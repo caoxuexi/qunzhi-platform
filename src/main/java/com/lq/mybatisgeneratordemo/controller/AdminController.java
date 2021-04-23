@@ -17,7 +17,7 @@ import com.lq.mybatisgeneratordemo.common.api.CommonPage;
 
 import java.util.List;
 
-@Api(tags = "AdminController", value = "管理员登录与注册")
+@Api(tags = "用户管理")
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
