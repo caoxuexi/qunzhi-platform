@@ -1,6 +1,7 @@
 package com.lq.mybatisgeneratordemo.controller;
 
 import com.lq.mybatisgeneratordemo.dto.AdminLoginParam;
+import com.lq.mybatisgeneratordemo.dto.SaberUserParam;
 import com.lq.mybatisgeneratordemo.mbg.model.SaberUser;
 import com.lq.mybatisgeneratordemo.service.AdminService;
 import io.swagger.annotations.Api;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import com.lq.mybatisgeneratordemo.common.api.CommonResult;
 import com.lq.mybatisgeneratordemo.common.api.CommonPage;
 
-@Api(tags = "AdminController", description = "用户管理")
+import java.util.List;
+
+@Api(tags = "AdminController", value = "管理员登录与注册")
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -35,7 +38,38 @@ public class AdminController {
         return CommonResult.success(true);
     }
 
+    @ApiOperation("根据用户名分页获取开发者列表")
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<CommonPage<SaberUser>> list(@RequestParam(value = "keyword", required = false) String keyword,
+                                                   @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                                   @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+        List<SaberUser> adminList = adminService.list(keyword, pageSize, pageNum);
+        return CommonResult.success(CommonPage.restPage(adminList));
+    }
 
-    //@GetMapping("/userlist")
-    //public CommonResult<CommonPage<SaberUser>> listUser(@RequestParam(value = "pageNum"))
+    @ApiOperation("获取指定开发者信息")
+    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<SaberUser> getItem(@PathVariable int id) {
+        SaberUser user = adminService.getUser(id);
+        return CommonResult.success(user);
+    }
+
+    @ApiOperation(value = "更新指定开发者信息")
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult update(@PathVariable("id") Integer id,
+                               @Validated @RequestBody SaberUserParam saberUserParam) {
+        CommonResult commonResult;
+        int count = adminService.update(id, saberUserParam);
+        if (count == 1) {
+            commonResult = CommonResult.success(count);
+        } else {
+            commonResult = CommonResult.failed();
+        }
+        return commonResult;
+    }
+
+
 }
