@@ -48,6 +48,7 @@ public class AdminController {
         return CommonResult.success(CommonPage.restPage(adminList));
     }
 
+
     @ApiOperation("获取指定开发者信息")
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -56,6 +57,7 @@ public class AdminController {
         return CommonResult.success(user);
     }
 
+    //尚未测试
     @ApiOperation(value = "更新指定开发者信息")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     @ResponseBody

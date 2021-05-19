@@ -12,3 +12,9 @@ mybatis:
     - classpath:mapper/*.xml
     - classpath*:mapper/*.xml
 
+jwt:
+  tokenHead: 'btc'
+  tokenHeader: 'Authorization'
+  secret: suo-ran-wu-wei-secret #JWT加解密使用的密钥
+  expiration: 604800 #JWT的超期限时间(60*60*24*7)
+
