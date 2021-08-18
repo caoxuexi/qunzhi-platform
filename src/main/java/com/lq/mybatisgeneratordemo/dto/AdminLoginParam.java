@@ -3,12 +3,10 @@ package com.lq.mybatisgeneratordemo.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotEmpty;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 public class AdminLoginParam {
     @NotEmpty
     @ApiModelProperty(value = "用户名",required = true)

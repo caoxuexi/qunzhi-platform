@@ -1,7 +1,6 @@
 package com.lq.mybatisgeneratordemo.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.lq.mybatisgeneratordemo.dto.SaberUserParam;
 import com.lq.mybatisgeneratordemo.mbg.mapper.SaberAdminMapper;
 import com.lq.mybatisgeneratordemo.mbg.mapper.SaberUserMapper;
 import com.lq.mybatisgeneratordemo.mbg.model.SaberAdmin;
@@ -9,8 +8,6 @@ import com.lq.mybatisgeneratordemo.mbg.model.SaberAdminExample;
 import com.lq.mybatisgeneratordemo.mbg.model.SaberUser;
 import com.lq.mybatisgeneratordemo.mbg.model.SaberUserExample;
 import com.lq.mybatisgeneratordemo.service.AdminService;
-import io.micrometer.core.instrument.Timer.Sample;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -27,6 +24,8 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public boolean login(String username, String password) {
         SaberAdmin admin = getAdminByUsername(username);
+        if(admin == null)
+            return false;
         return admin.getPassword().equals(password);
     }
 
@@ -54,15 +53,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public SaberUser getUser(Integer id) {
+    public SaberUser getUser(Long id) {
         return saberUserMapper.selectByPrimaryKey(id);
-    }
-
-    @Override
-    public int update(Integer id, SaberUserParam userParam) {
-        SaberUser saberUser = new SaberUser();
-        BeanUtils.copyProperties(userParam, saberUser);
-        saberUser.setId(id);
-        return saberUserMapper.updateByPrimaryKeySelective(saberUser);
     }
 }

@@ -2,11 +2,16 @@ package com.lq.mybatisgeneratordemo.dto;
 
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
 public class SaberUserParam implements Serializable {
+
+    @ApiModelProperty(value = "用户ID")
+    private Long id;
 
     @ApiModelProperty(value = "用户名称（邮箱格式）")
     private String username;
@@ -47,5 +52,7 @@ public class SaberUserParam implements Serializable {
     @ApiModelProperty(value = "创建时间")
     private Date addTime;
 
-    private static final long serialVersionUID = 1L;
+    @ApiModelProperty(value = "是否可用")
+    private Byte status;
+
 }

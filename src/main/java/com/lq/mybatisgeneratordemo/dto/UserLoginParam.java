@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import javax.validation.constraints.NotEmpty;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 public class UserLoginParam {
     @NotEmpty
     @ApiModelProperty(value = "用户名",required = true)

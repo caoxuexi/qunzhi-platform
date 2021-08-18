@@ -10,7 +10,7 @@ public interface SaberUserMapper {
 
     int deleteByExample(SaberUserExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(SaberUser record);
 
@@ -18,7 +18,7 @@ public interface SaberUserMapper {
 
     List<SaberUser> selectByExample(SaberUserExample example);
 
-    SaberUser selectByPrimaryKey(Integer id);
+    SaberUser selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") SaberUser record, @Param("example") SaberUserExample example);
 

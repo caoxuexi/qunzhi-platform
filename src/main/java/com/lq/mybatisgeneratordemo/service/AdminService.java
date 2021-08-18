@@ -1,9 +1,7 @@
 package com.lq.mybatisgeneratordemo.service;
 
-import com.lq.mybatisgeneratordemo.dto.SaberUserParam;
 import com.lq.mybatisgeneratordemo.mbg.model.SaberAdmin;
 import com.lq.mybatisgeneratordemo.mbg.model.SaberUser;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -30,10 +28,6 @@ public interface AdminService {
     /**
      * 根据用户id获取用户
      */
-    SaberUser getUser(Integer id);
+    SaberUser getUser(Long id);
 
-    /**
-     * 修改指定用户信息
-     */
-    int update(Integer id, SaberUserParam saberUserParam);
 }
