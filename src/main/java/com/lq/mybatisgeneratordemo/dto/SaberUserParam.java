@@ -49,10 +49,4 @@ public class SaberUserParam implements Serializable {
     @ApiModelProperty(value = "用户详细地址")
     private String addressDetail;
 
-    @ApiModelProperty(value = "创建时间")
-    private Date addTime;
-
-    @ApiModelProperty(value = "是否可用")
-    private Byte status;
-
 }

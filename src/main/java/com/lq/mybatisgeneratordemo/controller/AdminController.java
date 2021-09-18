@@ -5,10 +5,10 @@ import com.lq.mybatisgeneratordemo.mbg.model.SaberUser;
 import com.lq.mybatisgeneratordemo.service.AdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.lq.mybatisgeneratordemo.common.api.CommonResult;
@@ -17,7 +17,7 @@ import com.lq.mybatisgeneratordemo.common.api.CommonPage;
 import java.util.List;
 
 @Api(tags = "管理员相关功能")
-@Controller
+@RestController
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
@@ -27,7 +27,6 @@ public class AdminController {
 
     @ApiOperation("验证管理员的用户名与密码")
     @PostMapping("/login")
-    @ResponseBody
     public CommonResult login(@Validated @RequestBody AdminLoginParam adminLoginParam) {
         boolean res = adminService.login(adminLoginParam.getUsername(), adminLoginParam.getPassword());
         if(res == false) {
@@ -39,10 +38,9 @@ public class AdminController {
 
     @ApiOperation("根据用户名分页获取开发者列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public CommonResult<CommonPage<SaberUser>> list(@RequestParam(value = "keyword", required = false) String keyword,
-                                                   @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
-                                                   @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+    public CommonResult<CommonPage<SaberUser>> list(@ApiParam(name = "keyword", value = "用户名关键字") @RequestParam(value = "keyword", required = false) String keyword,
+                                                   @ApiParam(name = "pageSize", value = "页面大小")@RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,
+                                                   @ApiParam(name = "pageNum", value = "页面号")@RequestParam(value = "pageNum", defaultValue = "1", required = false)Integer pageNum) {
         List<SaberUser> adminList = adminService.list(keyword, pageSize, pageNum);
         return CommonResult.success(CommonPage.restPage(adminList));
     }
@@ -50,7 +48,6 @@ public class AdminController {
 
     @ApiOperation("获取指定开发者信息")
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
-    @ResponseBody
     public CommonResult<SaberUser> getItem(@PathVariable int id) {
         SaberUser user = adminService.getUser((long) id);
         return CommonResult.success(user);

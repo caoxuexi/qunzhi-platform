@@ -8,6 +8,8 @@ import com.lq.mybatisgeneratordemo.mbg.model.SaberAdminExample;
 import com.lq.mybatisgeneratordemo.mbg.model.SaberUser;
 import com.lq.mybatisgeneratordemo.mbg.model.SaberUserExample;
 import com.lq.mybatisgeneratordemo.service.AdminService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @Service
 public class AdminServiceImpl implements AdminService {
+    private Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
     @Autowired
     private SaberAdminMapper saberAdminMapper;
     @Autowired
@@ -24,8 +27,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public boolean login(String username, String password) {
         SaberAdmin admin = getAdminByUsername(username);
-        if(admin == null)
+        logger.info(password + "== " + admin.getPassword());
+        if (admin == null) {
             return false;
+        }
         return admin.getPassword().equals(password);
     }
 
