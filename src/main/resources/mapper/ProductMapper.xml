@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xidian.qunzhi.mapper.ProductMapper">
+  <resultMap id="BaseResultMap" type="pojo.Product">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="root_category_id" jdbcType="INTEGER" property="rootCategoryId" />
+    <result column="chat_method" jdbcType="VARCHAR" property="chatMethod" />
+    <result column="product_key" jdbcType="VARCHAR" property="productKey" />
+    <result column="product_secret" jdbcType="VARCHAR" property="productSecret" />
+    <result column="power_dissipation" jdbcType="SMALLINT" property="powerDissipation" />
+    <result column="share" jdbcType="SMALLINT" property="share" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+  </resultMap>
+</mapper>
