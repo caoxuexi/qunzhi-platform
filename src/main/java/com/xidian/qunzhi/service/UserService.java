@@ -10,5 +10,5 @@ public interface UserService {
     boolean register(String email, String password);
 
 
-    UserLoginVO login(String email, String password);
+    UserLoginVO login(String email, String password) throws Exception;
 }

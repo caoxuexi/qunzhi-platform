@@ -4,8 +4,10 @@ import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.mapper.UserMapper;
 
 import com.xidian.qunzhi.service.UserService;
+import com.xidian.qunzhi.utils.MD5Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setPassword(password);
         user.setEmail(email);
+        user.setNickname("default");
         //查询是否有相同用户名的用户
         Example example=new Example(User.class);
         Example.Criteria criteria=example.createCriteria();
@@ -42,7 +45,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserLoginVO login(String email, String password) {
-        return null;
+    public UserLoginVO login(String email, String password) throws Exception {
+        Example example=new Example(User.class);
+        Example.Criteria criteria=example.createCriteria();
+        criteria.andEqualTo("email",email)
+                .andEqualTo("password", MD5Utils.getMD5Str(password));
+        User user = userMapper.selectOneByExample(example);
+        if (user==null) {
+            throw new ForbiddenException(20003);
+        }
+        UserLoginVO userLoginVO=new UserLoginVO();
+        BeanUtils.copyProperties(user,userLoginVO);
+        return userLoginVO;
     }
 }

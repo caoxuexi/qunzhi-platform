@@ -1,7 +1,10 @@
 package com.xidian.qunzhi.controller;
 
 import com.xidian.qunzhi.core.UnifyResponse;
+import com.xidian.qunzhi.exception.http.HttpException;
+import com.xidian.qunzhi.exception.http.UnknowException;
 import com.xidian.qunzhi.service.UserService;
+import com.xidian.qunzhi.utils.MD5Utils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -28,19 +31,23 @@ public class UserController {
 
     @ApiOperation(value = "用户注册",httpMethod = "POST")
     @PostMapping(value = "/register")
-    public void register(@RequestBody @Valid UserRegistDTO useruserRegistDTO) {
-        boolean result = userService.register(useruserRegistDTO.getEmail(), useruserRegistDTO.getPassword());
+    public void register(@RequestBody @Valid UserRegistDTO useruserRegistDTO) throws Exception {
+        String rawPassword= useruserRegistDTO.getPassword();
+        String password= MD5Utils.getMD5Str(rawPassword);
+        boolean result = userService.register(useruserRegistDTO.getEmail(), password);
         if (result){
             UnifyResponse.createSuccess(1);
+        }else{
+            throw new UnknowException();
         }
     }
 
 
     @ApiOperation(value = "用户登录",httpMethod = "POST")
     @PostMapping("/login")
-    public UserLoginVO login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
-        UserLoginVO userVO=userService.login(userLoginDTO.getEmail(), userLoginDTO.getPassword());
-        return null;
+    public UserLoginVO login(@RequestBody @Valid UserLoginDTO userLoginDTO) throws Exception {
+        UserLoginVO userLoginVO=userService.login(userLoginDTO.getEmail(), userLoginDTO.getPassword());
+        return userLoginVO;
     }
 
 }

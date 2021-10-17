@@ -1,26 +1,35 @@
 package com.xidian.qunzhi.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
-
-/**
- * @author 曹学习
- * @description 跨域配置类
- * @date 2021/10/17 12:02
- */
 @Configuration
-public class CorsConfig implements WebMvcConfigurer {
+public class CorsConfig {
+    public CorsConfig(){
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedHeaders(CorsConfiguration.ALL)
-                .allowedMethods(CorsConfiguration.ALL)
-                .allowCredentials(true)
-                .maxAge(3600); // 1小时内不需要再预检（发OPTIONS请求）
+    }
+
+    @Bean
+    public CorsFilter corsFilter(){
+        //CorsFilter导.web.filter.CorsFilter下的
+        //1.添加cors配置信息
+        CorsConfiguration config=new CorsConfiguration();
+        config.addAllowedOrigin("*");
+        // 设置是否发送cookie信息
+        config.setAllowCredentials(true);
+        // 设置允许请求的方式  全部
+        config.addAllowedMethod("*");
+        // 设置允许的header
+        config.addAllowedHeader("*");
+
+        //2. 为url添加映射路径 选第一个
+        UrlBasedCorsConfigurationSource corsSource=new UrlBasedCorsConfigurationSource();
+        corsSource.registerCorsConfiguration("/**",config);
+
+        //3. 返回中心定义好的corsSource
+        return new CorsFilter(corsSource);
     }
 }
