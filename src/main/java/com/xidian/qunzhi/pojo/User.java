@@ -1,4 +1,4 @@
-package pojo;
+package com.xidian.qunzhi.pojo;
 
 import lombok.Data;
 

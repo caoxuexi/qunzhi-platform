@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import pojo.User;
-import pojo.vo.UserLoginVO;
+import com.xidian.qunzhi.pojo.User;
+import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -21,6 +21,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Autowired
     private UserMapper userMapper;
 

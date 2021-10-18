@@ -1,4 +1,4 @@
-package pojo;
+package com.xidian.qunzhi.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -16,9 +16,11 @@ public abstract class BaseEntity {
     @JsonIgnore
     @Column(insertable=false, updatable=false)
     private Date createTime;
+
     @JsonIgnore
     @Column(insertable=false, updatable=false)
     private Date updateTime;
+
     @JsonIgnore
     private Date deleteTime;
 }

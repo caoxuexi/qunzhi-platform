@@ -1,7 +1,7 @@
 package com.xidian.qunzhi.service;
 
 
-import pojo.vo.UserLoginVO;
+import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 
 public interface UserService {
     /**

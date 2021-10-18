@@ -4,6 +4,7 @@ import com.xidian.qunzhi.service.impl.UserServiceImpl;
 import com.xidian.qunzhi.utils.ValidateCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpSession;
 public class ValidateCodeController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ValidateCodeController.class);
 
+    @ApiOperation(value = "生成验证码",httpMethod = "GET")
     @GetMapping(value="/generate")
     public String generateCode(HttpServletRequest request, HttpServletResponse response) throws Exception{
         // 设置响应的类型格式为图片格式

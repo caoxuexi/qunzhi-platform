@@ -2,7 +2,7 @@ package com.xidian.qunzhi.validator.related;
 
 
 import com.xidian.qunzhi.validator.PasswordEqual;
-import pojo.dto.UserRegistDTO;
+import com.xidian.qunzhi.pojo.dto.UserRegistDTO;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

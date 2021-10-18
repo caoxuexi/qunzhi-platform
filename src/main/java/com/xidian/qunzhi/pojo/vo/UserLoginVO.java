@@ -1,4 +1,4 @@
-package pojo.vo;
+package com.xidian.qunzhi.pojo.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

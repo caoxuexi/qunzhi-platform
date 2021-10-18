@@ -1,5 +1,6 @@
 package com.xidian.qunzhi.core;
 
+import com.xidian.qunzhi.exception.CommonSuccess;
 import com.xidian.qunzhi.exception.CreateSuccess;
 import lombok.Data;
 
@@ -20,8 +21,12 @@ public class UnifyResponse {
         this.request = request;
     }
 
-    public static void createSuccess(int code) {
-        throw new CreateSuccess(code);
+    public static void createSuccess() {
+        throw new CreateSuccess(1);
     }
+    public static void commonSuccess() {
+        throw new CommonSuccess(0);
+    }
+
 
 }
