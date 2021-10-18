@@ -29,4 +29,8 @@ public class UserRegistDTO {
     @Size(min = 5,max=16,message = "重输密码长度不对")
     @ApiModelProperty(value = "二次确认密码",name = "rePassword",example = "123456",required = true)
     private String rePassword;
+
+    @ApiModelProperty(value = "验证码",name = "captcha",example = "43MDW",required = true)
+    private String captcha;
+
 }
