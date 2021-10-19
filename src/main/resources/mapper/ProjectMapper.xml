@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xidian.qunzhi.mapper.ProductMapper">
-    <resultMap id="BaseResultMap" type="com.xidian.qunzhi.pojo.Product">
+<mapper namespace="com.xidian.qunzhi.mapper.ProjectMapper">
+    <resultMap id="BaseResultMap" type="com.xidian.qunzhi.pojo.Project">
         <!--
           WARNING - @mbg.generated
         -->
@@ -20,7 +20,7 @@
     <!--resultMap指定上面生成的映射数据格式-->
     <select id="listAllByUserId" parameterType="integer" resultMap="BaseResultMap">
         select *
-        from product p
-        where p.id in (SELECT up.product_id from user_project up where up.user_id = #{id}) and p.delete_time is null
+        from project p
+        where p.id in (SELECT up.project_id from user_project up where up.user_id = #{id}) and p.delete_time is null
     </select>
 </mapper>

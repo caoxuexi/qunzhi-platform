@@ -13,8 +13,8 @@ public class UserProject extends BaseEntity{
     @Column(name = "user_id")
     private Integer userId;
 
-    @Column(name = "product_id")
-    private Integer productId;
+    @Column(name = "project_id")
+    private Integer projectId;
 
     /**
      * 用户对于项目的角色

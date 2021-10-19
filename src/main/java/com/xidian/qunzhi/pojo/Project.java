@@ -6,7 +6,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Data
-public class Product {
+public class Project {
     @Id
     private Integer id;
 
@@ -42,5 +42,7 @@ public class Product {
 
     @Column(name = "delete_time")
     private Date deleteTime;
+
+
 
 }

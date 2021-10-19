@@ -7,10 +7,12 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
     <result column="user_role" jdbcType="SMALLINT" property="userRole" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
   </resultMap>
+
+
 </mapper>

@@ -9,11 +9,11 @@ import java.util.Date;
 
 /**
  * @author Cao Study
- * @description <h1>ProductDetailVO</h1>
+ * @description <h1>ProjectDetailVO</h1>
  * @date 2021-10-19 11:27
  */
 @Data
-public class ProductDetailVO {
+public class ProjectDetailVO {
     private Integer id;
 
     private String name;

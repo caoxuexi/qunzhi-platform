@@ -24,11 +24,8 @@
 
 package com.xidian.qunzhi.utils;
 
-import com.xidian.qunzhi.pojo.Product;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;
-
-import java.util.List;
 
 /**
  * 继承自己的MyMapper
