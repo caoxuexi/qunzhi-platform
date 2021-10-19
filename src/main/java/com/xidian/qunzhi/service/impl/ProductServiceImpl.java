@@ -6,6 +6,7 @@ import com.xidian.qunzhi.mapper.UserMapper;
 import com.xidian.qunzhi.mapper.UserProjectMapper;
 import com.xidian.qunzhi.pojo.Product;
 import com.xidian.qunzhi.pojo.UserProject;
+import com.xidian.qunzhi.pojo.vo.ProductDetailVO;
 import com.xidian.qunzhi.pojo.vo.ProductPreviewVO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 import com.xidian.qunzhi.service.ProductService;
@@ -41,8 +42,8 @@ public class ProductServiceImpl implements ProductService {
     public void checkBelonging(Integer productId, Integer usrId) {
         Example example=new Example(UserProject.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("productId",productId)
-                .andEqualTo("userId",usrId);
+        criteria.andEqualTo("product_id",productId)
+                .andEqualTo("user_id",usrId);
 
         UserProject userProject = userProjectMapper.selectOneByExample(example);
         if(userProject==null) {
@@ -52,7 +53,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void detail(Integer productId) {
-
+    public ProductDetailVO detail(Integer productId) {
+        Product product = productMapper.selectByPrimaryKey(productId);
+        ProductDetailVO productDetailVO = CopyUtil.copy(product, ProductDetailVO.class);
+        return productDetailVO;
     }
 }

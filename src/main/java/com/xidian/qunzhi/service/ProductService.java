@@ -1,5 +1,6 @@
 package com.xidian.qunzhi.service;
 
+import com.xidian.qunzhi.pojo.vo.ProductDetailVO;
 import com.xidian.qunzhi.pojo.vo.ProductPreviewVO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 
@@ -29,6 +30,7 @@ public interface ProductService {
     /**
      * 根据项目名称搜索项目的详细信息
      * @param productId
+     * @return
      */
-    void detail(Integer productId);
+    ProductDetailVO detail(Integer productId);
 }

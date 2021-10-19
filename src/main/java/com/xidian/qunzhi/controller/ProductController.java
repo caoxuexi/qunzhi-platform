@@ -1,6 +1,7 @@
 package com.xidian.qunzhi.controller;
 
 import com.xidian.qunzhi.pojo.Product;
+import com.xidian.qunzhi.pojo.vo.ProductDetailVO;
 import com.xidian.qunzhi.pojo.vo.ProductPreviewVO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 import com.xidian.qunzhi.service.ProductService;
@@ -8,6 +9,7 @@ import com.xidian.qunzhi.utils.JythonUtil;
 import com.xidian.qunzhi.utils.LoginUserContext;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,12 +37,13 @@ public class ProductController {
 
     @ApiOperation(value = "获取项目的详细内容",httpMethod = "GET")
     @GetMapping("/detail")
-    public Product detail(Integer productId){
+    public  ProductDetailVO detail(@ApiParam(value = "项目id",example = "1")
+                                       @RequestParam(value = "id") Integer productId){
         //判断该项目是否属于当前用户
         UserLoginVO userLoginVO=LoginUserContext.getUser();
         productService.checkBelonging(productId,userLoginVO.getId());
-        productService.detail(productId);
-        return null;
+        ProductDetailVO productDetailVO = productService.detail(productId);
+        return productDetailVO;
     }
 
     @ApiOperation(value = "关键词抽取",httpMethod = "POST")
