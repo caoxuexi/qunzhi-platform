@@ -42,8 +42,8 @@ public class ProductServiceImpl implements ProductService {
     public void checkBelonging(Integer productId, Integer usrId) {
         Example example=new Example(UserProject.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("product_id",productId)
-                .andEqualTo("user_id",usrId);
+        criteria.andEqualTo("productId",productId)
+                .andEqualTo("userId",usrId);
 
         UserProject userProject = userProjectMapper.selectOneByExample(example);
         if(userProject==null) {
