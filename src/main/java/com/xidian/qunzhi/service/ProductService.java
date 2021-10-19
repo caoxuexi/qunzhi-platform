@@ -12,5 +12,23 @@ import java.util.List;
  */
 public interface ProductService {
 
-    List<ProductPreviewVO> listAllByEmail(UserLoginVO userLoginVO);
+    /**
+     * 获的当前用户所有的项目的缩略图
+     * @param userLoginVO
+     * @return
+     */
+    List<ProductPreviewVO> listAll(UserLoginVO userLoginVO);
+
+    /**
+     * 判断项目是否属于用户
+     * @param productId
+     * @param userId
+     */
+    void checkBelonging(Integer productId, Integer userId);
+
+    /**
+     * 根据项目名称搜索项目的详细信息
+     * @param productId
+     */
+    void detail(Integer productId);
 }

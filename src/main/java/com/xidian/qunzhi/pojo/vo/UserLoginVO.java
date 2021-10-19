@@ -12,6 +12,8 @@ import lombok.Data;
 @ApiModel(value = "用户登录成功时返回的VO",description = "用户登录成功返回给前端的对象")
 @Data
 public class UserLoginVO {
+    @ApiModelProperty(value = "id",name = "id",example = "1",required = true)
+    private Integer id;
     @ApiModelProperty(value = "邮箱",name = "email",example = "752245683@qq.com",required = true)
     private String email;
     @ApiModelProperty(value = "昵称",name = "nickname",example = "caoxuexi",required = true)

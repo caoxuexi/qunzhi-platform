@@ -19,7 +19,13 @@ public class SpringMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns(
                         "/redis/**", //redisTemplate的本质也是向redis发http请求，所以这里redis接口要放开
                         "/user/**",
-                        "/captcha/generate"
+                        "/captcha/generate",
+                        // swagger2需要放行的资源
+                        "/doc.html",
+                        "/swagger-ui.html",
+                        "/swagger-resources/**",
+                        "/v2/**",
+                        "/webjars/**"
                 );
     }
 

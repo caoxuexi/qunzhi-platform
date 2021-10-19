@@ -1,5 +1,6 @@
 package com.xidian.qunzhi.controller;
 
+import com.xidian.qunzhi.pojo.Product;
 import com.xidian.qunzhi.pojo.vo.ProductPreviewVO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 import com.xidian.qunzhi.service.ProductService;
@@ -24,12 +25,22 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @ApiOperation(value = "列出当前用户所在的所有项目",httpMethod = "POST")
+    @ApiOperation(value = "列出当前用户所在的所有项目缩列图",httpMethod = "GET")
     @GetMapping("/listall")
     public List<ProductPreviewVO> listallByEmial(){
         UserLoginVO userLoginVO = LoginUserContext.getUser();
-        List<ProductPreviewVO> productPreviewVOList=productService.listAllByEmail(userLoginVO);
+        List<ProductPreviewVO> productPreviewVOList=productService.listAll(userLoginVO);
         return productPreviewVOList;
+    }
+
+    @ApiOperation(value = "获取项目的详细内容",httpMethod = "GET")
+    @GetMapping("/detail")
+    public Product detail(Integer productId){
+        //判断该项目是否属于当前用户
+        UserLoginVO userLoginVO=LoginUserContext.getUser();
+        productService.checkBelonging(productId,userLoginVO.getId());
+        productService.detail(productId);
+        return null;
     }
 
     @ApiOperation(value = "关键词抽取",httpMethod = "POST")

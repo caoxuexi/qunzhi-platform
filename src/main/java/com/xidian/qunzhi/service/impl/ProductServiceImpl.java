@@ -1,15 +1,15 @@
 package com.xidian.qunzhi.service.impl;
 
-import com.xidian.qunzhi.exception.http.NotFoundException;
+import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.mapper.ProductMapper;
 import com.xidian.qunzhi.mapper.UserMapper;
+import com.xidian.qunzhi.mapper.UserProjectMapper;
 import com.xidian.qunzhi.pojo.Product;
-import com.xidian.qunzhi.pojo.User;
+import com.xidian.qunzhi.pojo.UserProject;
 import com.xidian.qunzhi.pojo.vo.ProductPreviewVO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 import com.xidian.qunzhi.service.ProductService;
 import com.xidian.qunzhi.utils.CopyUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -27,19 +27,32 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserProjectMapper userProjectMapper;
 
     @Override
-    public List<ProductPreviewVO> listAllByEmail(UserLoginVO userLoginVO) {
-        String userEmail=userLoginVO.getEmail();
-        Example example=new Example(User.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("email",userEmail);
-        User user=userMapper.selectOneByExample(example);
-        if(user==null){
-            throw new NotFoundException(20002);
-        }
-        List<Product> productList= productMapper.listAllByUserId(user.getId());
+    public List<ProductPreviewVO> listAll(UserLoginVO userLoginVO) {
+        List<Product> productList= productMapper.listAllByUserId(userLoginVO.getId());
         List<ProductPreviewVO> productPreviewVOList = CopyUtil.copyList(productList, ProductPreviewVO.class);
         return productPreviewVOList;
+    }
+
+    @Override
+    public void checkBelonging(Integer productId, Integer usrId) {
+        Example example=new Example(UserProject.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("productId",productId)
+                .andEqualTo("userId",usrId);
+
+        UserProject userProject = userProjectMapper.selectOneByExample(example);
+        if(userProject==null) {
+            //如果该项目不属于当前用户则抛出异常
+            throw new ForbiddenException(30002);
+        }
+    }
+
+    @Override
+    public void detail(Integer productId) {
+
     }
 }

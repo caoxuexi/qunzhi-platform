@@ -1,8 +1,10 @@
 package com.xidian.qunzhi.interceptor;
 
 import com.alibaba.fastjson.JSON;
+import com.xidian.qunzhi.exception.http.UnAuthenticatedException;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 import com.xidian.qunzhi.utils.LoginUserContext;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,16 +48,14 @@ public class LoginInterceptor implements HandlerInterceptor {
             LOG.info( "token为空，请求被拦截" );
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setCharacterEncoding("utf-8");
-            response.getWriter().write("token为空，请求被拦截");
-            return false;
+            throw new UnAuthenticatedException(10007);
         }
         Object object = redisTemplate.opsForValue().get(token);
         if (object == null) {
             LOG.warn( "token无效，请求被拦截" );
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setCharacterEncoding("utf-8");
-            response.getWriter().write("token无效，请求被拦截");
-            return false;
+            throw new UnAuthenticatedException(10004);
         } else {
             LOG.info("已登录：{}", object);
             //序列化回结构体，存入LoginUserContext的localthread中
