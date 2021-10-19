@@ -21,6 +21,6 @@
     <select id="listAllByUserId" parameterType="integer" resultMap="BaseResultMap">
         select *
         from product p
-        where p.id in (SELECT up.product_id from user_project up where up.user_id = #{id})
+        where p.id in (SELECT up.product_id from user_project up where up.user_id = #{id}) and p.delete_time is null
     </select>
 </mapper>

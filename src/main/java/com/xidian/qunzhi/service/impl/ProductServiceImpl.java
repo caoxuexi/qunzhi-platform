@@ -54,7 +54,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDetailVO detail(Integer productId) {
-        Product product = productMapper.selectByPrimaryKey(productId);
+        Example example=new Example(UserProject.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id",productId)
+                .andEqualTo("deleteTime",null);
+        Product product = productMapper.selectOneByExample(example);
         ProductDetailVO productDetailVO = CopyUtil.copy(product, ProductDetailVO.class);
         return productDetailVO;
     }
