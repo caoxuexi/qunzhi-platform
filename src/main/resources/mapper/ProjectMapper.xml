@@ -17,6 +17,7 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
     </resultMap>
+
     <!--resultMap指定上面生成的映射数据格式-->
     <select id="listAllByUserId" parameterType="integer" resultMap="BaseResultMap">
         select *

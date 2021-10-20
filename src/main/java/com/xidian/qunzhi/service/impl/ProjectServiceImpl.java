@@ -63,6 +63,7 @@ public class ProjectServiceImpl implements ProjectService {
         //先检查用户是否是管理员
         Example example=new Example(Project.class);
         Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("deleteTime",null);
         //按项目名查询
         if(!StringUtils.isEmpty(searchProjectDTO.getName())){
             criteria.andLike("name","%"+searchProjectDTO.getName()+"%");
