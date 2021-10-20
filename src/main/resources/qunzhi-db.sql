@@ -11,7 +11,7 @@
  Target Server Version : 80026
  File Encoding         : 65001
 
- Date: 20/10/2021 10:45:03
+ Date: 20/10/2021 21:29:55
 */
 
 SET NAMES utf8mb4;
@@ -59,7 +59,7 @@ CREATE TABLE `project`  (
 -- ----------------------------
 -- Records of project
 -- ----------------------------
-INSERT INTO `project` VALUES (1, '智能家居系统', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-18 20:19:04.000', '2021-10-18 20:19:07.000', NULL);
+INSERT INTO `project` VALUES (1, '智能家居系统', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-18 20:19:04.000', '2021-10-20 20:04:46.847', '2021-10-20 20:04:46.841');
 INSERT INTO `project` VALUES (2, '智慧社区系统', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-19 08:35:51.000', '2021-10-19 08:35:58.000', NULL);
 
 -- ----------------------------
@@ -104,12 +104,13 @@ CREATE TABLE `user_project`  (
   `update_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_project
 -- ----------------------------
-INSERT INTO `user_project` VALUES (1, 1, 1, NULL, '2021-10-18 19:48:42.148', '2021-10-18 19:48:42.148', NULL);
-INSERT INTO `user_project` VALUES (2, 1, 2, NULL, '2021-10-19 08:37:38.000', '2021-10-19 08:37:40.000', NULL);
+INSERT INTO `user_project` VALUES (1, 1, 1, 1, '2021-10-18 19:48:42.148', '2021-10-20 20:05:23.184', NULL);
+INSERT INTO `user_project` VALUES (2, 1, 2, 2, '2021-10-19 08:37:38.000', '2021-10-20 19:58:41.185', NULL);
+INSERT INTO `user_project` VALUES (3, 2, 1, 2, '2021-10-20 19:22:22.186', '2021-10-20 20:05:19.090', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
