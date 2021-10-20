@@ -1,4 +1,4 @@
-package com.xidian.qunzhi.pojo;
+package com.xidian.qunzhi.pojo.basic;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;

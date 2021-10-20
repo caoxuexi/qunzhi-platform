@@ -6,8 +6,10 @@ import com.xidian.qunzhi.core.UnifyResponse;
 import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.exception.http.NotFoundException;
 import com.xidian.qunzhi.exception.http.UnknowException;
+import com.xidian.qunzhi.pojo.User;
 import com.xidian.qunzhi.service.UserService;
 import com.xidian.qunzhi.utils.JsonUtils;
+import com.xidian.qunzhi.utils.LoginUserContext;
 import com.xidian.qunzhi.utils.MD5Utils;
 import com.xidian.qunzhi.utils.SnowFlake;
 import io.swagger.annotations.Api;
@@ -74,12 +76,11 @@ public class UserController {
     }
 
     @ApiOperation(value = "用户退出", httpMethod = "GET")
-    @GetMapping(value = "/logout/{token}")
-    public UnifyResponse logout(@PathVariable
-                           @ApiParam(name = "用户授权token",defaultValue = "105306861133238272")
-                                   String token,HttpServletRequest request) throws Exception {
-        redisTemplate.delete(token);
-        LOGGER.info("从redis中删除token: {}", token);
+    @GetMapping(value = "/logout")
+    public UnifyResponse logout(@PathVariable HttpServletRequest request) throws Exception {
+        UserLoginVO userLoginVO = LoginUserContext.getUser();
+        redisTemplate.delete(userLoginVO.getToken());
+        LOGGER.info("从redis中删除token: {}", userLoginVO.getToken());
         return UnifyResponse.commonSuccess(request);
     }
 }

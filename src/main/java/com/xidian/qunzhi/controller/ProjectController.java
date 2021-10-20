@@ -1,6 +1,9 @@
 package com.xidian.qunzhi.controller;
 
 import com.xidian.qunzhi.core.UnifyResponse;
+import com.xidian.qunzhi.pojo.basic.PageVO;
+import com.xidian.qunzhi.pojo.dto.SearchProjectDTO;
+import com.xidian.qunzhi.pojo.vo.ProjectAdminVO;
 import com.xidian.qunzhi.pojo.vo.ProjectDetailVO;
 import com.xidian.qunzhi.pojo.vo.ProjectPreviewVO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -32,35 +36,34 @@ public class ProjectController {
     @GetMapping("/listAllByUser")
     public List<ProjectPreviewVO> listAllByUser(){
         UserLoginVO userLoginVO = LoginUserContext.getUser();
-        List<ProjectPreviewVO> productPreviewVOList= projectService.listAll(userLoginVO);
+        List<ProjectPreviewVO> productPreviewVOList= projectService.listAllByUser(userLoginVO);
         return productPreviewVOList;
     }
 
-    @ApiOperation(value = "管理员列出所有项目的情况",httpMethod = "GET")
-    @GetMapping("/listAll")
-    public List<ProjectPreviewVO> listAll(){
+    @ApiOperation(value = "管理员按条件搜索列出项目的情况",httpMethod = "GET")
+    @GetMapping("/searchByAdmin")
+    public  PageVO<ProjectAdminVO> searchByAdmin(@Valid SearchProjectDTO searchProjectDTO){
         UserLoginVO userLoginVO = LoginUserContext.getUser();
-
-        List<ProjectPreviewVO> productPreviewVOList= projectService.listAll(userLoginVO);
-        return productPreviewVOList;
+        //分页查询
+        PageVO<ProjectAdminVO> projectAdminVOList= projectService.searchByAdmin(searchProjectDTO,userLoginVO);
+        return projectAdminVOList;
     }
 
     @ApiOperation(value = "获取项目的详细内容",httpMethod = "GET")
     @GetMapping("/detail")
     public ProjectDetailVO detail(@ApiParam(value = "项目id",example = "1")
                                        @RequestParam(value = "id") Integer projectId){
-        //判断该项目是否属于当前用户
         UserLoginVO userLoginVO=LoginUserContext.getUser();
-        projectService.checkBelonging(projectId,userLoginVO.getId());
-        ProjectDetailVO productDetailVO = projectService.detail(projectId);
+        ProjectDetailVO productDetailVO = projectService.detail(projectId,userLoginVO.getId());
         return productDetailVO;
     }
 
-    @ApiOperation(value = "获取项目的详细内容",httpMethod = "DELETE")
+    @ApiOperation(value = "删除项目",httpMethod = "DELETE")
     @DeleteMapping("/delete")
     public UnifyResponse delete(@ApiParam(value = "项目id",example = "1")
                                   @RequestParam(value = "id") Integer projectId, HttpServletRequest request){
-        //TODO 判断该项目是否属于当前用户
+        UserLoginVO userLoginVO=LoginUserContext.getUser();
+        projectService.delete(projectId,userLoginVO.getId());
         return UnifyResponse.deleteSuccess(request);
     }
 

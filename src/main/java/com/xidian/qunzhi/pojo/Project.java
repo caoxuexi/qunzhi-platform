@@ -1,5 +1,6 @@
 package com.xidian.qunzhi.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.Date;
@@ -34,15 +35,17 @@ public class Project {
      */
     private Short share;
 
+    @Column(name = "current_user_count")
+    private Integer currentUserCount;
+
     @Column(name = "create_time")
     private Date createTime;
 
     @Column(name = "update_time")
     private Date updateTime;
 
+    @JsonIgnore
     @Column(name = "delete_time")
     private Date deleteTime;
-
-
 
 }

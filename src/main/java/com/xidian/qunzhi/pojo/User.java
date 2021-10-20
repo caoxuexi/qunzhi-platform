@@ -13,7 +13,6 @@ public class User{
 
     private String nickname;
 
-
     private String realname;
 
     private String password;
