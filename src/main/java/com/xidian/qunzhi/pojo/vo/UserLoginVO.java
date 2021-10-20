@@ -21,5 +21,5 @@ public class UserLoginVO {
     @ApiModelProperty(value = "令牌",name = "token",example = "asdadas.axxsd.asda",required = true)
     private String token;
     @ApiModelProperty(value = "是否是管理员",name = "isAdmin",example = "1",required = true)
-    private String isAdmin;
+    private Short isAdmin;
 }

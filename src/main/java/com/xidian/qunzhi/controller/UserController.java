@@ -46,7 +46,7 @@ public class UserController {
 
     @ApiOperation(value = "用户注册", httpMethod = "POST")
     @PostMapping(value = "/register")
-    public void register(@RequestBody @Valid UserRegistDTO userRegistDTO, HttpServletRequest request) throws Exception {
+    public UnifyResponse register(@RequestBody @Valid UserRegistDTO userRegistDTO, HttpServletRequest request) throws Exception {
         String rawPassword = userRegistDTO.getPassword();
         String password = MD5Utils.getMD5Str(rawPassword);
         String backgroundCaptcha = request.getSession().getAttribute("code").toString();
@@ -55,7 +55,7 @@ public class UserController {
         }
         boolean result = userService.register(userRegistDTO.getEmail(), password);
         if (result) {
-            UnifyResponse.createSuccess();
+           return UnifyResponse.createSuccess(request);
         } else {
             throw new UnknowException();
         }
@@ -75,11 +75,11 @@ public class UserController {
 
     @ApiOperation(value = "用户退出", httpMethod = "GET")
     @GetMapping(value = "/logout/{token}")
-    public void logout(@PathVariable
+    public UnifyResponse logout(@PathVariable
                            @ApiParam(name = "用户授权token",defaultValue = "105306861133238272")
-                                   String token) throws Exception {
+                                   String token,HttpServletRequest request) throws Exception {
         redisTemplate.delete(token);
         LOGGER.info("从redis中删除token: {}", token);
-        UnifyResponse.commonSuccess();
+        return UnifyResponse.commonSuccess(request);
     }
 }

@@ -15,6 +15,7 @@
     <result column="qq" jdbcType="VARCHAR" property="qq" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="is_admin" jdbcType="SMALLINT" property="isAdmin" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>

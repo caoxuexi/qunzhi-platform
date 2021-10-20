@@ -1,6 +1,6 @@
 package com.xidian.qunzhi.config;
 
-import com.xidian.qunzhi.interceptor.LoginInterceptor;
+import com.xidian.qunzhi.core.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

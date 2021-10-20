@@ -6,6 +6,8 @@ import com.xidian.qunzhi.exception.DeleteSuccess;
 import com.xidian.qunzhi.exception.UpdateSuccess;
 import lombok.Data;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author 曹学习
  * @description UnifyResponse
@@ -23,18 +25,20 @@ public class UnifyResponse {
         this.request = request;
     }
 
-    public static void commonSuccess() {
-        throw new CommonSuccess(0);
+    public static UnifyResponse commonSuccess(HttpServletRequest request) {
+        return new UnifyResponse(0,"ok",request.getMethod()+" "+request.getRequestURI());
     }
 
-    public static void createSuccess() {
-        throw new CreateSuccess(1);
+    public static UnifyResponse createSuccess(HttpServletRequest request) {
+        return new UnifyResponse(1,"创建成功", request.getMethod()+" "+request.getRequestURI());
     }
 
-    public static void updateSuccess() { throw new UpdateSuccess(2); }
+    public static UnifyResponse updateSuccess(HttpServletRequest request) {
+        return new UnifyResponse(2,"更新成功", request.getMethod()+" "+request.getRequestURI());
+    }
 
-    public static void deleteSuccess() {
-        throw new DeleteSuccess(3);
+    public static UnifyResponse deleteSuccess(HttpServletRequest request) {
+        return new UnifyResponse(3,"删除成功", request.getMethod()+" "+request.getRequestURI());
     }
 
 

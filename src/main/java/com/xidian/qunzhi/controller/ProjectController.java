@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -57,10 +58,10 @@ public class ProjectController {
 
     @ApiOperation(value = "获取项目的详细内容",httpMethod = "DELETE")
     @DeleteMapping("/delete")
-    public void delete(@ApiParam(value = "项目id",example = "1")
-                                  @RequestParam(value = "id") Integer projectId){
-        //判断该项目是否属于当前用户
-        UnifyResponse.deleteSuccess();
+    public UnifyResponse delete(@ApiParam(value = "项目id",example = "1")
+                                  @RequestParam(value = "id") Integer projectId, HttpServletRequest request){
+        //TODO 判断该项目是否属于当前用户
+        return UnifyResponse.deleteSuccess(request);
     }
 
     @ApiOperation(value = "关键词抽取",httpMethod = "POST")

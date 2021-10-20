@@ -13,6 +13,7 @@ public class User{
 
     private String nickname;
 
+
     private String realname;
 
     private String password;
@@ -30,7 +31,7 @@ public class User{
     private String district;
 
     @Column(name = "is_admin")
-    private Integer isAdmin;
+    private Short isAdmin;
 
 
     @JsonIgnore
