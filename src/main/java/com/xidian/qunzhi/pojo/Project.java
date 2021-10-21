@@ -35,8 +35,6 @@ public class Project {
      */
     private Short share;
 
-    @Column(name = "current_user_count")
-    private Integer currentUserCount;
 
     @Column(name = "create_time")
     private Date createTime;

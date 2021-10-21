@@ -14,13 +14,14 @@ import java.util.Date;
 public abstract class BaseEntity {
 
     @JsonIgnore
-    @Column(insertable=false, updatable=false)
+    @Column(name = "create_time",insertable=false, updatable=false)
     private Date createTime;
 
     @JsonIgnore
-    @Column(insertable=false, updatable=false)
+    @Column(name = "update_time",insertable=false, updatable=false)
     private Date updateTime;
 
     @JsonIgnore
+    @Column(name = "delete_time")
     private Date deleteTime;
 }

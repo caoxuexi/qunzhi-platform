@@ -6,8 +6,8 @@ package com.xidian.qunzhi.core.enumerate;
  * @date 2021-10-19 22:52
  */
 public enum AdminOrNotEnum {
-    ADMIN(0,"普通用户"),
-    NORMAL(1, "管理员");
+    NORMAL(0,"普通用户"),
+    ADMIN(1, "管理员");
 
     private Integer value;
 

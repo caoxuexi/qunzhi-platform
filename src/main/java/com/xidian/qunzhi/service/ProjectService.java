@@ -1,6 +1,7 @@
 package com.xidian.qunzhi.service;
 
 import com.xidian.qunzhi.pojo.basic.PageVO;
+import com.xidian.qunzhi.pojo.dto.ProjectDTO;
 import com.xidian.qunzhi.pojo.dto.SearchProjectDTO;
 import com.xidian.qunzhi.pojo.vo.ProjectAdminVO;
 import com.xidian.qunzhi.pojo.vo.ProjectDetailVO;
@@ -50,5 +51,20 @@ public interface ProjectService {
      */
     void delete(Integer projectId, Integer userId);
 
+    /**
+     * 新建项目
+     * @param projectDTO
+     * @param id
+     * @return
+     */
+    ProjectDetailVO create(ProjectDTO projectDTO, Integer id);
+
+    /**
+     * 组长审批后，添加用户到项目的逻辑
+     * @param projectId
+     * @param userId
+     * @param id
+     */
+    void addProjectMember(Integer projectId, Integer userId, Integer leaderId);
 }
 

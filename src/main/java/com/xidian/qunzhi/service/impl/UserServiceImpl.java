@@ -1,9 +1,12 @@
 package com.xidian.qunzhi.service.impl;
 
+import com.xidian.qunzhi.core.enumerate.AdminOrNotEnum;
 import com.xidian.qunzhi.exception.http.ForbiddenException;
+import com.xidian.qunzhi.exception.http.UnAuthenticatedException;
 import com.xidian.qunzhi.mapper.UserMapper;
 
 import com.xidian.qunzhi.service.UserService;
+import com.xidian.qunzhi.utils.CopyUtil;
 import com.xidian.qunzhi.utils.MD5Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,9 +36,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setNickname("default");
         //查询是否有相同用户名的用户
-        Example example=new Example(User.class);
-        Example.Criteria criteria=example.createCriteria();
-        criteria.andEqualTo("email",email);
+        Example example = new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("email", email);
         List<User> userList = userMapper.selectByExample(example);
         if (userList.size() > 0) {
             throw new ForbiddenException(20001);
@@ -47,16 +50,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserLoginVO login(String email, String password) throws Exception {
-        Example example=new Example(User.class);
-        Example.Criteria criteria=example.createCriteria();
-        criteria.andEqualTo("email",email)
+        Example example = new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("email", email)
                 .andEqualTo("password", MD5Utils.getMD5Str(password));
         User user = userMapper.selectOneByExample(example);
-        if (user==null) {
+        if (user == null) {
             throw new ForbiddenException(20003);
         }
-        UserLoginVO userLoginVO=new UserLoginVO();
-        BeanUtils.copyProperties(user,userLoginVO);
+        UserLoginVO userLoginVO = CopyUtil.copy(user, UserLoginVO.class);
+        return userLoginVO;
+    }
+
+    @Override
+    public UserLoginVO adminLogin(String email, String password) throws Exception {
+        Example example = new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("email", email)
+                .andEqualTo("password", MD5Utils.getMD5Str(password));
+        User user = userMapper.selectOneByExample(example);
+        if (user == null) {
+            throw new ForbiddenException(20003);
+        }
+         //判断用户是否是管理员
+        if(user.getIsAdmin().intValue()!=AdminOrNotEnum.ADMIN.getValue()){
+            throw new UnAuthenticatedException(20006);
+        }
+        UserLoginVO userLoginVO = CopyUtil.copy(user, UserLoginVO.class);
         return userLoginVO;
     }
 }

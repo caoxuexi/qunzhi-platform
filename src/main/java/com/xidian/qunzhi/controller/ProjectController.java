@@ -2,6 +2,7 @@ package com.xidian.qunzhi.controller;
 
 import com.xidian.qunzhi.core.UnifyResponse;
 import com.xidian.qunzhi.pojo.basic.PageVO;
+import com.xidian.qunzhi.pojo.dto.ProjectDTO;
 import com.xidian.qunzhi.pojo.dto.SearchProjectDTO;
 import com.xidian.qunzhi.pojo.vo.ProjectAdminVO;
 import com.xidian.qunzhi.pojo.vo.ProjectDetailVO;
@@ -58,6 +59,14 @@ public class ProjectController {
         return productDetailVO;
     }
 
+    @ApiOperation(value = "新建项目",httpMethod = "POST")
+    @GetMapping("/create")
+    public ProjectDetailVO create(ProjectDTO projectDTO){
+        UserLoginVO userLoginVO=LoginUserContext.getUser();
+        ProjectDetailVO productDetailVO = projectService.create(projectDTO,userLoginVO.getId());
+        return productDetailVO;
+    }
+
     @ApiOperation(value = "删除项目",httpMethod = "DELETE")
     @DeleteMapping("/delete")
     public UnifyResponse delete(@ApiParam(value = "项目id",example = "1")
@@ -66,6 +75,17 @@ public class ProjectController {
         projectService.delete(projectId,userLoginVO.getId());
         return UnifyResponse.deleteSuccess(request);
     }
+
+    @ApiOperation(value = "添加项目组成员",httpMethod = "GET")
+    @GetMapping("/addProjectMember")
+    public UnifyResponse addProjectMember(@ApiParam(value = "项目id",example = "1") @RequestParam(value = "id") Integer projectId,
+                                          @ApiParam(value = "用户id",example = "1") Integer userId,
+                                          HttpServletRequest request){
+        UserLoginVO userLoginVO=LoginUserContext.getUser();
+        projectService.addProjectMember(projectId,userId,userLoginVO.getId());
+        return UnifyResponse.commonSuccess(request);
+    }
+
 
     @ApiOperation(value = "关键词抽取",httpMethod = "POST")
     @PostMapping("/keyext")

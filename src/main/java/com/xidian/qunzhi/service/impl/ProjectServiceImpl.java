@@ -3,6 +3,7 @@ package com.xidian.qunzhi.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xidian.qunzhi.QunzhiApplication;
+import com.xidian.qunzhi.core.enumerate.UserRoleEnum;
 import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.exception.http.NotFoundException;
 import com.xidian.qunzhi.exception.http.UnAuthenticatedException;
@@ -13,6 +14,7 @@ import com.xidian.qunzhi.pojo.Project;
 import com.xidian.qunzhi.pojo.User;
 import com.xidian.qunzhi.pojo.UserProject;
 import com.xidian.qunzhi.pojo.basic.PageVO;
+import com.xidian.qunzhi.pojo.dto.ProjectDTO;
 import com.xidian.qunzhi.pojo.dto.SearchProjectDTO;
 import com.xidian.qunzhi.pojo.vo.ProjectAdminVO;
 import com.xidian.qunzhi.pojo.vo.ProjectDetailVO;
@@ -22,6 +24,7 @@ import com.xidian.qunzhi.service.ProjectService;
 import com.xidian.qunzhi.utils.CopyUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.jdbc.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +66,7 @@ public class ProjectServiceImpl implements ProjectService {
         //先检查用户是否是管理员
         Example example=new Example(Project.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("deleteTime",null);
+        criteria.andCondition("delete_time is null");
         //按项目名查询
         if(!StringUtils.isEmpty(searchProjectDTO.getName())){
             criteria.andLike("name","%"+searchProjectDTO.getName()+"%");
@@ -90,7 +93,7 @@ public class ProjectServiceImpl implements ProjectService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("projectId",projectId)
                 .andEqualTo("userId",usrId)
-                .andEqualTo("deleteTime",null);
+                .andCondition("delete_time is null");
 
         UserProject userProject = userProjectMapper.selectOneByExample(example);
         if(userProject==null) {
@@ -105,17 +108,25 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDetailVO detail(Integer projectId, Integer userId) {
         //判断该项目是否属于当前用户
         checkBelonging(projectId,userId);
-        Example example=new Example(UserProject.class);
+        Example example=new Example(Project.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("id",projectId)
-                .andEqualTo("deleteTime",null);
-        Project product = projectMapper.selectOneByExample(example);
-        if(ObjectUtils.isEmpty(product)){
+                .andCondition("delete_time is null");
+
+        Project project = projectMapper.selectOneByExample(example);
+        if(ObjectUtils.isEmpty(project)){
             //抛出项目不存在异常消息
             throw new NotFoundException(30001);
         }
-        ProjectDetailVO productDetailVO = CopyUtil.copy(product, ProjectDetailVO.class);
+        ProjectDetailVO productDetailVO = CopyUtil.copy(project, ProjectDetailVO.class);
         return productDetailVO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public ProjectDetailVO create(ProjectDTO projectDTO, Integer id) {
+        //TODO
+        return null;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -141,5 +152,22 @@ public class ProjectServiceImpl implements ProjectService {
         Project project=new Project();
         project.setDeleteTime(new Date());
         projectMapper.updateByExampleSelective(project,deleteProjectExample);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void addProjectMember(Integer projectId, Integer userId, Integer leaderId) {
+        //判断该项目是否属于当前用户
+        UserProject checkUserProject = checkBelonging(projectId, leaderId);
+        //判断当前用户是否是该项目的组长，只有组长才能添加组员到项目
+        if(checkUserProject.getUserRole()!=1){
+            throw new UnAuthenticatedException(30003);
+        }
+        //向表中插入关系数据
+        UserProject userProject=new UserProject();
+        userProject.setUserId(userId);
+        userProject.setProjectId(projectId);
+        userProject.setUserRole(UserRoleEnum.MEMBER.getValue().shortValue());
+        int result = userProjectMapper.insertSelective(userProject);
     }
 }
