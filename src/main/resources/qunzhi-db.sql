@@ -11,30 +11,11 @@
  Target Server Version : 80026
  File Encoding         : 65001
 
- Date: 20/10/2021 21:29:55
+ Date: 21/10/2021 20:09:07
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for admin_user
--- ----------------------------
-DROP TABLE IF EXISTS `admin_user`;
-CREATE TABLE `admin_user`  (
-  `id` int NOT NULL,
-  `account` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `mobile` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `create_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
-  `update_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-  `delete_time` datetime(3) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of admin_user
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for project
@@ -59,8 +40,24 @@ CREATE TABLE `project`  (
 -- ----------------------------
 -- Records of project
 -- ----------------------------
-INSERT INTO `project` VALUES (1, '智能家居系统', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-18 20:19:04.000', '2021-10-20 20:04:46.847', '2021-10-20 20:04:46.841');
+INSERT INTO `project` VALUES (1, '智能家居系统', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-18 20:19:04.000', '2021-10-21 19:53:08.529', NULL);
 INSERT INTO `project` VALUES (2, '智慧社区系统', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-19 08:35:51.000', '2021-10-19 08:35:58.000', NULL);
+
+-- ----------------------------
+-- Table structure for project_extra
+-- ----------------------------
+DROP TABLE IF EXISTS `project_extra`;
+CREATE TABLE `project_extra`  (
+  `id` int NOT NULL,
+  `project_id` int NOT NULL,
+  `current_user_count` int NULL DEFAULT NULL,
+  `demand` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of project_extra
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for user
@@ -109,8 +106,9 @@ CREATE TABLE `user_project`  (
 -- ----------------------------
 -- Records of user_project
 -- ----------------------------
-INSERT INTO `user_project` VALUES (1, 1, 1, 1, '2021-10-18 19:48:42.148', '2021-10-20 20:05:23.184', NULL);
-INSERT INTO `user_project` VALUES (2, 1, 2, 2, '2021-10-19 08:37:38.000', '2021-10-20 19:58:41.185', NULL);
-INSERT INTO `user_project` VALUES (3, 2, 1, 2, '2021-10-20 19:22:22.186', '2021-10-20 20:05:19.090', NULL);
+INSERT INTO `user_project` VALUES (1, 1, 1, 1, '2021-10-18 19:48:42.148', '2021-10-21 20:01:53.088', NULL);
+INSERT INTO `user_project` VALUES (2, 1, 2, 1, '2021-10-19 08:37:38.000', '2021-10-21 19:49:17.216', NULL);
+INSERT INTO `user_project` VALUES (3, 2, 1, 2, '2021-10-20 19:22:22.186', '2021-10-21 19:52:54.695', NULL);
+INSERT INTO `user_project` VALUES (5, 3, 1, 2, '2021-10-21 20:04:18.503', '2021-10-21 20:05:16.791', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
