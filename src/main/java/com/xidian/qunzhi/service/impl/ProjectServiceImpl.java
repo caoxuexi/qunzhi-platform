@@ -74,10 +74,10 @@ public class ProjectServiceImpl implements ProjectService {
         }
         PageHelper.startPage(searchProjectDTO.getPage(), searchProjectDTO.getSize());
         List<Project> projectList = projectMapper.selectByExample(example);
-        List<ProjectAdminVO> projectAdminVOList = CopyUtil.copyList(projectList, ProjectAdminVO.class);
-        PageInfo<ProjectAdminVO> pageInfo = new PageInfo<>(projectAdminVOList);
+        PageInfo<Project> pageInfo = new PageInfo<>(projectList);
         LOG.info("总行数：{}", pageInfo.getTotal());
         LOG.info("总页数：{}", pageInfo.getPages());
+        List<ProjectAdminVO> projectAdminVOList = CopyUtil.copyList(projectList, ProjectAdminVO.class);
         PageVO<ProjectAdminVO> pageVO = new PageVO<>();
         pageVO.setTotal(pageInfo.getTotal());
         pageVO.setList(projectAdminVOList);
