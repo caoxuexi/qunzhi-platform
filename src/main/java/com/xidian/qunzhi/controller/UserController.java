@@ -89,8 +89,7 @@ public class UserController {
 
     @ApiOperation(value = "用户退出", httpMethod = "GET")
     @GetMapping(value = "/logout")
-    public UnifyResponse logout(@PathVariable HttpServletRequest request) throws Exception {
-
+    public UnifyResponse logout(HttpServletRequest request) throws Exception {
         UserLoginVO userLoginVO = LoginUserContext.getUser();
         if(userLoginVO==null){
             throw new ForbiddenException(20005);
