@@ -13,7 +13,6 @@ import java.io.InputStreamReader;
 public class JythonUtil {
 
     public static String ext(String demands){
-        // TODO Auto-generated method stub
         Process proc;
         try {
             // 参数列表
