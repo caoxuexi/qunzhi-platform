@@ -1,21 +1,17 @@
 package com.xidian.qunzhi.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xidian.qunzhi.QunzhiApplication;
 import com.xidian.qunzhi.core.UnifyResponse;
 import com.xidian.qunzhi.exception.http.ForbiddenException;
-import com.xidian.qunzhi.exception.http.NotFoundException;
 import com.xidian.qunzhi.exception.http.UnknowException;
-import com.xidian.qunzhi.pojo.User;
+import com.xidian.qunzhi.pojo.dto.ChangePasswordDTO;
+import com.xidian.qunzhi.pojo.dto.UserInformationDTO;
 import com.xidian.qunzhi.service.UserService;
-import com.xidian.qunzhi.utils.JsonUtils;
 import com.xidian.qunzhi.utils.LoginUserContext;
 import com.xidian.qunzhi.utils.MD5Utils;
 import com.xidian.qunzhi.utils.SnowFlake;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +23,6 @@ import com.xidian.qunzhi.pojo.dto.UserRegistDTO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.concurrent.TimeUnit;
 
@@ -56,11 +51,12 @@ public class UserController {
     public UnifyResponse register(@RequestBody @Valid UserRegistDTO userRegistDTO, HttpServletRequest request) throws Exception {
         String rawPassword = userRegistDTO.getPassword();
         String password = MD5Utils.getMD5Str(rawPassword);
+        //判断验证码是否正确
         String backgroundCaptcha = request.getSession().getAttribute("code").toString();
         if (!backgroundCaptcha.equals(userRegistDTO.getCaptcha())) {
             throw new ForbiddenException(20004);
         }
-        boolean result = userService.register(userRegistDTO.getEmail(), password);
+        boolean result = userService.register(userRegistDTO, password);
         if (result) {
            return UnifyResponse.createSuccess(request);
         } else {
@@ -78,6 +74,26 @@ public class UserController {
         redisTemplate.opsForValue().set(token.toString(), JSONObject.toJSONString(userLoginVO),
                 3600 * 24, TimeUnit.SECONDS);
         return userLoginVO;
+    }
+
+    @ApiOperation(value = "用户密码修改", httpMethod = "POST")
+    @PostMapping("/changePassword")
+    public UnifyResponse changePassword(@RequestBody @Valid ChangePasswordDTO changePasswordDTO, HttpServletRequest request) throws Exception {
+        UserLoginVO userLoginVO = LoginUserContext.getUser();
+        userService.changePassword(changePasswordDTO,userLoginVO.getId());
+        //删除用户原来的token
+        redisTemplate.delete(userLoginVO.getToken());
+        LOGGER.info("从redis中删除token: {}", userLoginVO.getToken());
+        return UnifyResponse.commonSuccess(request);
+    }
+
+    @ApiOperation(value = "用户信息修改", httpMethod = "POST")
+    @PostMapping("/changeInformation")
+    public UserLoginVO changeInformation(@RequestBody @Valid UserInformationDTO userInformationDTO, HttpServletRequest request) throws Exception {
+        UserLoginVO userLoginVO = LoginUserContext.getUser();
+        userService.changeInformation(userInformationDTO,userLoginVO);
+        //删除用
+        return null;
     }
 
     @ApiOperation(value = "管理员登录", httpMethod = "POST")

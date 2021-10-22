@@ -45,6 +45,7 @@ public class ProjectGroupServiceImpl implements ProjectGroupService {
     @Override
     public void applyProjectMember(Integer projectId, Integer userId) {
         //TODO
+
     }
 
     @Override

@@ -26,7 +26,13 @@ public class UserRegistDTO {
     @ApiModelProperty(value = "密码",name = "password",example = "123456",required = true)
     private String password;
 
-    @Size(min = 5,max=16,message = "重输密码长度不对")
+    @ApiModelProperty(value = "昵称",name = "nickname",example = "caoxuexi",required = true)
+    private String nickname;
+
+    @ApiModelProperty(value = "真实姓名",name = "nickname",example = "曹操",required = true)
+    private String realname;
+
+    @Size(min = 5,max=16,message = "确认密码长度不对")
     @ApiModelProperty(value = "二次确认密码",name = "rePassword",example = "123456",required = true)
     private String rePassword;
 

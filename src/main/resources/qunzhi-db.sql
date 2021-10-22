@@ -11,7 +11,7 @@
  Target Server Version : 80026
  File Encoding         : 65001
 
- Date: 21/10/2021 20:09:07
+ Date: 22/10/2021 16:01:49
 */
 
 SET NAMES utf8mb4;
@@ -30,18 +30,39 @@ CREATE TABLE `project`  (
   `product_secret` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `power_dissipation` smallint NULL DEFAULT NULL COMMENT '1.低 2.正常 3.高',
   `share` smallint NULL DEFAULT NULL COMMENT '0.不共享 1.共享',
-  `current_user_count` int NULL DEFAULT NULL,
   `create_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
   `update_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of project
 -- ----------------------------
-INSERT INTO `project` VALUES (1, '智能家居系统', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-18 20:19:04.000', '2021-10-21 19:53:08.529', NULL);
-INSERT INTO `project` VALUES (2, '智慧社区系统', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-19 08:35:51.000', '2021-10-19 08:35:58.000', NULL);
+INSERT INTO `project` VALUES (1, '智能家居系统', NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-18 20:19:04.000', '2021-10-21 19:53:08.529', NULL);
+INSERT INTO `project` VALUES (2, '智慧社区系统', NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-19 08:35:51.000', '2021-10-19 08:35:58.000', NULL);
+INSERT INTO `project` VALUES (3, '智慧城市系统', NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-21 20:11:33.000', '2021-10-21 20:11:36.000', NULL);
+INSERT INTO `project` VALUES (4, '智慧园区系统', NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-21 20:11:54.000', '2021-10-21 20:11:57.000', NULL);
+INSERT INTO `project` VALUES (5, '智慧校园系统', NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-21 20:12:22.000', '2021-10-21 20:12:26.000', NULL);
+
+-- ----------------------------
+-- Table structure for project_application
+-- ----------------------------
+DROP TABLE IF EXISTS `project_application`;
+CREATE TABLE `project_application`  (
+  `id` int NOT NULL,
+  `project_mac` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `project_id` int NOT NULL,
+  `first_online_time` datetime(3) NULL DEFAULT NULL,
+  `last_onlon_time` datetime NULL DEFAULT NULL,
+  `online_count` int NULL DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of project_application
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for project_extra
@@ -101,7 +122,7 @@ CREATE TABLE `user_project`  (
   `update_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_project
