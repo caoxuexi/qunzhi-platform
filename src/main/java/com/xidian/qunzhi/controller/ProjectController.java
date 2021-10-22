@@ -9,8 +9,8 @@ import com.xidian.qunzhi.pojo.vo.ProjectDetailVO;
 import com.xidian.qunzhi.pojo.vo.ProjectPreviewVO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 import com.xidian.qunzhi.service.ProjectService;
-import com.xidian.qunzhi.utils.JythonUtil;
 import com.xidian.qunzhi.utils.LoginUserContext;
+import com.xidian.qunzhi.utils.NLPUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -90,9 +90,8 @@ public class ProjectController {
     @ApiOperation(value = "关键词抽取",httpMethod = "POST")
     @PostMapping("/keyext")
     public String KeywordExtraction (@RequestParam String demands){
-        String result = JythonUtil.ext(demands);
+        String result = NLPUtil.ext(demands);
         return result;
     }
-
 
 }
