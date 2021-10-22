@@ -9,6 +9,7 @@ import com.xidian.qunzhi.pojo.vo.ProjectDetailVO;
 import com.xidian.qunzhi.pojo.vo.ProjectPreviewVO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 import com.xidian.qunzhi.service.ProjectService;
+import com.xidian.qunzhi.service.ProjectGroupService;
 import com.xidian.qunzhi.utils.JythonUtil;
 import com.xidian.qunzhi.utils.LoginUserContext;
 import io.swagger.annotations.Api;
@@ -32,6 +33,9 @@ import java.util.List;
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private ProjectGroupService projectGroupService;
 
     @ApiOperation(value = "列出当前用户所在的所有项目缩列图",httpMethod = "GET")
     @GetMapping("/listAllByUser")
@@ -76,14 +80,41 @@ public class ProjectController {
         return UnifyResponse.deleteSuccess(request);
     }
 
+    @ApiOperation(value = "用户申请成为组员",httpMethod = "GET")
+    @GetMapping("/applyProjectMember")
+    public UnifyResponse applyProjectMember(@ApiParam(value = "项目id",example = "1") @RequestParam(value = "id") Integer projectId,
+                                          HttpServletRequest request){
+        UserLoginVO userLoginVO=LoginUserContext.getUser();
+        projectGroupService.applyProjectMember(projectId,userLoginVO.getId());
+        return UnifyResponse.commonSuccess(request);
+    }
+
+    @ApiOperation(value = "获取项目组的成员申请列表",httpMethod = "GET")
+    @GetMapping("/getApplication")
+    public UnifyResponse getApplication(HttpServletRequest request){
+        UserLoginVO userLoginVO=LoginUserContext.getUser();
+        projectGroupService.getApplication(userLoginVO.getId());
+        return UnifyResponse.commonSuccess(request);
+    }
+
     @ApiOperation(value = "添加项目组成员",httpMethod = "GET")
     @GetMapping("/addProjectMember")
     public UnifyResponse addProjectMember(@ApiParam(value = "项目id",example = "1") @RequestParam(value = "id") Integer projectId,
                                           @ApiParam(value = "用户id",example = "1") Integer userId,
                                           HttpServletRequest request){
         UserLoginVO userLoginVO=LoginUserContext.getUser();
-        projectService.addProjectMember(projectId,userId,userLoginVO.getId());
+        projectGroupService.addProjectMember(projectId,userId,userLoginVO.getId());
         return UnifyResponse.commonSuccess(request);
+    }
+
+    @ApiOperation(value = "删除项目组成员",httpMethod = "DELETE")
+    @DeleteMapping("/deleteProjectMember")
+    public UnifyResponse deleteProjectMember(@ApiParam(value = "项目id",example = "1") @RequestParam(value = "id") Integer projectId,
+                                          @ApiParam(value = "用户id",example = "1") Integer userId,
+                                          HttpServletRequest request){
+        UserLoginVO userLoginVO=LoginUserContext.getUser();
+        projectGroupService.deleteProjectMember(projectId,userId,userLoginVO.getId());
+        return UnifyResponse.deleteSuccess(request);
     }
 
 

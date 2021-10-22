@@ -32,6 +32,11 @@ import javax.validation.Valid;
 import java.util.concurrent.TimeUnit;
 
 
+/**
+ * @author Cao Study
+ * @description <h1>UserController</h1>
+ * @date 2021-10-17 22:33
+ */
 @Api(tags = "用户相关功能")
 @RestController
 @RequestMapping("/user")

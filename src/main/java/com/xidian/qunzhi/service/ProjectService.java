@@ -1,5 +1,6 @@
 package com.xidian.qunzhi.service;
 
+import com.xidian.qunzhi.pojo.UserProject;
 import com.xidian.qunzhi.pojo.basic.PageVO;
 import com.xidian.qunzhi.pojo.dto.ProjectDTO;
 import com.xidian.qunzhi.pojo.dto.SearchProjectDTO;
@@ -33,6 +34,13 @@ public interface ProjectService {
      */
     PageVO<ProjectAdminVO> searchByAdmin(SearchProjectDTO searchProjectDTO, UserLoginVO userLoginVO);
 
+    /**
+     * 检查项目是否属于当前用户
+     * @param projectId
+     * @param usrId
+     * @return
+     */
+    public UserProject checkBelonging(Integer projectId, Integer usrId);
 
     /**
      * 根据项目名称搜索项目的详细信息
@@ -59,12 +67,6 @@ public interface ProjectService {
      */
     ProjectDetailVO create(ProjectDTO projectDTO, Integer id);
 
-    /**
-     * 组长审批后，添加用户到项目的逻辑
-     * @param projectId
-     * @param userId
-     * @param id
-     */
-    void addProjectMember(Integer projectId, Integer userId, Integer leaderId);
+
 }
 

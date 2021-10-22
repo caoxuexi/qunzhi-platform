@@ -154,20 +154,5 @@ public class ProjectServiceImpl implements ProjectService {
         projectMapper.updateByExampleSelective(project,deleteProjectExample);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
-    @Override
-    public void addProjectMember(Integer projectId, Integer userId, Integer leaderId) {
-        //判断该项目是否属于当前用户
-        UserProject checkUserProject = checkBelonging(projectId, leaderId);
-        //判断当前用户是否是该项目的组长，只有组长才能添加组员到项目
-        if(checkUserProject.getUserRole()!=1){
-            throw new UnAuthenticatedException(30003);
-        }
-        //向表中插入关系数据
-        UserProject userProject=new UserProject();
-        userProject.setUserId(userId);
-        userProject.setProjectId(projectId);
-        userProject.setUserRole(UserRoleEnum.MEMBER.getValue().shortValue());
-        int result = userProjectMapper.insertSelective(userProject);
-    }
+
 }
