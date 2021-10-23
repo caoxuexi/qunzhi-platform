@@ -4,9 +4,8 @@ package com.xidian.qunzhi.service;
 import com.xidian.qunzhi.pojo.dto.ChangePasswordDTO;
 import com.xidian.qunzhi.pojo.dto.UserInformationDTO;
 import com.xidian.qunzhi.pojo.dto.UserRegistDTO;
+import com.xidian.qunzhi.pojo.vo.UserInformationVO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface UserService {
 
@@ -41,9 +40,16 @@ public interface UserService {
     UserLoginVO adminLogin(String email, String password) throws Exception;
 
     /**
-     * 修改用户信息
+     * 修改用户具体信息
      * @param userInformationDTO
-     * @param userLoginVO
+     * @param userId
      */
-    void changeInformation(UserInformationDTO userInformationDTO, UserLoginVO userLoginVO);
+    UserInformationVO changeInformation(UserInformationDTO userInformationDTO, Integer userId);
+
+    /**
+     * 获取用户具体信息
+     * @param userId
+     * @return
+     */
+    UserInformationVO getInformation(Integer userId);
 }

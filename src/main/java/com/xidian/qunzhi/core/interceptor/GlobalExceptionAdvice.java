@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -57,9 +58,19 @@ public class GlobalExceptionAdvice {
         return responseEntity;
     }
 
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseBody
+    @ResponseStatus(code=HttpStatus.BAD_REQUEST)
+    public UnifyResponse handleBeanValidation(HttpServletRequest req,HttpRequestMethodNotSupportedException e){
+        String requestUrl=req.getRequestURI();
+        String method=req.getMethod();
+        String message = "请求使用的方法错误";
+        return new UnifyResponse(10001,message,method+" "+requestUrl);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
-    @ResponseStatus(code=HttpStatus.BAD_REQUEST) //设置了这个注解就不用返回ResponseEntity了
+    @ResponseStatus(code=HttpStatus.METHOD_NOT_ALLOWED) //设置了这个注解就不用返回ResponseEntity了
     public UnifyResponse handleBeanValidation(HttpServletRequest req,MethodArgumentNotValidException e){
         String requestUrl=req.getRequestURI();
         String method=req.getMethod();

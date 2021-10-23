@@ -44,13 +44,13 @@ public class ProjectGroupServiceImpl implements ProjectGroupService {
 
     @Override
     public void applyProjectMember(Integer projectId, Integer userId) {
-        //TODO
+        //TODO 添加项目成员
 
     }
 
     @Override
     public void getApplication(Integer userId) {
-        //TODO
+        //TODO  获得项目申请请求
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

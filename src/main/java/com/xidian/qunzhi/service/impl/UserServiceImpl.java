@@ -8,10 +8,12 @@ import com.xidian.qunzhi.mapper.UserMapper;
 import com.xidian.qunzhi.pojo.dto.ChangePasswordDTO;
 import com.xidian.qunzhi.pojo.dto.UserInformationDTO;
 import com.xidian.qunzhi.pojo.dto.UserRegistDTO;
+import com.xidian.qunzhi.pojo.vo.UserInformationVO;
 import com.xidian.qunzhi.service.UserService;
 import com.xidian.qunzhi.utils.CopyUtil;
 import com.xidian.qunzhi.utils.MD5Utils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +81,7 @@ public class UserServiceImpl implements UserService {
         return count != 0;
     }
 
+    @Transactional(propagation=Propagation.SUPPORTS)
     @Override
     public UserLoginVO login(String email, String password) throws Exception {
         Example example = new Example(User.class);
@@ -93,6 +96,7 @@ public class UserServiceImpl implements UserService {
         return userLoginVO;
     }
 
+    @Transactional(propagation=Propagation.SUPPORTS)
     @Override
     public UserLoginVO adminLogin(String email, String password) throws Exception {
         Example example = new Example(User.class);
@@ -111,8 +115,41 @@ public class UserServiceImpl implements UserService {
         return userLoginVO;
     }
 
+    @Transactional(propagation=Propagation.REQUIRED)
     @Override
-    public void changeInformation(UserInformationDTO userInformationDTO, UserLoginVO userLoginVO) {
+    public UserInformationVO changeInformation(UserInformationDTO userInformationDTO, Integer userId) {
+        //设置更新
+        User user=new User();
+        //设置主键，按照主键进行数据更新
+        user.setId(userId);
+        //根据传入参数设置属性值
+        user.setNickname(userInformationDTO.getNickname());
+        if(StringUtils.isNotBlank(userInformationDTO.getAddress())){
+            user.setAddress(userInformationDTO.getAddress());
+        }
+        if(StringUtils.isNotBlank(userInformationDTO.getDistrict())){
+            user.setDistrict(userInformationDTO.getDistrict());
+        }
+        if(StringUtils.isNotBlank(userInformationDTO.getRealname())){
+            user.setRealname(userInformationDTO.getRealname());
+        }
+        if(StringUtils.isNotBlank(userInformationDTO.getQq())){
+            user.setQq(userInformationDTO.getQq());
+        }
+        if(StringUtils.isNotBlank(userInformationDTO.getMobile())){
+            user.setMobile(userInformationDTO.getMobile());
+        }
+        userMapper.updateByPrimaryKeySelective(user);
+        User newUser=userMapper.selectByPrimaryKey(userId);
+        UserInformationVO userInformationVO = CopyUtil.copy(newUser, UserInformationVO.class);
+        return userInformationVO;
+    }
 
+    @Transactional(propagation=Propagation.SUPPORTS)
+    @Override
+    public UserInformationVO getInformation(Integer userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        UserInformationVO userInformationVO = CopyUtil.copy(user, UserInformationVO.class);
+        return userInformationVO;
     }
 }

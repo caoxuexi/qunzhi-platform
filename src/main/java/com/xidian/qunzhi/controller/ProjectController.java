@@ -112,11 +112,17 @@ public class ProjectController {
 
     @ApiOperation(value = "获取参加项目请求",httpMethod = "GET")
     @GetMapping("/getApplication")
-    public UnifyResponse getApplication                                                                    (@ApiParam(value = "项目id",example = "1") @RequestParam(value = "id") Integer projectId,
+    public UnifyResponse getApplication(@ApiParam(value = "项目id",example = "1") @RequestParam(value = "id") Integer projectId,
                                             HttpServletRequest request){
         UserLoginVO userLoginVO=LoginUserContext.getUser();
         projectGroupService.applyProjectMember(projectId,userLoginVO.getId());
         return UnifyResponse.commonSuccess(request);
+    }
+
+    @ApiOperation(value = "获取日志",httpMethod = "GET")
+    @PostMapping("/getLogs")
+    public String getLogs (@RequestParam(value = "id")  Integer projectId){
+
     }
 
     @ApiOperation(value = "关键词抽取",httpMethod = "POST")
@@ -125,4 +131,6 @@ public class ProjectController {
         String result = NLPUtil.ext(demands);
         return result;
     }
+
+
 }

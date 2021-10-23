@@ -6,6 +6,7 @@ import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.exception.http.UnknowException;
 import com.xidian.qunzhi.pojo.dto.ChangePasswordDTO;
 import com.xidian.qunzhi.pojo.dto.UserInformationDTO;
+import com.xidian.qunzhi.pojo.vo.UserInformationVO;
 import com.xidian.qunzhi.service.UserService;
 import com.xidian.qunzhi.utils.LoginUserContext;
 import com.xidian.qunzhi.utils.MD5Utils;
@@ -76,26 +77,6 @@ public class UserController {
         return userLoginVO;
     }
 
-    @ApiOperation(value = "用户密码修改", httpMethod = "POST")
-    @PostMapping("/changePassword")
-    public UnifyResponse changePassword(@RequestBody @Valid ChangePasswordDTO changePasswordDTO, HttpServletRequest request) throws Exception {
-        UserLoginVO userLoginVO = LoginUserContext.getUser();
-        userService.changePassword(changePasswordDTO,userLoginVO.getId());
-        //删除用户原来的token
-        redisTemplate.delete(userLoginVO.getToken());
-        LOGGER.info("从redis中删除token: {}", userLoginVO.getToken());
-        return UnifyResponse.commonSuccess(request);
-    }
-
-    @ApiOperation(value = "用户信息修改", httpMethod = "POST")
-    @PostMapping("/changeInformation")
-    public UserLoginVO changeInformation(@RequestBody @Valid UserInformationDTO userInformationDTO, HttpServletRequest request) throws Exception {
-        UserLoginVO userLoginVO = LoginUserContext.getUser();
-        userService.changeInformation(userInformationDTO,userLoginVO);
-        //删除用
-        return null;
-    }
-
     @ApiOperation(value = "管理员登录", httpMethod = "POST")
     @PostMapping("/adminLogin")
     public UserLoginVO adminLogin(@RequestBody @Valid UserLoginDTO userLoginDTO) throws Exception {
@@ -108,6 +89,17 @@ public class UserController {
         return userLoginVO;
     }
 
+    @ApiOperation(value = "用户密码修改", httpMethod = "POST")
+    @PostMapping("/changePassword")
+    public UnifyResponse changePassword(@RequestBody @Valid ChangePasswordDTO changePasswordDTO, HttpServletRequest request) throws Exception {
+        UserLoginVO userLoginVO = LoginUserContext.getUser();
+        userService.changePassword(changePasswordDTO,userLoginVO.getId());
+        //删除用户原来的token
+        redisTemplate.delete(userLoginVO.getToken());
+        LOGGER.info("从redis中删除token: {}", userLoginVO.getToken());
+        return UnifyResponse.commonSuccess(request);
+    }
+
     @ApiOperation(value = "用户退出", httpMethod = "GET")
     @GetMapping(value = "/logout")
     public UnifyResponse logout(HttpServletRequest request) throws Exception {
@@ -118,5 +110,22 @@ public class UserController {
         redisTemplate.delete(userLoginVO.getToken());
         LOGGER.info("从redis中删除token: {}", userLoginVO.getToken());
         return UnifyResponse.commonSuccess(request);
+    }
+
+    @ApiOperation(value = "用户信息修改", httpMethod = "POST")
+    @PostMapping("/changeInformation")
+    public UserInformationVO changeInformation(@RequestBody @Valid UserInformationDTO userInformationDTO, HttpServletRequest request) throws Exception {
+        UserLoginVO userLoginVO = LoginUserContext.getUser();
+        UserInformationVO userInformationVO = userService.changeInformation(userInformationDTO, userLoginVO.getId());
+        //删除用
+        return userInformationVO;
+    }
+
+    @ApiOperation(value = "用户信息获取", httpMethod = "GET")
+    @GetMapping("/getInformation")
+    public UserInformationVO getInformation() throws Exception {
+        UserLoginVO userLoginVO = LoginUserContext.getUser();
+        UserInformationVO userInformationVO = userService.getInformation(userLoginVO.getId());
+        return userInformationVO;
     }
 }
