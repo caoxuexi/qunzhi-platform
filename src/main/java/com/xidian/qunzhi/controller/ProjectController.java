@@ -35,8 +35,6 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
-    @Autowired
-    ProjectGroupService projectGroupService;
 
     @ApiOperation(value = "列出当前用户所在的所有项目缩列图",httpMethod = "GET")
     @GetMapping("/listAllByUser")
@@ -81,48 +79,11 @@ public class ProjectController {
         return UnifyResponse.deleteSuccess(request);
     }
 
-    @ApiOperation(value = "添加项目组成员",httpMethod = "GET")
-    @GetMapping("/addProjectMember")
-    public UnifyResponse addProjectMember(@ApiParam(value = "项目id",example = "1") @RequestParam(value = "id") Integer projectId,
-                                          @ApiParam(value = "用户id",example = "1") Integer userId,
-                                          HttpServletRequest request){
-        UserLoginVO userLoginVO=LoginUserContext.getUser();
-        projectGroupService.addProjectMember(projectId,userId,userLoginVO.getId());
-        return UnifyResponse.commonSuccess(request);
-    }
-
-    @ApiOperation(value = "删除项目组成员",httpMethod = "GET")
-    @GetMapping("/deleteProjectMember")
-    public UnifyResponse deleteProjectMember(@ApiParam(value = "项目id",example = "1") @RequestParam(value = "id") Integer projectId,
-                                          @ApiParam(value = "用户id",example = "1") Integer userId,
-                                          HttpServletRequest request){
-        UserLoginVO userLoginVO=LoginUserContext.getUser();
-        projectGroupService.deleteProjectMember(projectId,userId,userLoginVO.getId());
-        return UnifyResponse.commonSuccess(request);
-    }
-
-    @ApiOperation(value = "申请项目组成员",httpMethod = "GET")
-    @GetMapping("/applyProjectMember")
-    public UnifyResponse applyProjectMember(@ApiParam(value = "项目id",example = "1") @RequestParam(value = "id") Integer projectId,
-                                             HttpServletRequest request){
-        UserLoginVO userLoginVO=LoginUserContext.getUser();
-        projectGroupService.applyProjectMember(projectId,userLoginVO.getId());
-        return UnifyResponse.commonSuccess(request);
-    }
-
-    @ApiOperation(value = "获取参加项目请求",httpMethod = "GET")
-    @GetMapping("/getApplication")
-    public UnifyResponse getApplication(@ApiParam(value = "项目id",example = "1") @RequestParam(value = "id") Integer projectId,
-                                            HttpServletRequest request){
-        UserLoginVO userLoginVO=LoginUserContext.getUser();
-        projectGroupService.applyProjectMember(projectId,userLoginVO.getId());
-        return UnifyResponse.commonSuccess(request);
-    }
-
     @ApiOperation(value = "获取日志",httpMethod = "GET")
     @PostMapping("/getLogs")
     public String getLogs (@RequestParam(value = "id")  Integer projectId){
-
+        //TODO
+        return null;
     }
 
     @ApiOperation(value = "关键词抽取",httpMethod = "POST")
@@ -131,6 +92,4 @@ public class ProjectController {
         String result = NLPUtil.ext(demands);
         return result;
     }
-
-
 }
