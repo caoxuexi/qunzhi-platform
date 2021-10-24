@@ -11,11 +11,31 @@
  Target Server Version : 80026
  File Encoding         : 65001
 
- Date: 22/10/2021 16:01:49
+ Date: 24/10/2021 22:10:01
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for device_log
+-- ----------------------------
+DROP TABLE IF EXISTS `device_log`;
+CREATE TABLE `device_log`  (
+  `id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `project_id` int NOT NULL,
+  `mac` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `first_online` datetime(3) NULL DEFAULT NULL,
+  `cumulative_online` int NOT NULL DEFAULT 0,
+  `last_online` datetime(3) NULL DEFAULT NULL,
+  `state` smallint NULL DEFAULT NULL COMMENT '0:离线 1:在线',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of device_log
+-- ----------------------------
+INSERT INTO `device_log` VALUES ('1', 1, 'virtual:site', '2021-10-01 22:08:29.000', 3, '2021-10-24 22:08:42.000', 0);
 
 -- ----------------------------
 -- Table structure for project
@@ -104,7 +124,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'default', NULL, 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245683@qq.com', NULL, NULL, NULL, NULL, 1, '2021-10-17 22:19:56.482', '2021-10-19 22:50:48.640');
+INSERT INTO `user` VALUES (1, 'caoxuexi', '曹操', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245683@qq.com', '18858781650', '969718359', '浙江省杭州市萧山区萧山经济开发区钱农东路8号西电杭州研究院', '浙江省/杭州市/萧山区', 1, '2021-10-17 22:19:56.482', '2021-10-23 19:40:37.126');
 INSERT INTO `user` VALUES (2, 'default', NULL, 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245682@qq.com', NULL, NULL, NULL, NULL, 0, '2021-10-18 15:22:17.675', '2021-10-19 22:50:50.951');
 INSERT INTO `user` VALUES (3, 'default', NULL, 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245680@qq.com', NULL, NULL, NULL, NULL, 0, '2021-10-18 20:17:09.138', '2021-10-19 22:50:51.975');
 INSERT INTO `user` VALUES (4, 'default', NULL, 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '969718359@qq.com', NULL, NULL, NULL, NULL, 0, '2021-10-18 23:04:53.523', '2021-10-19 22:56:51.501');
