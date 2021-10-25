@@ -1,14 +1,20 @@
 package com.xidian.qunzhi.service.impl;
 
-import com.xidian.qunzhi.core.enumerate.AdminOrNotEnum;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xidian.qunzhi.core.enumerate.IsLoginEnum;
 import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.exception.http.UnAuthenticatedException;
 import com.xidian.qunzhi.mapper.UserMapper;
 
+import com.xidian.qunzhi.pojo.Project;
+import com.xidian.qunzhi.pojo.basic.PageVO;
 import com.xidian.qunzhi.pojo.dto.ChangePasswordDTO;
+import com.xidian.qunzhi.pojo.dto.SearchUserDTO;
 import com.xidian.qunzhi.pojo.dto.UserInformationDTO;
 import com.xidian.qunzhi.pojo.dto.UserRegistDTO;
+import com.xidian.qunzhi.pojo.vo.ProjectAdminVO;
+import com.xidian.qunzhi.pojo.vo.UserAdminVO;
 import com.xidian.qunzhi.pojo.vo.UserInformationVO;
 import com.xidian.qunzhi.service.UserService;
 import com.xidian.qunzhi.utils.CopyUtil;
@@ -29,7 +35,7 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -77,7 +83,7 @@ public class UserServiceImpl implements UserService {
         user.setNickname(userRegistDTO.getNickname());
         user.setRealname(userRegistDTO.getRealname());
 
-        LOGGER.info("用户" + user.toString());
+        LOG.info("用户" + user.toString());
         int count = userMapper.insertSelective(user);
         return count != 0;
     }
@@ -148,5 +154,40 @@ public class UserServiceImpl implements UserService {
         user.setId(userId);
         user.setIsLogin((short)0);
         userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public PageVO<UserAdminVO> searchByAdmin(SearchUserDTO searchUserDTO, UserLoginVO userLoginVO) {
+        //先检查用户是否是管理员
+        Short isAdmin=userLoginVO.getIsAdmin();
+        if(isAdmin!=1){
+            throw new UnAuthenticatedException(30004);
+        }
+        //条件查询
+        Example example=new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+        //按昵称查询
+        if(!StringUtils.isEmpty(searchUserDTO.getNickname())){
+            criteria.andLike("nickname","%"+searchUserDTO.getNickname()+"%");
+        }
+        //按真名查询
+        if(!StringUtils.isEmpty(searchUserDTO.getNickname())){
+            criteria.andLike("realname","%"+searchUserDTO.getRealname()+"%");
+        }
+        //按邮箱(帐号)查询
+        if(!StringUtils.isEmpty(searchUserDTO.getEmail())){
+            criteria.andLike("email","%"+searchUserDTO.getEmail()+"%");
+        }
+
+        PageHelper.startPage(searchUserDTO.getPage(), searchUserDTO.getSize());
+        List<User> userList = userMapper.selectByExample(example);
+        PageInfo<User> pageInfo = new PageInfo<>(userList);
+        LOG.info("总行数：{}", pageInfo.getTotal());
+        LOG.info("总页数：{}", pageInfo.getPages());
+        List<UserAdminVO> userAdminVOList = CopyUtil.copyList(userList , UserAdminVO.class);
+        PageVO<UserAdminVO> pageVO = new PageVO<>();
+        pageVO.setTotal(pageInfo.getTotal());
+        pageVO.setList( userAdminVOList);
+        return pageVO;
     }
 }

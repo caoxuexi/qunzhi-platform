@@ -62,6 +62,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public PageVO<ProjectAdminVO> searchByAdmin(SearchProjectDTO searchProjectDTO, UserLoginVO userLoginVO) {
         //先检查用户是否是管理员
+        Short isAdmin=userLoginVO.getIsAdmin();
+        if(isAdmin!=1){
+            throw new UnAuthenticatedException(30004);
+        }
+        //条件查询
         Example example=new Example(Project.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andCondition("delete_time is null");
@@ -69,10 +74,7 @@ public class ProjectServiceImpl implements ProjectService {
         if(!StringUtils.isEmpty(searchProjectDTO.getName())){
             criteria.andLike("name","%"+searchProjectDTO.getName()+"%");
         }
-        Short isAdmin=userLoginVO.getIsAdmin();
-        if(isAdmin!=1){
-            throw new UnAuthenticatedException(30004);
-        }
+
         PageHelper.startPage(searchProjectDTO.getPage(), searchProjectDTO.getSize());
         List<Project> projectList = projectMapper.selectByExample(example);
         PageInfo<Project> pageInfo = new PageInfo<>(projectList);

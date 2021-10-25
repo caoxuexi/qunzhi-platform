@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.xidian.qunzhi.core.UnifyResponse;
 import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.exception.http.UnknowException;
-import com.xidian.qunzhi.pojo.dto.ChangePasswordDTO;
-import com.xidian.qunzhi.pojo.dto.UserInformationDTO;
+import com.xidian.qunzhi.pojo.basic.PageVO;
+import com.xidian.qunzhi.pojo.dto.*;
+import com.xidian.qunzhi.pojo.vo.ProjectAdminVO;
+import com.xidian.qunzhi.pojo.vo.UserAdminVO;
 import com.xidian.qunzhi.pojo.vo.UserInformationVO;
 import com.xidian.qunzhi.service.UserService;
 import com.xidian.qunzhi.utils.LoginUserContext;
@@ -19,8 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.xidian.qunzhi.pojo.dto.UserLoginDTO;
-import com.xidian.qunzhi.pojo.dto.UserRegistDTO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -122,5 +122,14 @@ public class UserController {
         UserLoginVO userLoginVO = LoginUserContext.getUser();
         UserInformationVO userInformationVO = userService.getInformation(userLoginVO.getId());
         return userInformationVO;
+    }
+
+    @ApiOperation(value = "管理员获取所有的用户信息", httpMethod = "GET")
+    @GetMapping("/searchByAdmin")
+    public PageVO<UserAdminVO> searchByAdmin(@Valid SearchUserDTO searchUserDTO){
+        UserLoginVO userLoginVO = LoginUserContext.getUser();
+        //分页查询
+        PageVO<UserAdminVO> userAdminVOList= userService.searchByAdmin(searchUserDTO,userLoginVO);
+        return userAdminVOList;
     }
 }

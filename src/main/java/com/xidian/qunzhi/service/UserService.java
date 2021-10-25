@@ -1,11 +1,14 @@
 package com.xidian.qunzhi.service;
 
 
-import com.xidian.qunzhi.pojo.dto.ChangePasswordDTO;
-import com.xidian.qunzhi.pojo.dto.UserInformationDTO;
-import com.xidian.qunzhi.pojo.dto.UserRegistDTO;
+import com.xidian.qunzhi.pojo.basic.PageVO;
+import com.xidian.qunzhi.pojo.dto.*;
+import com.xidian.qunzhi.pojo.vo.ProjectAdminVO;
+import com.xidian.qunzhi.pojo.vo.UserAdminVO;
 import com.xidian.qunzhi.pojo.vo.UserInformationVO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
+
+import javax.validation.Valid;
 
 public interface UserService {
 
@@ -51,4 +54,12 @@ public interface UserService {
      * @return
      */
     void logout(Integer userId);
+
+    /**
+     * 管理员获取所有用户的信息
+     * @param searchProjectDTO
+     * @param userLoginVO
+     * @return
+     */
+    PageVO<UserAdminVO> searchByAdmin(@Valid SearchUserDTO searchProjectDTO, UserLoginVO userLoginVO);
 }
