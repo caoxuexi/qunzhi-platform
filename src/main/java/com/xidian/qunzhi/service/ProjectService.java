@@ -71,6 +71,6 @@ public interface ProjectService {
      * @param userId
      * @return
      */
-    DeviceLogVO logs(Integer projectId, Integer userId);
+    List<DeviceLogVO> logs(Integer projectId, Integer userId);
 }
 

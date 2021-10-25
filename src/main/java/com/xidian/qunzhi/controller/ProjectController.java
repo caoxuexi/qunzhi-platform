@@ -6,7 +6,6 @@ import com.xidian.qunzhi.pojo.dto.ProjectDTO;
 import com.xidian.qunzhi.pojo.dto.SearchProjectDTO;
 import com.xidian.qunzhi.pojo.vo.*;
 import com.xidian.qunzhi.service.ProjectService;
-import com.xidian.qunzhi.service.ProjectGroupService;
 
 import com.xidian.qunzhi.utils.LoginUserContext;
 import com.xidian.qunzhi.utils.NLPUtil;
@@ -78,9 +77,9 @@ public class ProjectController {
 
     @ApiOperation(value = "获取日志",httpMethod = "GET")
     @GetMapping("/getLogs")
-    public DeviceLogVO getLogs (@RequestParam(value = "id")  Integer projectId){
+    public List<DeviceLogVO> getLogs (@RequestParam(value = "id")  Integer projectId){
         UserLoginVO userLoginVO=LoginUserContext.getUser();
-        DeviceLogVO deviceLogVO = projectService.logs(projectId, userLoginVO.getId());
+        List<DeviceLogVO> deviceLogVO = projectService.logs(projectId, userLoginVO.getId());
         return deviceLogVO;
     }
 

@@ -2,8 +2,6 @@ package com.xidian.qunzhi.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.xidian.qunzhi.QunzhiApplication;
-import com.xidian.qunzhi.core.enumerate.UserRoleEnum;
 import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.exception.http.NotFoundException;
 import com.xidian.qunzhi.exception.http.UnAuthenticatedException;
@@ -13,7 +11,6 @@ import com.xidian.qunzhi.mapper.UserMapper;
 import com.xidian.qunzhi.mapper.UserProjectMapper;
 import com.xidian.qunzhi.pojo.DeviceLog;
 import com.xidian.qunzhi.pojo.Project;
-import com.xidian.qunzhi.pojo.User;
 import com.xidian.qunzhi.pojo.UserProject;
 import com.xidian.qunzhi.pojo.basic.PageVO;
 import com.xidian.qunzhi.pojo.dto.ProjectDTO;
@@ -23,7 +20,6 @@ import com.xidian.qunzhi.service.ProjectService;
 import com.xidian.qunzhi.utils.CopyUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.jdbc.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +28,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import javax.persistence.Id;
 import java.util.Date;
 import java.util.List;
 
@@ -159,19 +154,19 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public DeviceLogVO logs(Integer projectId, Integer userId) {
+    public List<DeviceLogVO> logs(Integer projectId, Integer userId) {
         //判断该项目是否属于当前用户
         checkBelonging(projectId,userId);
         Example example=new Example(DeviceLog.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("id", projectId);
 
-        DeviceLog deviceLog = deviceLogMapper.selectOneByExample(example);
-        if(ObjectUtils.isEmpty(deviceLog)){
+        List<DeviceLog> deviceLogList = deviceLogMapper.selectByExample(example);
+        if(deviceLogList.size()<=0){
             //抛出项目不存在异常消息
-            throw new NotFoundException(30001);
+            throw new NotFoundException(30005);
         }
-        DeviceLogVO deviceLogVO = CopyUtil.copy(deviceLog, DeviceLogVO.class);
-        return deviceLogVO;
+        List<DeviceLogVO> deviceLogVOList = CopyUtil.copyList(deviceLogList, DeviceLogVO.class);
+        return deviceLogVOList;
     }
 }
