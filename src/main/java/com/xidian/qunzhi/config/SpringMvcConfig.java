@@ -22,6 +22,8 @@ public class SpringMvcConfig implements WebMvcConfigurer {
                         "/user/login",
                         "/user/adminLogin",
                         "/user/register",
+                        //管理员登录路由
+                        "/adminUser/login",
                         "/captcha/generate", //二维码生成路由
                         "/adminUser/**",  //管理员登录等路由
                         // swagger2需要放行的资源

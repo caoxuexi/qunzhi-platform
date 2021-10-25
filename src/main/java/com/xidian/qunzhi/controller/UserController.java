@@ -83,18 +83,6 @@ public class UserController {
         return userLoginVO;
     }
 
-    @ApiOperation(value = "管理员登录", httpMethod = "POST")
-    @PostMapping("/adminLogin")
-    public UserLoginVO adminLogin(@RequestBody @Valid UserLoginDTO userLoginDTO) throws Exception {
-        UserLoginVO userLoginVO = userService.adminLogin(userLoginDTO.getEmail(), userLoginDTO.getPassword());
-        Long token = snowFlake.nextId();
-        LOGGER.info("生成单点登录token：{}，并放入redis中", token);
-        userLoginVO.setToken(token.toString());
-        redisTemplate.opsForValue().set(token.toString(), JSONObject.toJSONString(userLoginVO),
-                3600 * 24, TimeUnit.SECONDS);
-        return userLoginVO;
-    }
-
     @ApiOperation(value = "用户密码修改", httpMethod = "POST")
     @PostMapping("/changePassword")
     public UnifyResponse changePassword(@RequestBody @Valid ChangePasswordDTO changePasswordDTO, HttpServletRequest request) throws Exception {
@@ -113,6 +101,7 @@ public class UserController {
         if (userLoginVO == null) {
             throw new ForbiddenException(20005);
         }
+        userService.logout(userLoginVO.getId());
         redisTemplate.delete(userLoginVO.getToken());
         LOGGER.info("从redis中删除token: {}", userLoginVO.getToken());
         return UnifyResponse.commonSuccess(request);

@@ -32,14 +32,6 @@ public interface UserService {
     UserLoginVO login(String email, String password) throws Exception;
 
     /**
-     * 管理员登录
-     * @param email
-     * @param password
-     * @return 登录用户VO
-     */
-    UserLoginVO adminLogin(String email, String password) throws Exception;
-
-    /**
      * 修改用户具体信息
      * @param userInformationDTO
      * @param userId
@@ -52,4 +44,11 @@ public interface UserService {
      * @return
      */
     UserInformationVO getInformation(Integer userId);
+
+    /**
+     * 用户退出
+     * @param userId
+     * @return
+     */
+    void logout(Integer userId);
 }

@@ -1,6 +1,7 @@
 package com.xidian.qunzhi.service.impl;
 
 import com.xidian.qunzhi.core.enumerate.AdminOrNotEnum;
+import com.xidian.qunzhi.core.enumerate.IsLoginEnum;
 import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.exception.http.UnAuthenticatedException;
 import com.xidian.qunzhi.mapper.UserMapper;
@@ -53,8 +54,8 @@ public class UserServiceImpl implements UserService {
             throw new ForbiddenException(20008);
         }
         User newUser=new User();
-        user.setId(userId);
-        user.setPassword(MD5Utils.getMD5Str(changePasswordDTO.getNewPassword()));
+        newUser.setId(userId);
+        newUser.setPassword(MD5Utils.getMD5Str(changePasswordDTO.getNewPassword()));
         //修改密码
         userMapper.updateByPrimaryKeySelective(newUser);
     }
@@ -92,26 +93,13 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new ForbiddenException(20003);
         }
-        UserLoginVO userLoginVO = CopyUtil.copy(user, UserLoginVO.class);
-        return userLoginVO;
-    }
-
-    @Transactional(propagation=Propagation.SUPPORTS)
-    @Override
-    public UserLoginVO adminLogin(String email, String password) throws Exception {
-        Example example = new Example(User.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("email", email)
-                .andEqualTo("password", MD5Utils.getMD5Str(password));
-        User user = userMapper.selectOneByExample(example);
-        if (user == null) {
-            throw new ForbiddenException(20003);
-        }
-         //判断用户是否是管理员
-        if(user.getIsAdmin().intValue()!=AdminOrNotEnum.ADMIN.getValue()){
-            throw new UnAuthenticatedException(20006);
+        //判断用户是否已经登录
+        if (user.getIsLogin()!= IsLoginEnum.ALREADY_LOGIN.getValue().shortValue()){
+            throw new ForbiddenException(20009);
         }
         UserLoginVO userLoginVO = CopyUtil.copy(user, UserLoginVO.class);
+        user.setIsLogin((short) 1);
+        userMapper.updateByPrimaryKeySelective(user);
         return userLoginVO;
     }
 
@@ -151,5 +139,14 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.selectByPrimaryKey(userId);
         UserInformationVO userInformationVO = CopyUtil.copy(user, UserInformationVO.class);
         return userInformationVO;
+    }
+
+    @Transactional(propagation=Propagation.REQUIRED)
+    @Override
+    public void logout(Integer userId) {
+        User user=new User();
+        user.setId(userId);
+        user.setIsLogin((short)0);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 }
