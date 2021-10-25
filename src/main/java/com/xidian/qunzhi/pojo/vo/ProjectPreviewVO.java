@@ -15,6 +15,7 @@ import java.util.Date;
 @ApiModel(value = "项目预览VO",description = "在开发中的个人项目页面展示")
 @Data
 public class ProjectPreviewVO {
+    private Integer id;
     private String name;
     private String productKey;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+8")

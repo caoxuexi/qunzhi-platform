@@ -13,7 +13,7 @@ import javax.validation.constraints.Pattern;
  * @description <h1>UserInformationDTO</h1>
  * @date 2021-10-22 22:36
  */
-@ApiModel(value = "用户登录对象DTO", description = "用户登录时需要的字段封装")
+@ApiModel(value = "用户修改信息DTO", description = "用户修改信息时需要的字段封装")
 @Data
 public class UserInformationDTO {
 
