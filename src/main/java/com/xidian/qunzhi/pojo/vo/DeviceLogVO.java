@@ -1,5 +1,6 @@
 package com.xidian.qunzhi.pojo.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -15,10 +16,12 @@ public class DeviceLogVO {
 
     private Integer projectId;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date firstOnline;
 
     private Integer cumulativeOnline;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date lastOnline;
 
     /**
