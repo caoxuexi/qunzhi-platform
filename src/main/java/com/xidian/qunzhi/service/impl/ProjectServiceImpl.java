@@ -7,19 +7,18 @@ import com.xidian.qunzhi.core.enumerate.UserRoleEnum;
 import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.exception.http.NotFoundException;
 import com.xidian.qunzhi.exception.http.UnAuthenticatedException;
+import com.xidian.qunzhi.mapper.DeviceLogMapper;
 import com.xidian.qunzhi.mapper.ProjectMapper;
 import com.xidian.qunzhi.mapper.UserMapper;
 import com.xidian.qunzhi.mapper.UserProjectMapper;
+import com.xidian.qunzhi.pojo.DeviceLog;
 import com.xidian.qunzhi.pojo.Project;
 import com.xidian.qunzhi.pojo.User;
 import com.xidian.qunzhi.pojo.UserProject;
 import com.xidian.qunzhi.pojo.basic.PageVO;
 import com.xidian.qunzhi.pojo.dto.ProjectDTO;
 import com.xidian.qunzhi.pojo.dto.SearchProjectDTO;
-import com.xidian.qunzhi.pojo.vo.ProjectAdminVO;
-import com.xidian.qunzhi.pojo.vo.ProjectDetailVO;
-import com.xidian.qunzhi.pojo.vo.ProjectPreviewVO;
-import com.xidian.qunzhi.pojo.vo.UserLoginVO;
+import com.xidian.qunzhi.pojo.vo.*;
 import com.xidian.qunzhi.service.ProjectService;
 import com.xidian.qunzhi.utils.CopyUtil;
 import org.apache.commons.lang3.ObjectUtils;
@@ -33,6 +32,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.persistence.Id;
 import java.util.Date;
 import java.util.List;
 
@@ -49,6 +49,9 @@ public class ProjectServiceImpl implements ProjectService {
     private UserMapper userMapper;
     @Autowired
     private UserProjectMapper userProjectMapper;
+
+    @Autowired
+    private DeviceLogMapper deviceLogMapper;
 
     private static final Logger LOG= LoggerFactory.getLogger(ProjectServiceImpl.class);
 
@@ -154,5 +157,21 @@ public class ProjectServiceImpl implements ProjectService {
         projectMapper.updateByExampleSelective(project,deleteProjectExample);
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public DeviceLogVO logs(Integer projectId, Integer userId) {
+        //判断该项目是否属于当前用户
+        checkBelonging(projectId,userId);
+        Example example=new Example(DeviceLog.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id", projectId);
 
+        DeviceLog deviceLog = deviceLogMapper.selectOneByExample(example);
+        if(ObjectUtils.isEmpty(deviceLog)){
+            //抛出项目不存在异常消息
+            throw new NotFoundException(30001);
+        }
+        DeviceLogVO deviceLogVO = CopyUtil.copy(deviceLog, DeviceLogVO.class);
+        return deviceLogVO;
+    }
 }

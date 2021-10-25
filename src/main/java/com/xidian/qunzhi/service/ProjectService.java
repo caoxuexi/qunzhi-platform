@@ -4,10 +4,7 @@ import com.xidian.qunzhi.pojo.UserProject;
 import com.xidian.qunzhi.pojo.basic.PageVO;
 import com.xidian.qunzhi.pojo.dto.ProjectDTO;
 import com.xidian.qunzhi.pojo.dto.SearchProjectDTO;
-import com.xidian.qunzhi.pojo.vo.ProjectAdminVO;
-import com.xidian.qunzhi.pojo.vo.ProjectDetailVO;
-import com.xidian.qunzhi.pojo.vo.ProjectPreviewVO;
-import com.xidian.qunzhi.pojo.vo.UserLoginVO;
+import com.xidian.qunzhi.pojo.vo.*;
 
 import java.util.List;
 
@@ -67,6 +64,13 @@ public interface ProjectService {
      */
     ProjectDetailVO create(ProjectDTO projectDTO, Integer id);
 
-
+    /**
+     * 根据项目名称搜索项目的日志信息
+     *
+     * @param projectId
+     * @param userId
+     * @return
+     */
+    DeviceLogVO logs(Integer projectId, Integer userId);
 }
 

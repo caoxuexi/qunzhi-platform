@@ -4,10 +4,7 @@ import com.xidian.qunzhi.core.UnifyResponse;
 import com.xidian.qunzhi.pojo.basic.PageVO;
 import com.xidian.qunzhi.pojo.dto.ProjectDTO;
 import com.xidian.qunzhi.pojo.dto.SearchProjectDTO;
-import com.xidian.qunzhi.pojo.vo.ProjectAdminVO;
-import com.xidian.qunzhi.pojo.vo.ProjectDetailVO;
-import com.xidian.qunzhi.pojo.vo.ProjectPreviewVO;
-import com.xidian.qunzhi.pojo.vo.UserLoginVO;
+import com.xidian.qunzhi.pojo.vo.*;
 import com.xidian.qunzhi.service.ProjectService;
 import com.xidian.qunzhi.service.ProjectGroupService;
 
@@ -80,10 +77,11 @@ public class ProjectController {
     }
 
     @ApiOperation(value = "获取日志",httpMethod = "GET")
-    @PostMapping("/getLogs")
-    public String getLogs (@RequestParam(value = "id")  Integer projectId){
-        //TODO
-        return null;
+    @GetMapping("/getLogs")
+    public DeviceLogVO getLogs (@RequestParam(value = "id")  Integer projectId){
+        UserLoginVO userLoginVO=LoginUserContext.getUser();
+        DeviceLogVO deviceLogVO = projectService.logs(projectId, userLoginVO.getId());
+        return deviceLogVO;
     }
 
     @ApiOperation(value = "关键词抽取",httpMethod = "POST")
