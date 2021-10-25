@@ -53,13 +53,19 @@ public class UserController {
         String rawPassword = userRegistDTO.getPassword();
         String password = MD5Utils.getMD5Str(rawPassword);
         //判断验证码是否正确
-        String backgroundCaptcha = request.getSession().getAttribute("code").toString();
+        String backgroundCaptcha = "";
+        try {
+            backgroundCaptcha = request.getSession().getAttribute("code").toString();
+        }catch (Exception e){
+            throw new ForbiddenException(20004);
+        }
         if (!backgroundCaptcha.equals(userRegistDTO.getCaptcha())) {
             throw new ForbiddenException(20004);
         }
+        //注册
         boolean result = userService.register(userRegistDTO, password);
         if (result) {
-           return UnifyResponse.createSuccess(request);
+            return UnifyResponse.createSuccess(request);
         } else {
             throw new UnknowException();
         }
@@ -93,7 +99,7 @@ public class UserController {
     @PostMapping("/changePassword")
     public UnifyResponse changePassword(@RequestBody @Valid ChangePasswordDTO changePasswordDTO, HttpServletRequest request) throws Exception {
         UserLoginVO userLoginVO = LoginUserContext.getUser();
-        userService.changePassword(changePasswordDTO,userLoginVO.getId());
+        userService.changePassword(changePasswordDTO, userLoginVO.getId());
         //删除用户原来的token
         redisTemplate.delete(userLoginVO.getToken());
         LOGGER.info("从redis中删除token: {}", userLoginVO.getToken());
@@ -104,7 +110,7 @@ public class UserController {
     @GetMapping(value = "/logout")
     public UnifyResponse logout(HttpServletRequest request) throws Exception {
         UserLoginVO userLoginVO = LoginUserContext.getUser();
-        if(userLoginVO==null){
+        if (userLoginVO == null) {
             throw new ForbiddenException(20005);
         }
         redisTemplate.delete(userLoginVO.getToken());
