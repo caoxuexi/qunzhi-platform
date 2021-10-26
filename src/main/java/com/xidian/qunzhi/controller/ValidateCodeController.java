@@ -36,7 +36,7 @@ public class ValidateCodeController {
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
 
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(true);
 
         ValidateCode vCode = new ValidateCode(120,40,5,100);
         session.setAttribute("code", vCode.getCode());

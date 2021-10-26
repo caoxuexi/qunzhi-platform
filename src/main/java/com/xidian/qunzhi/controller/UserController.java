@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.concurrent.TimeUnit;
 
@@ -42,20 +43,19 @@ public class UserController {
     private UserService userService;
     @Autowired
     private RedisTemplate redisTemplate;
-    @Autowired
-    private SnowFlake snowFlake;
+
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @ApiOperation(value = "用户注册", httpMethod = "POST")
     @PostMapping(value = "/register")
-    public UnifyResponse register(@RequestBody @Valid UserRegistDTO userRegistDTO, HttpServletRequest request) throws Exception {
+    public UnifyResponse register(@RequestBody @Valid UserRegistDTO userRegistDTO, HttpServletRequest request, HttpSession session) throws Exception {
         String rawPassword = userRegistDTO.getPassword();
         String password = MD5Utils.getMD5Str(rawPassword);
         //判断验证码是否正确
         String backgroundCaptcha = "";
         try {
-            backgroundCaptcha = request.getSession().getAttribute("code").toString();
+            backgroundCaptcha = session.getAttribute("code").toString();
         }catch (Exception e){
             throw new ForbiddenException(20004);
         }
@@ -75,11 +75,6 @@ public class UserController {
     @PostMapping("/login")
     public UserLoginVO login(@RequestBody @Valid UserLoginDTO userLoginDTO, HttpServletRequest request) throws Exception {
         UserLoginVO userLoginVO = userService.login(userLoginDTO.getEmail(), userLoginDTO.getPassword());
-        Long token = snowFlake.nextId();
-        LOGGER.info("生成单点登录token：{}，并放入redis中", token);
-        userLoginVO.setToken(token.toString());
-        redisTemplate.opsForValue().set(token.toString(), JSONObject.toJSONString(userLoginVO),
-                3600 * 24, TimeUnit.SECONDS);
         return userLoginVO;
     }
 
@@ -102,8 +97,7 @@ public class UserController {
             throw new ForbiddenException(20005);
         }
         userService.logout(userLoginVO.getId());
-        redisTemplate.delete(userLoginVO.getToken());
-        LOGGER.info("从redis中删除token: {}", userLoginVO.getToken());
+
         return UnifyResponse.commonSuccess(request);
     }
 

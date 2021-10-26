@@ -1,8 +1,8 @@
 package com.xidian.qunzhi.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.xidian.qunzhi.core.enumerate.IsLoginEnum;
 import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.exception.http.UnAuthenticatedException;
 import com.xidian.qunzhi.mapper.UserMapper;
@@ -19,19 +19,23 @@ import com.xidian.qunzhi.pojo.vo.UserInformationVO;
 import com.xidian.qunzhi.service.UserService;
 import com.xidian.qunzhi.utils.CopyUtil;
 import com.xidian.qunzhi.utils.MD5Utils;
+import com.xidian.qunzhi.utils.SnowFlake;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.xidian.qunzhi.pojo.User;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.genid.GenId;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -39,6 +43,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
+    @Autowired
+    private SnowFlake snowFlake;
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
@@ -88,9 +96,10 @@ public class UserServiceImpl implements UserService {
         return count != 0;
     }
 
-    @Transactional(propagation=Propagation.SUPPORTS)
+    @Transactional(propagation=Propagation.REQUIRED)
     @Override
     public UserLoginVO login(String email, String password) throws Exception {
+        //1.判断帐号密码是否正确
         Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("email", email)
@@ -99,13 +108,23 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new ForbiddenException(20003);
         }
-        //判断用户是否已经登录
-        if (user.getIsLogin()!= IsLoginEnum.ALREADY_LOGIN.getValue().shortValue()){
-            throw new ForbiddenException(20009);
+        //2.判断用户是否已经登录，登录了的话，删除原来的token
+        if (StringUtils.isNotBlank(user.getToken())){
+            redisTemplate.delete(user.getToken());
         }
-        UserLoginVO userLoginVO = CopyUtil.copy(user, UserLoginVO.class);
-        user.setIsLogin((short) 1);
+
+        //4.生成并保存token
+        Long token = snowFlake.nextId();
+        //4.1 保存token(登录状态到数据库中)
+        user.setToken(token.toString());
         userMapper.updateByPrimaryKeySelective(user);
+        UserLoginVO userLoginVO = CopyUtil.copy(user, UserLoginVO.class);
+
+        //4.2 保存token到redis里
+        LOG.info("生成单点登录token：{}，并放入redis中", token);
+        redisTemplate.opsForValue().set(token.toString(), JSONObject.toJSONString(userLoginVO),
+                3600 * 24, TimeUnit.SECONDS);
+
         return userLoginVO;
     }
 
@@ -150,9 +169,12 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation=Propagation.REQUIRED)
     @Override
     public void logout(Integer userId) {
-        User user=new User();
-        user.setId(userId);
-        user.setIsLogin((short)0);
+        User user = userMapper.selectByPrimaryKey(userId);
+        String token=user.getToken();
+        redisTemplate.delete(token);
+        //删除token
+        user.setToken("");
+        LOG.info("从redis中删除token: {}", token);
         userMapper.updateByPrimaryKeySelective(user);
     }
 

@@ -3,11 +3,10 @@ package com.xidian.qunzhi.service.impl;
 import com.xidian.qunzhi.core.enumerate.UserRoleEnum;
 import com.xidian.qunzhi.exception.http.UnAuthenticatedException;
 import com.xidian.qunzhi.mapper.UserProjectMapper;
-import com.xidian.qunzhi.pojo.User;
 import com.xidian.qunzhi.pojo.UserProject;
 import com.xidian.qunzhi.service.ProjectGroupService;
 import com.xidian.qunzhi.service.ProjectService;
-import com.xidian.qunzhi.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

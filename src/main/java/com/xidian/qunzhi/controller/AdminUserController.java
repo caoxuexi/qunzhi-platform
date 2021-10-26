@@ -1,9 +1,13 @@
 package com.xidian.qunzhi.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xidian.qunzhi.core.UnifyResponse;
+import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.pojo.dto.UserLoginDTO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 import com.xidian.qunzhi.service.AdminUserService;
+import com.xidian.qunzhi.service.UserService;
+import com.xidian.qunzhi.utils.LoginUserContext;
 import com.xidian.qunzhi.utils.SnowFlake;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,11 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.concurrent.TimeUnit;
 
@@ -34,6 +36,8 @@ public class AdminUserController {
     private SnowFlake snowFlake;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private UserService userService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
@@ -47,5 +51,17 @@ public class AdminUserController {
         redisTemplate.opsForValue().set(token.toString(), JSONObject.toJSONString(userLoginVO),
                 3600 * 24, TimeUnit.SECONDS);
         return userLoginVO;
+    }
+
+    @ApiOperation(value = "管理员退出", httpMethod = "GET")
+    @GetMapping(value = "/logout")
+    public UnifyResponse logout(HttpServletRequest request) throws Exception {
+        UserLoginVO userLoginVO = LoginUserContext.getUser();
+        if (userLoginVO == null) {
+            throw new ForbiddenException(20005);
+        }
+        userService.logout(userLoginVO.getId());
+
+        return UnifyResponse.commonSuccess(request);
     }
 }
