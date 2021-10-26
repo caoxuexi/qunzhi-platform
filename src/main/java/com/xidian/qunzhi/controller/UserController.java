@@ -118,12 +118,5 @@ public class UserController {
         return userInformationVO;
     }
 
-    @ApiOperation(value = "管理员获取所有的用户信息", httpMethod = "GET")
-    @GetMapping("/searchByAdmin")
-    public PageVO<UserAdminVO> searchByAdmin(@Valid SearchUserDTO searchUserDTO){
-        UserLoginVO userLoginVO = LoginUserContext.getUser();
-        //分页查询
-        PageVO<UserAdminVO> userAdminVOList= userService.searchByAdmin(searchUserDTO,userLoginVO);
-        return userAdminVOList;
-    }
+
 }

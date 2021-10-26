@@ -2,6 +2,7 @@ package com.xidian.qunzhi.controller;
 
 import com.xidian.qunzhi.core.UnifyResponse;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
+import com.xidian.qunzhi.pojo.vo.UserProjectVO;
 import com.xidian.qunzhi.service.ProjectGroupService;
 import com.xidian.qunzhi.utils.LoginUserContext;
 import io.swagger.annotations.Api;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author Cao Study
@@ -62,8 +64,18 @@ public class ProjecctGroupController {
     public UnifyResponse getApplication(@ApiParam(value = "项目id",example = "1") @RequestParam(value = "id") Integer projectId,
                                         HttpServletRequest request){
         UserLoginVO userLoginVO=LoginUserContext.getUser();
-        projectGroupService.applyProjectMember(projectId,userLoginVO.getId());
+        projectGroupService.getApplication(projectId,userLoginVO.getId());
         return UnifyResponse.commonSuccess(request);
+    }
+
+
+    @ApiOperation(value = "查看项目组成员",httpMethod = "GET")
+    @GetMapping("/getProjectMember")
+    public  List<UserProjectVO>  getProjectMember(@ApiParam(value = "项目id",example = "1") @RequestParam(value = "id") Integer projectId,
+                                          HttpServletRequest request){
+        UserLoginVO userLoginVO=LoginUserContext.getUser();
+        List<UserProjectVO> userProjectVOList= projectGroupService.getProjectMember(projectId,userLoginVO.getId());
+        return  userProjectVOList;
     }
 
 }

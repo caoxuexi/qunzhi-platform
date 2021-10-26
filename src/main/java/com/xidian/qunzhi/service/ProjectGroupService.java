@@ -1,5 +1,9 @@
 package com.xidian.qunzhi.service;
 
+import com.xidian.qunzhi.pojo.vo.UserProjectVO;
+
+import java.util.List;
+
 /**
  * @author Cao Study
  * @description <h1>UserGroupService</h1>
@@ -22,7 +26,26 @@ public interface ProjectGroupService {
      */
     void deleteProjectMember(Integer projectId, Integer userId, Integer leaderId);
 
-    void getApplication(Integer userId);
 
+    /**
+     * 申请成为项目组的成员
+     * @param projectId
+     * @param userId
+     */
     void applyProjectMember(Integer projectId, Integer userId);
+
+    /**
+     * 获得项目组的所有成员
+     * @param projectId
+     * @param userId
+     * @return
+     */
+    List<UserProjectVO> getProjectMember(Integer projectId, Integer userId);
+
+    /**
+     * 组长获取申请加入项目的请求
+     * @param projectId
+     * @param id
+     */
+    void getApplication(Integer projectId, Integer id);
 }

@@ -17,7 +17,6 @@ public interface ProjectService {
 
     /**
      * 获的当前用户所有的项目的缩略图
-     *
      * @param userLoginVO
      * @return
      */
@@ -41,7 +40,6 @@ public interface ProjectService {
 
     /**
      * 根据项目名称搜索项目的详细信息
-     *
      * @param projectId
      * @param userId
      * @return
@@ -50,7 +48,6 @@ public interface ProjectService {
 
     /**
      * 删除项目(必须是组长身份才行)
-     *
      * @param projectId
      * @return
      */
@@ -66,11 +63,18 @@ public interface ProjectService {
 
     /**
      * 根据项目名称搜索项目的日志信息
-     *
      * @param projectId
      * @param userId
      * @return
      */
     List<DeviceLogVO> logs(Integer projectId, Integer userId);
+
+    /**
+     * 更新项目信息
+     * @param projectDTO
+     * @param id
+     * @return
+     */
+    ProjectDetailVO update(ProjectDTO projectDTO, Integer id);
 }
 

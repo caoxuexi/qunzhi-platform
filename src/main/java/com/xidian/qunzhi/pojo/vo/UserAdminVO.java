@@ -1,6 +1,7 @@
 package com.xidian.qunzhi.pojo.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 
 import java.util.Date;
 
@@ -9,6 +10,7 @@ import java.util.Date;
  * @description <h1>UserAdminVO</h1>
  * @date 2021-10-25 22:33
  */
+@Data
 public class UserAdminVO {
     String email;
 
@@ -23,8 +25,6 @@ public class UserAdminVO {
     String address;
 
     String district;
-
-    Short isLogin;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+8")
     Date createTime;

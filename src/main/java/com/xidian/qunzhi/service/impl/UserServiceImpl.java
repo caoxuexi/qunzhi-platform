@@ -7,13 +7,11 @@ import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.exception.http.UnAuthenticatedException;
 import com.xidian.qunzhi.mapper.UserMapper;
 
-import com.xidian.qunzhi.pojo.Project;
 import com.xidian.qunzhi.pojo.basic.PageVO;
 import com.xidian.qunzhi.pojo.dto.ChangePasswordDTO;
 import com.xidian.qunzhi.pojo.dto.SearchUserDTO;
 import com.xidian.qunzhi.pojo.dto.UserInformationDTO;
 import com.xidian.qunzhi.pojo.dto.UserRegistDTO;
-import com.xidian.qunzhi.pojo.vo.ProjectAdminVO;
 import com.xidian.qunzhi.pojo.vo.UserAdminVO;
 import com.xidian.qunzhi.pojo.vo.UserInformationVO;
 import com.xidian.qunzhi.service.UserService;
@@ -189,15 +187,15 @@ public class UserServiceImpl implements UserService {
         Example example=new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
         //按昵称查询
-        if(!StringUtils.isEmpty(searchUserDTO.getNickname())){
+        if(StringUtils.isNotBlank(searchUserDTO.getNickname())){
             criteria.andLike("nickname","%"+searchUserDTO.getNickname()+"%");
         }
         //按真名查询
-        if(!StringUtils.isEmpty(searchUserDTO.getNickname())){
+        if(StringUtils.isNotBlank(searchUserDTO.getRealname())){
             criteria.andLike("realname","%"+searchUserDTO.getRealname()+"%");
         }
         //按邮箱(帐号)查询
-        if(!StringUtils.isEmpty(searchUserDTO.getEmail())){
+        if(StringUtils.isNotBlank(searchUserDTO.getEmail())){
             criteria.andLike("email","%"+searchUserDTO.getEmail()+"%");
         }
 
@@ -211,5 +209,11 @@ public class UserServiceImpl implements UserService {
         pageVO.setTotal(pageInfo.getTotal());
         pageVO.setList( userAdminVOList);
         return pageVO;
+    }
+
+    @Override
+    public Integer userCount(UserLoginVO userLoginVO) {
+
+        return null;
     }
 }

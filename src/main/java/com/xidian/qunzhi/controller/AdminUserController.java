@@ -3,9 +3,15 @@ package com.xidian.qunzhi.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.xidian.qunzhi.core.UnifyResponse;
 import com.xidian.qunzhi.exception.http.ForbiddenException;
+import com.xidian.qunzhi.pojo.basic.PageVO;
+import com.xidian.qunzhi.pojo.dto.SearchProjectDTO;
+import com.xidian.qunzhi.pojo.dto.SearchUserDTO;
 import com.xidian.qunzhi.pojo.dto.UserLoginDTO;
+import com.xidian.qunzhi.pojo.vo.ProjectAdminVO;
+import com.xidian.qunzhi.pojo.vo.UserAdminVO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 import com.xidian.qunzhi.service.AdminUserService;
+import com.xidian.qunzhi.service.ProjectService;
 import com.xidian.qunzhi.service.UserService;
 import com.xidian.qunzhi.utils.LoginUserContext;
 import com.xidian.qunzhi.utils.SnowFlake;
@@ -38,6 +44,8 @@ public class AdminUserController {
     private RedisTemplate redisTemplate;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ProjectService projectService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
@@ -45,11 +53,6 @@ public class AdminUserController {
     @PostMapping("/login")
     public UserLoginVO adminLogin(@RequestBody @Valid UserLoginDTO userLoginDTO) throws Exception {
         UserLoginVO userLoginVO = adminUserService.adminLogin(userLoginDTO.getEmail(), userLoginDTO.getPassword());
-        Long token = snowFlake.nextId();
-        LOGGER.info("生成单点登录token：{}，并放入redis中", token);
-        userLoginVO.setToken(token.toString());
-        redisTemplate.opsForValue().set(token.toString(), JSONObject.toJSONString(userLoginVO),
-                3600 * 24, TimeUnit.SECONDS);
         return userLoginVO;
     }
 
@@ -63,5 +66,33 @@ public class AdminUserController {
         userService.logout(userLoginVO.getId());
 
         return UnifyResponse.commonSuccess(request);
+    }
+
+    @ApiOperation(value = "管理员获取所有的用户信息", httpMethod = "GET")
+    @GetMapping("/searchUser")
+    public PageVO<UserAdminVO> searchByAdmin(@Valid SearchUserDTO searchUserDTO){
+        UserLoginVO userLoginVO = LoginUserContext.getUser();
+        //分页查询
+        PageVO<UserAdminVO> userAdminVOList= userService.searchByAdmin(searchUserDTO,userLoginVO);
+        return userAdminVOList;
+    }
+
+
+    @ApiOperation(value = "管理员按条件搜索列出项目的情况",httpMethod = "GET")
+    @GetMapping("/searchProject")
+    public  PageVO<ProjectAdminVO> searchByAdmin(@Valid SearchProjectDTO searchProjectDTO){
+        UserLoginVO userLoginVO = LoginUserContext.getUser();
+        //分页查询
+        PageVO<ProjectAdminVO> projectAdminVOList= projectService.searchByAdmin(searchProjectDTO,userLoginVO);
+        return projectAdminVOList;
+    }
+
+    @ApiOperation(value = "管理员获取当前在线用户人数", httpMethod = "GET")
+    @GetMapping("/userCount")
+    public Integer userCount(){
+        UserLoginVO userLoginVO = LoginUserContext.getUser();
+        //分页查询
+        Integer userCount= userService.userCount(userLoginVO);
+        return userCount;
     }
 }

@@ -40,14 +40,6 @@ public class ProjectController {
         return productPreviewVOList;
     }
 
-    @ApiOperation(value = "管理员按条件搜索列出项目的情况",httpMethod = "GET")
-    @GetMapping("/searchByAdmin")
-    public  PageVO<ProjectAdminVO> searchByAdmin(@Valid SearchProjectDTO searchProjectDTO){
-        UserLoginVO userLoginVO = LoginUserContext.getUser();
-        //分页查询
-        PageVO<ProjectAdminVO> projectAdminVOList= projectService.searchByAdmin(searchProjectDTO,userLoginVO);
-        return projectAdminVOList;
-    }
 
     @ApiOperation(value = "获取项目的详细内容",httpMethod = "GET")
     @GetMapping("/detail")
@@ -63,6 +55,14 @@ public class ProjectController {
     public ProjectDetailVO create(ProjectDTO projectDTO){
         UserLoginVO userLoginVO=LoginUserContext.getUser();
         ProjectDetailVO productDetailVO = projectService.create(projectDTO,userLoginVO.getId());
+        return productDetailVO;
+    }
+
+    @ApiOperation(value = "修改项目信息",httpMethod = "POST")
+    @GetMapping("/update")
+    public ProjectDetailVO update(ProjectDTO projectDTO){
+        UserLoginVO userLoginVO=LoginUserContext.getUser();
+        ProjectDetailVO productDetailVO = projectService.update(projectDTO,userLoginVO.getId());
         return productDetailVO;
     }
 

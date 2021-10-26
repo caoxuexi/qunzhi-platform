@@ -20,12 +20,9 @@ public class SpringMvcConfig implements WebMvcConfigurer {
                         "/redis/**", //redisTemplate的本质也是向redis发http请求，所以这里redis接口要放开
                         //用户登录注册等路由
                         "/user/login",
-                        "/user/adminLogin",
                         "/user/register",
-                        //管理员登录路由
-                        "/adminUser/login",
+                        "/adminUser/login",  //管理员登录路由
                         "/captcha/generate", //二维码生成路由
-                        "/adminUser/**",  //管理员登录等路由
                         // swagger2需要放行的资源
                         "/doc.html",
                         "/swagger-ui.html",

@@ -171,4 +171,9 @@ public class ProjectServiceImpl implements ProjectService {
         List<DeviceLogVO> deviceLogVOList = CopyUtil.copyList(deviceLogList, DeviceLogVO.class);
         return deviceLogVOList;
     }
+
+    @Override
+    public ProjectDetailVO update(ProjectDTO projectDTO, Integer id) {
+        return null;
+    }
 }
