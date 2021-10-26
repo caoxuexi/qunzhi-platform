@@ -68,7 +68,7 @@ public class AdminUserController {
         return UnifyResponse.commonSuccess(request);
     }
 
-    @ApiOperation(value = "管理员获取所有的用户信息", httpMethod = "GET")
+    @ApiOperation(value = "管理员按条件获取用户信息", httpMethod = "GET")
     @GetMapping("/searchUser")
     public PageVO<UserAdminVO> searchByAdmin(@Valid SearchUserDTO searchUserDTO){
         UserLoginVO userLoginVO = LoginUserContext.getUser();
@@ -78,7 +78,7 @@ public class AdminUserController {
     }
 
 
-    @ApiOperation(value = "管理员按条件搜索列出项目的情况",httpMethod = "GET")
+    @ApiOperation(value = "管理员按条件获取项目信息",httpMethod = "GET")
     @GetMapping("/searchProject")
     public  PageVO<ProjectAdminVO> searchByAdmin(@Valid SearchProjectDTO searchProjectDTO){
         UserLoginVO userLoginVO = LoginUserContext.getUser();
@@ -91,7 +91,7 @@ public class AdminUserController {
     @GetMapping("/userCount")
     public Integer userCount(){
         UserLoginVO userLoginVO = LoginUserContext.getUser();
-        //分页查询
+        //查询在线人数
         Integer userCount= userService.userCount(userLoginVO);
         return userCount;
     }
