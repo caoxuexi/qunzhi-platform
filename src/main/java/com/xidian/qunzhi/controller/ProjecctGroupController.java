@@ -59,7 +59,7 @@ public class ProjecctGroupController {
         return UnifyResponse.commonSuccess(request);
     }
 
-    @ApiOperation(value = "获取参加项目请求",httpMethod = "GET")
+    @ApiOperation(value = "获取加入项目请求",httpMethod = "GET")
     @GetMapping("/getApplication")
     public UnifyResponse getApplication(@ApiParam(value = "项目id",example = "1") @RequestParam(value = "id") Integer projectId,
                                         HttpServletRequest request){

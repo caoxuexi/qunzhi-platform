@@ -11,7 +11,7 @@
  Target Server Version : 80026
  File Encoding         : 65001
 
- Date: 26/10/2021 15:57:38
+ Date: 26/10/2021 16:23:22
 */
 
 SET NAMES utf8mb4;
@@ -60,10 +60,10 @@ CREATE TABLE `project`  (
 -- Records of project
 -- ----------------------------
 INSERT INTO `project` VALUES (1, '智能家居系统', '智能家居/生活小家电', 'Wi-Fi', '5a220f0122af47fe9acf13a37ad93dc7', NULL, 2, 0, '2021-10-18 20:19:04.000', '2021-10-26 10:27:20.658', NULL);
-INSERT INTO `project` VALUES (2, '智慧社区系统', NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-19 08:35:51.000', '2021-10-19 08:35:58.000', NULL);
-INSERT INTO `project` VALUES (3, '智慧城市系统', NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-21 20:11:33.000', '2021-10-21 20:11:36.000', NULL);
-INSERT INTO `project` VALUES (4, '智慧园区系统', NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-21 20:11:54.000', '2021-10-21 20:11:57.000', NULL);
-INSERT INTO `project` VALUES (5, '智慧校园系统', NULL, NULL, NULL, NULL, NULL, NULL, '2021-10-21 20:12:22.000', '2021-10-21 20:12:26.000', NULL);
+INSERT INTO `project` VALUES (2, '智慧社区系统', NULL, NULL, '5a220f0122af47fe9acf13a37ad93dc8', NULL, NULL, NULL, '2021-10-19 08:35:51.000', '2021-10-26 16:22:51.088', NULL);
+INSERT INTO `project` VALUES (3, '智慧城市系统', NULL, NULL, '5a220f0122af47fe9acf13a37ad93dc9', NULL, NULL, NULL, '2021-10-21 20:11:33.000', '2021-10-26 16:22:54.616', NULL);
+INSERT INTO `project` VALUES (4, '智慧园区系统', NULL, NULL, '5a220f0122af47fe9acf13a37ad93dc5', NULL, NULL, NULL, '2021-10-21 20:11:54.000', '2021-10-26 16:23:00.202', NULL);
+INSERT INTO `project` VALUES (5, '智慧校园系统', NULL, NULL, '5a220f0122af47fe9acf13a37ad93dc4', NULL, NULL, NULL, '2021-10-21 20:12:22.000', '2021-10-26 16:23:05.242', NULL);
 
 -- ----------------------------
 -- Table structure for project_application
@@ -125,7 +125,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, '曹老板', '曹操', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245683@qq.com', '18858781650', '969718359', '浙江省杭州市萧山区萧山经济开发区钱农东路8号西电杭州研究院', '浙江省/杭州市/萧山区', 1, '', '2021-10-17 22:19:56.482', '2021-10-26 15:52:31.789');
+INSERT INTO `user` VALUES (1, '嗜血枭雄', '曹操', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245683@qq.com', '18858781650', '969718359', '浙江省杭州市萧山区萧山经济开发区钱农东路8号西电杭州研究院', '浙江省/杭州市/萧山区', 1, '', '2021-10-17 22:19:56.482', '2021-10-26 16:08:44.370');
 INSERT INTO `user` VALUES (2, '飞飞公主', '张飞', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245682@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-18 15:22:17.675', '2021-10-26 15:51:24.254');
 INSERT INTO `user` VALUES (3, '勇敢牛牛', '牛魔', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245680@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-18 20:17:09.138', '2021-10-26 15:51:24.363');
 INSERT INTO `user` VALUES (5, '机关重炮', '墨子', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245689@qq.com', NULL, NULL, NULL, NULL, NULL, '', '2021-10-25 13:23:25.608', '2021-10-26 15:51:38.831');
@@ -152,9 +152,10 @@ CREATE TABLE `user_project`  (
 -- ----------------------------
 -- Records of user_project
 -- ----------------------------
-INSERT INTO `user_project` VALUES (1, 1, 1, 1, '曹学习', '曹操', '2021-10-18 19:48:42.148', '2021-10-26 13:10:53.640', NULL);
-INSERT INTO `user_project` VALUES (2, 1, 2, 1, '曹学习', '曹操', '2021-10-19 08:37:38.000', '2021-10-26 13:10:49.672', NULL);
+INSERT INTO `user_project` VALUES (1, 1, 1, 1, '嗜血枭雄', '曹操', '2021-10-18 19:48:42.148', '2021-10-26 16:08:44.371', NULL);
+INSERT INTO `user_project` VALUES (2, 1, 2, 1, '嗜血枭雄', '曹操', '2021-10-19 08:37:38.000', '2021-10-26 16:08:44.371', NULL);
 INSERT INTO `user_project` VALUES (3, 2, 1, 2, '飞飞公主', '张飞', '2021-10-20 19:22:22.186', '2021-10-26 13:10:56.670', NULL);
 INSERT INTO `user_project` VALUES (5, 3, 1, 2, '勇敢牛牛', '牛魔', '2021-10-21 20:04:18.503', '2021-10-26 13:11:04.705', NULL);
+INSERT INTO `user_project` VALUES (6, 5, 1, 2, '机关重炮', '墨子', '2021-10-26 16:19:08.969', '2021-10-26 16:19:08.969', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -7,6 +7,8 @@ import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.exception.http.UnAuthenticatedException;
 import com.xidian.qunzhi.mapper.UserMapper;
 
+import com.xidian.qunzhi.mapper.UserProjectMapper;
+import com.xidian.qunzhi.pojo.UserProject;
 import com.xidian.qunzhi.pojo.basic.PageVO;
 import com.xidian.qunzhi.pojo.dto.ChangePasswordDTO;
 import com.xidian.qunzhi.pojo.dto.SearchUserDTO;
@@ -41,6 +43,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserProjectMapper userProjectMapper;
     @Autowired
     private RedisTemplate redisTemplate;
     @Autowired
@@ -131,18 +135,23 @@ public class UserServiceImpl implements UserService {
     public UserInformationVO changeInformation(UserInformationDTO userInformationDTO, Integer userId) {
         //设置更新
         User user=new User();
-        //设置主键，按照主键进行数据更新
+        UserProject userProject=new UserProject();
+        //设置主键，按照主键进行数据更新,对于UserProject则设置Example
         user.setId(userId);
-        //根据传入参数设置属性值
+        Example upexample=new Example(UserProject.class);
+        upexample.createCriteria().andEqualTo("userId",userId);
+        //根据传入参数设置属性值(必填值)
         user.setNickname(userInformationDTO.getNickname());
+        userProject.setUserNickname(userInformationDTO.getNickname());
+        user.setRealname(userInformationDTO.getRealname());
+        userProject.setUserRealname(userInformationDTO.getRealname());
+
+        //根据传入参数设置属性值(可选值)
         if(StringUtils.isNotBlank(userInformationDTO.getAddress())){
             user.setAddress(userInformationDTO.getAddress());
         }
         if(StringUtils.isNotBlank(userInformationDTO.getDistrict())){
             user.setDistrict(userInformationDTO.getDistrict());
-        }
-        if(StringUtils.isNotBlank(userInformationDTO.getRealname())){
-            user.setRealname(userInformationDTO.getRealname());
         }
         if(StringUtils.isNotBlank(userInformationDTO.getQq())){
             user.setQq(userInformationDTO.getQq());
@@ -150,7 +159,10 @@ public class UserServiceImpl implements UserService {
         if(StringUtils.isNotBlank(userInformationDTO.getMobile())){
             user.setMobile(userInformationDTO.getMobile());
         }
+        //更新信息
         userMapper.updateByPrimaryKeySelective(user);
+        userProjectMapper.updateByExampleSelective(userProject,upexample);
+
         User newUser=userMapper.selectByPrimaryKey(userId);
         UserInformationVO userInformationVO = CopyUtil.copy(newUser, UserInformationVO.class);
         return userInformationVO;
