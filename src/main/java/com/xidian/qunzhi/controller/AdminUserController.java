@@ -85,14 +85,6 @@ public class AdminUserController {
         return projectAdminVOList;
     }
 
-    @ApiOperation(value = "管理员获取当前在线用户人数", httpMethod = "GET")
-    @GetMapping("/userCount")
-    public Integer userCount(){
-        UserLoginVO userLoginVO = LoginUserContext.getUser();
-        //查询在线人数
-        Integer userCount= userService.userCount(userLoginVO);
-        return userCount;
-    }
 
     @ApiOperation(value = "管理员获取项目总数", httpMethod = "GET")
     @GetMapping("/getProjectNum")

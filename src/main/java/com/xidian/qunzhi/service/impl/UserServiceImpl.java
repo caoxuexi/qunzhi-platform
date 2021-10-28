@@ -223,9 +223,4 @@ public class UserServiceImpl implements UserService {
         return pageVO;
     }
 
-    @Override
-    public Integer userCount(UserLoginVO userLoginVO) {
-
-        return null;
-    }
 }

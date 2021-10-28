@@ -13,8 +13,9 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
 @Slf4j
-@SpringBootTest
 @RunWith(SpringRunner.class)
+//因为引入了websocket，所以需要指定webEnvironment，不然测试通不过打包会失败
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RSATest {
     @Test
     public void generateKeyBytes() throws Exception{

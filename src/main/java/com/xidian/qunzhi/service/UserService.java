@@ -63,11 +63,5 @@ public interface UserService {
      */
     PageVO<UserAdminVO> searchByAdmin(@Valid SearchUserDTO searchProjectDTO, UserLoginVO userLoginVO);
 
-    /**
-     * 管理员获取当前在线人数
-     * @param userLoginVO
-     * @return
-     */
-    Integer userCount(UserLoginVO userLoginVO);
 
 }
