@@ -11,7 +11,7 @@
  Target Server Version : 80026
  File Encoding         : 65001
 
- Date: 28/10/2021 10:42:47
+ Date: 28/10/2021 19:40:05
 */
 
 SET NAMES utf8mb4;
@@ -60,7 +60,7 @@ CREATE TABLE `project`  (
 -- Records of project
 -- ----------------------------
 INSERT INTO `project` VALUES (1, '智能家居系统', '智能家居/生活小家电', 'Wi-Fi', '5a220f0122af47fe9acf13a37ad93dc7', NULL, 2, 0, '2021-10-18 20:19:04.000', '2021-10-26 10:27:20.658', NULL);
-INSERT INTO `project` VALUES (2, '智慧社区系统', NULL, NULL, '5a220f0122af47fe9acf13a37ad93dc8', NULL, NULL, NULL, '2021-10-19 08:35:51.000', '2021-10-26 16:22:51.088', NULL);
+INSERT INTO `project` VALUES (2, '智慧社区系统', '管理系统/社区', 'Wi-Fi', '5a220f0122af47fe9acf13a37ad93dc8', NULL, 2, 0, '2021-10-19 08:35:51.000', '2021-10-28 11:31:01.329', NULL);
 INSERT INTO `project` VALUES (3, '智慧城市系统', NULL, NULL, '5a220f0122af47fe9acf13a37ad93dc9', NULL, NULL, NULL, '2021-10-21 20:11:33.000', '2021-10-26 16:22:54.616', NULL);
 INSERT INTO `project` VALUES (4, '智慧园区系统', NULL, NULL, '5a220f0122af47fe9acf13a37ad93dc5', NULL, NULL, NULL, '2021-10-21 20:11:54.000', '2021-10-26 16:23:00.202', NULL);
 INSERT INTO `project` VALUES (5, '智慧校园系统', NULL, NULL, '5a220f0122af47fe9acf13a37ad93dc4', NULL, NULL, NULL, '2021-10-21 20:12:22.000', '2021-10-27 19:04:04.788', NULL);
