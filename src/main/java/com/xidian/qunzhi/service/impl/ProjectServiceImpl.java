@@ -129,7 +129,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public ProjectDetailVO create(ProjectDTO projectDTO, Integer userId) {
+    public void create(ProjectDTO projectDTO, Integer userId) {
         //插入项目
         Project project=CopyUtil.copy(projectDTO,Project.class);
         byte[] bytes=(project.getName()+project.getCreateTime())
@@ -148,7 +148,6 @@ public class ProjectServiceImpl implements ProjectService {
         userProject.setUserNickname(user.getNickname());
         userProject.setUserRealname(user.getRealname());
         userProjectMapper.insertSelective(userProject);
-        return null;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -196,8 +195,20 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public ProjectDetailVO update(ProjectDTO projectDTO, Integer id) {
-        return null;
+    public ProjectDetailVO update(ProjectDTO projectDTO, Integer userId) {
+        Project projectUpdate=CopyUtil.copy(projectDTO,Project.class);
+
+        //因为是复用projectDTO所以这里要判断一下是否传入了id
+        if(StringUtils.isBlank(projectUpdate.getId().toString())){
+            throw new ForbiddenException(30006);
+        }
+        //检查项目归属
+        checkBelonging(projectUpdate.getId(),userId);
+        //更新项目
+        projectMapper.updateByPrimaryKeySelective(projectUpdate);
+        Project project = projectMapper.selectByPrimaryKey(projectUpdate.getId());
+        ProjectDetailVO projectDetailVO = CopyUtil.copy(project, ProjectDetailVO.class);
+        return projectDetailVO;
     }
 
     @Override

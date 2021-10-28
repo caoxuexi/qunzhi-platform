@@ -57,9 +57,8 @@ public interface ProjectService {
      * 新建项目
      * @param projectDTO
      * @param userId
-     * @return
      */
-    ProjectDetailVO create(ProjectDTO projectDTO, Integer userId);
+    void create(ProjectDTO projectDTO, Integer userId);
 
     /**
      * 根据项目名称搜索项目的日志信息
@@ -72,10 +71,10 @@ public interface ProjectService {
     /**
      * 更新项目信息
      * @param projectDTO
-     * @param id
+     * @param userId
      * @return
      */
-    ProjectDetailVO update(ProjectDTO projectDTO, Integer id);
+    ProjectDetailVO update(ProjectDTO projectDTO, Integer userId);
 
     /**
      * 获取总的项目数

@@ -14,6 +14,8 @@ import javax.validation.constraints.NotEmpty;
 @ApiModel(value = "新建项目参数DTO",description = "新建项目时的参数封装")
 @Data
 public class ProjectDTO {
+    @ApiModelProperty(value = "项目id(新建时无需填入)",name = "id",example = "6",required = false)
+    private Integer id;
 
     @ApiModelProperty(value = "项目名称",name = "name",example = "智慧图书馆系统",required = true)
     @NotEmpty(message = "项目名称不能为空")

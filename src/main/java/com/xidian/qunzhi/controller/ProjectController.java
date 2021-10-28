@@ -51,14 +51,14 @@ public class ProjectController {
 
     @ApiOperation(value = "新建项目",httpMethod = "POST")
     @PostMapping("/create")
-    public ProjectDetailVO create(@RequestBody @Valid ProjectDTO projectDTO){
+    public UnifyResponse create(@RequestBody @Valid ProjectDTO projectDTO,HttpServletRequest request){
         UserLoginVO userLoginVO=LoginUserContext.getUser();
-        ProjectDetailVO productDetailVO = projectService.create(projectDTO,userLoginVO.getId());
-        return productDetailVO;
+        projectService.create(projectDTO,userLoginVO.getId());
+        return UnifyResponse.createSuccess(request);
     }
 
     @ApiOperation(value = "修改项目信息",httpMethod = "POST")
-    @GetMapping("/update")
+    @PostMapping("/update")
     public ProjectDetailVO update(@RequestBody @Valid ProjectDTO projectDTO){
         UserLoginVO userLoginVO=LoginUserContext.getUser();
         ProjectDetailVO productDetailVO = projectService.update(projectDTO,userLoginVO.getId());
