@@ -9,6 +9,8 @@ import javax.persistence.*;
 @Data
 public class Project {
     @Id
+    //设置这个属性后，insert插入后，可从实体类中获取数据库自增的id值
+    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     private String name;

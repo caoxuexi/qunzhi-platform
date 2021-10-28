@@ -1,9 +1,7 @@
 package com.xidian.qunzhi.controller;
 
 import com.xidian.qunzhi.core.UnifyResponse;
-import com.xidian.qunzhi.pojo.basic.PageVO;
 import com.xidian.qunzhi.pojo.dto.ProjectDTO;
-import com.xidian.qunzhi.pojo.dto.SearchProjectDTO;
 import com.xidian.qunzhi.pojo.vo.*;
 import com.xidian.qunzhi.service.ProjectService;
 
@@ -13,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,10 +26,10 @@ import java.util.List;
 @Api(tags = "项目相关功能")
 @RestController
 @RequestMapping("project")
+@Validated
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
-
 
     @ApiOperation(value = "列出当前用户所在的所有项目缩列图",httpMethod = "GET")
     @GetMapping("/listAllByUser")
@@ -51,8 +50,8 @@ public class ProjectController {
     }
 
     @ApiOperation(value = "新建项目",httpMethod = "POST")
-    @GetMapping("/create")
-    public ProjectDetailVO create(ProjectDTO projectDTO){
+    @PostMapping("/create")
+    public ProjectDetailVO create(@RequestBody @Valid ProjectDTO projectDTO){
         UserLoginVO userLoginVO=LoginUserContext.getUser();
         ProjectDetailVO productDetailVO = projectService.create(projectDTO,userLoginVO.getId());
         return productDetailVO;
@@ -60,7 +59,7 @@ public class ProjectController {
 
     @ApiOperation(value = "修改项目信息",httpMethod = "POST")
     @GetMapping("/update")
-    public ProjectDetailVO update(ProjectDTO projectDTO){
+    public ProjectDetailVO update(@RequestBody @Valid ProjectDTO projectDTO){
         UserLoginVO userLoginVO=LoginUserContext.getUser();
         ProjectDetailVO productDetailVO = projectService.update(projectDTO,userLoginVO.getId());
         return productDetailVO;

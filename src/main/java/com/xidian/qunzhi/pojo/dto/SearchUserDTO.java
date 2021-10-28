@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "管理员分页搜索参数DTO",description = "管理员分页搜索项目的参数封装")
+@ApiModel(value = "管理员分页搜索用户参数DTO",description = "管理员分页搜索项目的参数封装")
 public class SearchUserDTO extends PageDTO {
     @ApiModelProperty(value = "用户昵称",name = "nickname",example = "caoxuexi",required = false)
     private String nickname;

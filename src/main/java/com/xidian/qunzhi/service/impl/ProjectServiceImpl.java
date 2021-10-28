@@ -2,6 +2,8 @@ package com.xidian.qunzhi.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xidian.qunzhi.core.enumerate.AdminOrNotEnum;
+import com.xidian.qunzhi.core.enumerate.UserRoleEnum;
 import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.exception.http.NotFoundException;
 import com.xidian.qunzhi.exception.http.UnAuthenticatedException;
@@ -11,6 +13,7 @@ import com.xidian.qunzhi.mapper.UserMapper;
 import com.xidian.qunzhi.mapper.UserProjectMapper;
 import com.xidian.qunzhi.pojo.DeviceLog;
 import com.xidian.qunzhi.pojo.Project;
+import com.xidian.qunzhi.pojo.User;
 import com.xidian.qunzhi.pojo.UserProject;
 import com.xidian.qunzhi.pojo.basic.PageVO;
 import com.xidian.qunzhi.pojo.dto.ProjectDTO;
@@ -28,8 +31,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Cao Study
@@ -66,7 +71,7 @@ public class ProjectServiceImpl implements ProjectService {
         if(isAdmin!=1){
             throw new UnAuthenticatedException(30004);
         }
-        //条件查询
+        //条件查询,查询未被删除的项目
         Example example=new Example(Project.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andCondition("delete_time is null");
@@ -124,8 +129,25 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public ProjectDetailVO create(ProjectDTO projectDTO, Integer id) {
-        //TODO 创建项目
+    public ProjectDetailVO create(ProjectDTO projectDTO, Integer userId) {
+        //插入项目
+        Project project=CopyUtil.copy(projectDTO,Project.class);
+        byte[] bytes=(project.getName()+project.getCreateTime())
+                .getBytes(StandardCharsets.UTF_8);
+        project.setProductKey(UUID.randomUUID().toString());
+        project.setProductSecret(UUID.nameUUIDFromBytes(bytes).toString());
+//        LOG.info("secret:"+UUID.nameUUIDFromBytes(bytes).toString());
+        projectMapper.insertSelective(project);
+        //查询出用户的具体信息
+        User user = userMapper.selectByPrimaryKey(userId);
+        //插入用户项目关系
+        UserProject userProject=new UserProject();
+        userProject.setUserId(userId);
+        userProject.setProjectId(project.getId());
+        userProject.setUserRole(UserRoleEnum.LEADER.getValue().shortValue());
+        userProject.setUserNickname(user.getNickname());
+        userProject.setUserRealname(user.getRealname());
+        userProjectMapper.insertSelective(userProject);
         return null;
     }
 
@@ -172,8 +194,17 @@ public class ProjectServiceImpl implements ProjectService {
         return deviceLogVOList;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public ProjectDetailVO update(ProjectDTO projectDTO, Integer id) {
         return null;
+    }
+
+    @Override
+    public Integer getCount(UserLoginVO userLoginVO) {
+        if(userLoginVO.getIsAdmin()!= AdminOrNotEnum.ADMIN.getValue().shortValue()){
+            throw new UnAuthenticatedException(20006);
+        }
+        return projectMapper.getCount();
     }
 }

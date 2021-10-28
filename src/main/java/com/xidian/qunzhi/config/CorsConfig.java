@@ -6,6 +6,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
 public class CorsConfig {
     public CorsConfig(){
@@ -17,13 +20,17 @@ public class CorsConfig {
         //CorsFilter导.web.filter.CorsFilter下的
         //1.添加cors配置信息
         CorsConfiguration config=new CorsConfiguration();
-        config.addAllowedOrigin("*");
+        config.addAllowedOrigin("http://localhost:5500");
         // 设置是否发送cookie信息
         config.setAllowCredentials(true);
         // 设置允许请求的方式  全部
         config.addAllowedMethod("*");
         // 设置允许的header
         config.addAllowedHeader("*");
+        // 设置允许返回对象里面有自定义的header
+        List<String> exposedHeaderList=new ArrayList<>();
+        exposedHeaderList.add("sessionKey");
+        config.setExposedHeaders(exposedHeaderList);
 
         //2. 为url添加映射路径 选第一个
         UrlBasedCorsConfigurationSource corsSource=new UrlBasedCorsConfigurationSource();

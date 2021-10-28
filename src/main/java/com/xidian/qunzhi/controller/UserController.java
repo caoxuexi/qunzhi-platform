@@ -10,6 +10,7 @@ import com.xidian.qunzhi.pojo.vo.ProjectAdminVO;
 import com.xidian.qunzhi.pojo.vo.UserAdminVO;
 import com.xidian.qunzhi.pojo.vo.UserInformationVO;
 import com.xidian.qunzhi.service.UserService;
+import com.xidian.qunzhi.utils.CookieUtils;
 import com.xidian.qunzhi.utils.LoginUserContext;
 import com.xidian.qunzhi.utils.MD5Utils;
 import com.xidian.qunzhi.utils.SnowFlake;
@@ -23,6 +24,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -44,16 +46,22 @@ public class UserController {
     @Autowired
     private RedisTemplate redisTemplate;
 
-
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @ApiOperation(value = "用户注册", httpMethod = "POST")
     @PostMapping(value = "/register")
-    public UnifyResponse register(@RequestBody @Valid UserRegistDTO userRegistDTO, HttpServletRequest request, HttpSession session) throws Exception {
+    public UnifyResponse register(@RequestBody @Valid UserRegistDTO userRegistDTO, HttpServletRequest request) throws Exception {
         String rawPassword = userRegistDTO.getPassword();
         String password = MD5Utils.getMD5Str(rawPassword);
         //判断验证码是否正确
+//        String sessionKey = request.getHeader("sessionKey");
+//        HttpSession session = ValidateCodeController.sessionMap.get(sessionKey);
+//        ValidateCodeController.sessionMap.remove(sessionKey);
+
         String backgroundCaptcha = "";
+        HttpSession session = request.getSession();
+
+        LOGGER.info("register SessionID："+session.getId());
         try {
             backgroundCaptcha = session.getAttribute("code").toString();
         }catch (Exception e){

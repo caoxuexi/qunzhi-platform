@@ -35,11 +35,11 @@ public class Swagger2Config {
         return new ApiInfoBuilder()
                 .title("西电 群智应用开发平台接口api")
                 .contact(new Contact("caoqiang",
-                        "https://www.caoxuexi.cn",
+                        "https://www.caoxuexi.cn/resume",
                         "969718359@qq.com")) //联系人信息
                 .description("群智应用开发平台api文档")
                 .version("1.0.0") //文档版本号
-                .termsOfServiceUrl("https://www.caoxuexi.cn") //网页地址
+                .termsOfServiceUrl("https://www.caoxuexi.cn/resume") //网页地址
                 .build();
 
     }

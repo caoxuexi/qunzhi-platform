@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ProjectMapper extends MyMapper<Project> {
     List<Project> listAllByUserId(Integer id);
+
+    Integer getCount();
 }

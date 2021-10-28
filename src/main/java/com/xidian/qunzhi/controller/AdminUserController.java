@@ -8,6 +8,7 @@ import com.xidian.qunzhi.pojo.dto.SearchProjectDTO;
 import com.xidian.qunzhi.pojo.dto.SearchUserDTO;
 import com.xidian.qunzhi.pojo.dto.UserLoginDTO;
 import com.xidian.qunzhi.pojo.vo.ProjectAdminVO;
+import com.xidian.qunzhi.pojo.vo.StatisticVO;
 import com.xidian.qunzhi.pojo.vo.UserAdminVO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 import com.xidian.qunzhi.service.AdminUserService;
@@ -15,6 +16,7 @@ import com.xidian.qunzhi.service.ProjectService;
 import com.xidian.qunzhi.service.UserService;
 import com.xidian.qunzhi.utils.LoginUserContext;
 import com.xidian.qunzhi.utils.SnowFlake;
+import io.micrometer.core.instrument.Statistic;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -38,10 +40,6 @@ import java.util.concurrent.TimeUnit;
 public class AdminUserController {
     @Autowired
     private AdminUserService adminUserService;
-    @Autowired
-    private SnowFlake snowFlake;
-    @Autowired
-    private RedisTemplate redisTemplate;
     @Autowired
     private UserService userService;
     @Autowired
@@ -94,5 +92,14 @@ public class AdminUserController {
         //查询在线人数
         Integer userCount= userService.userCount(userLoginVO);
         return userCount;
+    }
+
+    @ApiOperation(value = "管理员获取项目总数", httpMethod = "GET")
+    @GetMapping("/getProjectNum")
+    public Integer getProjectNum(){
+        UserLoginVO userLoginVO = LoginUserContext.getUser();
+        //查询总的项目数
+        Integer projectCount= projectService.getCount(userLoginVO);
+        return projectCount;
     }
 }

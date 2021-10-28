@@ -25,4 +25,8 @@
         where p.id in (SELECT up.project_id from user_project up where up.user_id = #{id} and p.delete_time is null
                                                                    and up.delete_time is null)
     </select>
+
+    <select id="getCount" resultType="Integer" >
+        select count(*) from project p where p.delete_time is null
+    </select>
 </mapper>

@@ -11,7 +11,7 @@
  Target Server Version : 80026
  File Encoding         : 65001
 
- Date: 26/10/2021 16:23:22
+ Date: 28/10/2021 10:42:47
 */
 
 SET NAMES utf8mb4;
@@ -54,7 +54,7 @@ CREATE TABLE `project`  (
   `update_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of project
@@ -63,7 +63,7 @@ INSERT INTO `project` VALUES (1, '智能家居系统', '智能家居/生活小�
 INSERT INTO `project` VALUES (2, '智慧社区系统', NULL, NULL, '5a220f0122af47fe9acf13a37ad93dc8', NULL, NULL, NULL, '2021-10-19 08:35:51.000', '2021-10-26 16:22:51.088', NULL);
 INSERT INTO `project` VALUES (3, '智慧城市系统', NULL, NULL, '5a220f0122af47fe9acf13a37ad93dc9', NULL, NULL, NULL, '2021-10-21 20:11:33.000', '2021-10-26 16:22:54.616', NULL);
 INSERT INTO `project` VALUES (4, '智慧园区系统', NULL, NULL, '5a220f0122af47fe9acf13a37ad93dc5', NULL, NULL, NULL, '2021-10-21 20:11:54.000', '2021-10-26 16:23:00.202', NULL);
-INSERT INTO `project` VALUES (5, '智慧校园系统', NULL, NULL, '5a220f0122af47fe9acf13a37ad93dc4', NULL, NULL, NULL, '2021-10-21 20:12:22.000', '2021-10-26 16:23:05.242', NULL);
+INSERT INTO `project` VALUES (5, '智慧校园系统', NULL, NULL, '5a220f0122af47fe9acf13a37ad93dc4', NULL, NULL, NULL, '2021-10-21 20:12:22.000', '2021-10-27 19:04:04.788', NULL);
 
 -- ----------------------------
 -- Table structure for project_application
@@ -91,7 +91,7 @@ DROP TABLE IF EXISTS `project_extra`;
 CREATE TABLE `project_extra`  (
   `id` int NOT NULL,
   `project_id` int NOT NULL,
-  `current_user_count` int NULL DEFAULT NULL,
+  `current_user_count` int UNSIGNED NULL DEFAULT 0,
   `demand` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
@@ -115,22 +115,23 @@ CREATE TABLE `user`  (
   `qq` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `address` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `district` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `is_admin` smallint NULL DEFAULT NULL,
+  `is_admin` smallint UNSIGNED NULL DEFAULT 0,
   `token` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
   `create_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
   `update_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, '嗜血枭雄', '曹操', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245683@qq.com', '18858781650', '969718359', '浙江省杭州市萧山区萧山经济开发区钱农东路8号西电杭州研究院', '浙江省/杭州市/萧山区', 1, '', '2021-10-17 22:19:56.482', '2021-10-26 16:08:44.370');
+INSERT INTO `user` VALUES (1, '嗜血枭雄', '曹操', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245683@qq.com', '18858781650', '969718359', '浙江省杭州市萧山区萧山经济开发区钱农东路8号西电杭州研究院', '浙江省/杭州市/萧山区', 1, '108582328946790400', '2021-10-17 22:19:56.482', '2021-10-26 16:08:44.370');
 INSERT INTO `user` VALUES (2, '飞飞公主', '张飞', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245682@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-18 15:22:17.675', '2021-10-26 15:51:24.254');
 INSERT INTO `user` VALUES (3, '勇敢牛牛', '牛魔', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245680@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-18 20:17:09.138', '2021-10-26 15:51:24.363');
-INSERT INTO `user` VALUES (5, '机关重炮', '墨子', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245689@qq.com', NULL, NULL, NULL, NULL, NULL, '', '2021-10-25 13:23:25.608', '2021-10-26 15:51:38.831');
-INSERT INTO `user` VALUES (6, '一夫当关', '关羽', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245679@qq.com', NULL, NULL, NULL, NULL, NULL, '', '2021-10-25 20:28:01.710', '2021-10-26 15:52:07.231');
-INSERT INTO `user` VALUES (7, '皇叔蹦迪', '刘备', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245677@qq.com', NULL, NULL, NULL, NULL, NULL, '', '2021-10-25 13:27:15.834', '2021-10-26 15:52:23.032');
+INSERT INTO `user` VALUES (4, '机关重炮', '墨子', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245689@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-25 13:23:25.608', '2021-10-26 19:23:21.658');
+INSERT INTO `user` VALUES (5, '一夫当关', '关羽', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245679@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-25 20:28:01.710', '2021-10-26 19:23:22.604');
+INSERT INTO `user` VALUES (6, '皇叔蹦迪', '刘备', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245677@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-25 13:27:15.834', '2021-10-26 19:23:48.413');
+INSERT INTO `user` VALUES (7, 'caoxuexi1', '曹操1', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245688@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-26 21:35:23.914', '2021-10-26 21:35:23.914');
 
 -- ----------------------------
 -- Table structure for user_project
@@ -147,7 +148,7 @@ CREATE TABLE `user_project`  (
   `update_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_project
@@ -155,7 +156,7 @@ CREATE TABLE `user_project`  (
 INSERT INTO `user_project` VALUES (1, 1, 1, 1, '嗜血枭雄', '曹操', '2021-10-18 19:48:42.148', '2021-10-26 16:08:44.371', NULL);
 INSERT INTO `user_project` VALUES (2, 1, 2, 1, '嗜血枭雄', '曹操', '2021-10-19 08:37:38.000', '2021-10-26 16:08:44.371', NULL);
 INSERT INTO `user_project` VALUES (3, 2, 1, 2, '飞飞公主', '张飞', '2021-10-20 19:22:22.186', '2021-10-26 13:10:56.670', NULL);
-INSERT INTO `user_project` VALUES (5, 3, 1, 2, '勇敢牛牛', '牛魔', '2021-10-21 20:04:18.503', '2021-10-26 13:11:04.705', NULL);
-INSERT INTO `user_project` VALUES (6, 5, 1, 2, '机关重炮', '墨子', '2021-10-26 16:19:08.969', '2021-10-26 16:19:08.969', NULL);
+INSERT INTO `user_project` VALUES (4, 3, 1, 2, '勇敢牛牛', '牛魔', '2021-10-21 20:04:18.503', '2021-10-26 13:11:04.705', NULL);
+INSERT INTO `user_project` VALUES (5, 5, 1, 2, '机关重炮', '墨子', '2021-10-26 16:19:08.969', '2021-10-26 16:19:08.969', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
