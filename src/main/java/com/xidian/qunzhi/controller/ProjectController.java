@@ -53,8 +53,8 @@ public class ProjectController {
     @PostMapping("/create")
     public UnifyResponse create(@RequestBody @Valid ProjectDTO projectDTO,HttpServletRequest request){
         UserLoginVO userLoginVO=LoginUserContext.getUser();
-        projectService.create(projectDTO,userLoginVO.getId());
-        return UnifyResponse.createSuccess(request);
+        Integer projectId = projectService.create(projectDTO, userLoginVO.getId());
+        return UnifyResponse.createSuccess(request,projectId.toString());
     }
 
     @ApiOperation(value = "修改项目信息",httpMethod = "POST")

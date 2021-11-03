@@ -1,5 +1,6 @@
 package com.xidian.qunzhi.service;
 
+import com.xidian.qunzhi.pojo.vo.StatisticVO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 
 /**
@@ -15,4 +16,11 @@ public interface AdminUserService {
      * @return 登录用户VO
      */
     UserLoginVO adminLogin(String email, String password) throws Exception;
+
+    /**
+     * 管理员获得项目和用户的统计数据
+     * @param userLoginVO
+     * @return
+     */
+    StatisticVO getStatistic(UserLoginVO userLoginVO);
 }

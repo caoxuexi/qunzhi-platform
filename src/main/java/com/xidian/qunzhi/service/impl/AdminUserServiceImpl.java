@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.xidian.qunzhi.core.enumerate.AdminOrNotEnum;
 import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.exception.http.UnAuthenticatedException;
+import com.xidian.qunzhi.mapper.ProjectMapper;
 import com.xidian.qunzhi.mapper.UserMapper;
 import com.xidian.qunzhi.pojo.User;
+import com.xidian.qunzhi.pojo.vo.StatisticVO;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 import com.xidian.qunzhi.service.AdminUserService;
 import com.xidian.qunzhi.utils.CopyUtil;
@@ -34,6 +36,8 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private ProjectMapper projectMapper;
     @Autowired
     private RedisTemplate redisTemplate;
     @Autowired
@@ -74,5 +78,20 @@ public class AdminUserServiceImpl implements AdminUserService {
                 3600 * 24, TimeUnit.SECONDS);
 
         return userLoginVO;
+    }
+
+    @Override
+    public StatisticVO getStatistic(UserLoginVO userLoginVO) {
+        //1.判断用户是否是管理员
+        if(userLoginVO.getIsAdmin().intValue()!= AdminOrNotEnum.ADMIN.getValue()){
+            throw new UnAuthenticatedException(20006);
+        }
+        User user=new User();
+        Integer userCount=userMapper.selectCount(user);
+        Integer projectCount=projectMapper.getCount();
+        StatisticVO statisticVO=new StatisticVO();
+        statisticVO.setUserCount(userCount);
+        statisticVO.setProjectCount(projectCount);
+        return statisticVO;
     }
 }

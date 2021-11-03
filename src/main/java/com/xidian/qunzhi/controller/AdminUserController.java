@@ -86,12 +86,12 @@ public class AdminUserController {
     }
 
 
-    @ApiOperation(value = "管理员获取项目总数", httpMethod = "GET")
-    @GetMapping("/getProjectNum")
-    public Integer getProjectNum(){
+    @ApiOperation(value = "管理员获取项目总数和用户总数", httpMethod = "GET")
+    @GetMapping("/getStatistic")
+    public StatisticVO getStatistic(){
         UserLoginVO userLoginVO = LoginUserContext.getUser();
         //查询总的项目数
-        Integer projectCount= projectService.getCount(userLoginVO);
-        return projectCount;
+        StatisticVO statisticVO= adminUserService.getStatistic(userLoginVO);
+        return statisticVO;
     }
 }

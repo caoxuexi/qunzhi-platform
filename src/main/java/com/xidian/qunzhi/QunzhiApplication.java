@@ -16,7 +16,6 @@ public class QunzhiApplication {
         Environment env =app.run(args).getEnvironment();
         LOG.info("启动成功！");
         LOG.info("地址：\t http://127.0.0.1:{}",env.getProperty("server.port"));
-
     }
 
 }

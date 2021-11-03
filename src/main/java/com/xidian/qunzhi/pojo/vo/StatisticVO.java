@@ -13,7 +13,8 @@ import javax.persistence.Column;
 @ApiModel(value = "返回给前端的统计数据VO",description = "管理员获取系统的统计数据时返回的VO")
 @Data
 public class StatisticVO {
-    private Integer onlineCount;
-
+    //总的用户数
+    private Integer userCount;
+    //项目总数
     private Integer projectCount;
 }

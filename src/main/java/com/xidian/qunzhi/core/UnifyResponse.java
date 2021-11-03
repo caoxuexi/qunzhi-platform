@@ -33,6 +33,11 @@ public class UnifyResponse {
         return new UnifyResponse(1,"创建成功", request.getMethod()+" "+request.getRequestURI());
     }
 
+
+    public static UnifyResponse createSuccess(HttpServletRequest request,String message) {
+        return new UnifyResponse(1,message, request.getMethod()+" "+request.getRequestURI());
+    }
+
     public static UnifyResponse updateSuccess(HttpServletRequest request) {
         return new UnifyResponse(2,"更新成功", request.getMethod()+" "+request.getRequestURI());
     }

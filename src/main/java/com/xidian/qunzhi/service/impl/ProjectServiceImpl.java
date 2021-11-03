@@ -89,6 +89,7 @@ public class ProjectServiceImpl implements ProjectService {
         PageVO<ProjectAdminVO> pageVO = new PageVO<>();
         pageVO.setTotal(pageInfo.getTotal());
         pageVO.setList(projectAdminVOList);
+        pageVO.setPage(searchProjectDTO.getPage());
         return pageVO;
     }
 
@@ -129,7 +130,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void create(ProjectDTO projectDTO, Integer userId) {
+    public Integer create(ProjectDTO projectDTO, Integer userId) {
         //插入项目
         Project project=CopyUtil.copy(projectDTO,Project.class);
         byte[] bytes=(project.getName()+project.getCreateTime())
@@ -148,6 +149,7 @@ public class ProjectServiceImpl implements ProjectService {
         userProject.setUserNickname(user.getNickname());
         userProject.setUserRealname(user.getRealname());
         userProjectMapper.insertSelective(userProject);
+        return project.getId();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

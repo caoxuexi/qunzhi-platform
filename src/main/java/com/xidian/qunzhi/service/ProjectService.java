@@ -58,7 +58,7 @@ public interface ProjectService {
      * @param projectDTO
      * @param userId
      */
-    void create(ProjectDTO projectDTO, Integer userId);
+    Integer create(ProjectDTO projectDTO, Integer userId);
 
     /**
      * 根据项目名称搜索项目的日志信息

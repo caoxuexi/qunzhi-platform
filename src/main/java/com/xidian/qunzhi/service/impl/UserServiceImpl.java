@@ -220,6 +220,7 @@ public class UserServiceImpl implements UserService {
         PageVO<UserAdminVO> pageVO = new PageVO<>();
         pageVO.setTotal(pageInfo.getTotal());
         pageVO.setList( userAdminVOList);
+        pageVO.setPage(searchUserDTO.getPage());
         return pageVO;
     }
 
