@@ -31,10 +31,10 @@ public class ServiceController {
 
     @ApiOperation(value = "列出当前传入字段对应的推荐服务",httpMethod = "POST")
     @PostMapping("/getService")
-    public  Map<String, List<ServiceRecommendVO>>  getService(@RequestBody ServiceRecommendDTO serviceRecommendDTO){
+    public  List<ServiceRecommendVO>  getService(@RequestBody ServiceRecommendDTO serviceRecommendDTO){
         UserLoginVO userLoginVO = LoginUserContext.getUser();
         List<String> functionNames = serviceRecommendDTO.getFunctionNames();
-        Map<String, List<ServiceRecommendVO>> serviceMap= serviceRecommendService.getService(functionNames);
-        return serviceMap;
+        List<ServiceRecommendVO> serviceRecommendVOList= serviceRecommendService.getService(functionNames);
+        return serviceRecommendVOList;
     }
 }

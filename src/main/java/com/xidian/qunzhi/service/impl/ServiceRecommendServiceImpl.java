@@ -7,9 +7,9 @@ import com.xidian.qunzhi.service.ServiceRecommendService;
 import com.xidian.qunzhi.utils.CopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,15 +25,24 @@ public class ServiceRecommendServiceImpl implements ServiceRecommendService {
     private ServiceRecommendMapper serviceRecommendMapper;
 
     @Override
-    public Map<String, List<ServiceRecommendVO>> getService( List<String> functionNames) {
-        Map<String, List<ServiceRecommendVO>> map=new HashMap<>();
+    public List<ServiceRecommendVO> getService(List<String> functionNames) {
+        List<ServiceRecommendVO> serviceRecommendVOList=new ArrayList<>();
         for (String functionName : functionNames) {
+            //按照功能名，在数据库中寻找服务
+            ServiceRecommendVO serviceRecommendVO= new ServiceRecommendVO();
             Example example =new Example(ServiceRecommend.class);
             example.createCriteria().andEqualTo("functionName",functionName);
             List<ServiceRecommend> serviceRecommendList = serviceRecommendMapper.selectByExample(example);
-            List<ServiceRecommendVO> serviceRecommendVOList = CopyUtil.copyList(serviceRecommendList, ServiceRecommendVO.class);
-            map.put(functionName,serviceRecommendVOList);
+            //填充serviceRecommendVO
+            serviceRecommendVO.setFunName(functionName);
+            List<String> serviceNameList=new ArrayList<>();
+            for (ServiceRecommend serviceRecommend : serviceRecommendList) {
+                serviceNameList.add(serviceRecommend.getServiceName());
+            }
+            serviceRecommendVO.setMicroservice(serviceNameList);
+            serviceRecommendVO.setNumber(serviceNameList.size());
+            serviceRecommendVOList.add(serviceRecommendVO);
         }
-        return map;
+        return serviceRecommendVOList;
     }
 }

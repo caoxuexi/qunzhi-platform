@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService {
         //4.2 保存token到redis里
         LOG.info("生成单点登录token：{}，并放入redis中", token);
         redisTemplate.opsForValue().set(token.toString(), JSONObject.toJSONString(userLoginVO),
-                3600 * 24, TimeUnit.SECONDS);
+                60 * 30, TimeUnit.SECONDS);
 
         return userLoginVO;
     }

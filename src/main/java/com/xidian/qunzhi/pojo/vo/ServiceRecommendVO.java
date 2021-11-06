@@ -2,6 +2,8 @@ package com.xidian.qunzhi.pojo.vo;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author Cao Study
  * @description <h1>ServiceRecommendVO</h1>
@@ -9,6 +11,7 @@ import lombok.Data;
  */
 @Data
 public class ServiceRecommendVO {
-    private String serviceName;
-    private String codeUrl;
+    private String funName;
+    private List<String> microservice;
+    private Integer number;
 }
