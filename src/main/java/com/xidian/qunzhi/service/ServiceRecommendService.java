@@ -3,6 +3,7 @@ package com.xidian.qunzhi.service;
 import com.xidian.qunzhi.pojo.vo.ServiceRecommendVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Cao Study
@@ -11,4 +12,6 @@ import java.util.List;
  */
 public interface ServiceRecommendService {
     List<ServiceRecommendVO> getService(List<String> functionNames);
+    Map<String,String> getCodsUrl(String funcName);
+
 }

@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Cao Study
@@ -41,5 +43,17 @@ public class ServiceRecommendServiceImpl implements ServiceRecommendService {
             serviceRecommendVOList.add(serviceRecommendVO);
         }
         return serviceRecommendVOList;
+    }
+
+    @Override
+    public Map<String,String> getCodsUrl(String funcName) {
+        Example example =new Example(ServiceRecommend.class);
+        example.createCriteria().andEqualTo("functionName",funcName);
+        List<ServiceRecommend> serviceRecommends = serviceRecommendMapper.selectByExample(example);
+        HashMap<String, String> codsMap = new HashMap<>();
+        for (ServiceRecommend serviceRecommend : serviceRecommends) {
+            codsMap.put(serviceRecommend.getServiceName(),serviceRecommend.getCodeUrl());
+        }
+        return codsMap;
     }
 }

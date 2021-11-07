@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("service")
 @Validated
-public class ServiceController {
+public class ServiceRecommendController {
     @Autowired
     private ServiceRecommendService serviceRecommendService;
 
@@ -36,5 +37,12 @@ public class ServiceController {
         List<String> functionNames = serviceRecommendDTO.getFunctionNames();
         List<ServiceRecommendVO> serviceRecommendVOList= serviceRecommendService.getService(functionNames);
         return serviceRecommendVOList;
+    }
+
+    @ApiOperation(value = "列出当前传入字段对应的推荐服务的代码连接",httpMethod = "POST")
+    @PostMapping("/getCods")
+    public Map getCods(String funcName){
+        Map<String, String> codsMap = serviceRecommendService.getCodsUrl(funcName);
+        return codsMap;
     }
 }
