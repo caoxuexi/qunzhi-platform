@@ -1,9 +1,20 @@
 package com.xidian.qunzhi.controller;
 
+import com.xidian.qunzhi.pojo.ServiceRecommend;
+import com.xidian.qunzhi.pojo.dto.ServiceRecommendDTO;
+import com.xidian.qunzhi.pojo.vo.ProjectPreviewVO;
+import com.xidian.qunzhi.pojo.vo.ServiceRecommendVO;
+import com.xidian.qunzhi.pojo.vo.UserLoginVO;
+import com.xidian.qunzhi.service.ServiceRecommendService;
+import com.xidian.qunzhi.utils.LoginUserContext;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Cao Study
@@ -15,5 +26,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("service")
 @Validated
 public class ServiceController {
+    @Autowired
+    private ServiceRecommendService serviceRecommendService;
 
+    @ApiOperation(value = "列出当前传入字段对应的推荐服务",httpMethod = "POST")
+    @PostMapping("/getService")
+    public  List<ServiceRecommendVO>  getService(@RequestBody ServiceRecommendDTO serviceRecommendDTO){
+        UserLoginVO userLoginVO = LoginUserContext.getUser();
+        List<String> functionNames = serviceRecommendDTO.getFunctionNames();
+        List<ServiceRecommendVO> serviceRecommendVOList= serviceRecommendService.getService(functionNames);
+        return serviceRecommendVOList;
+    }
 }

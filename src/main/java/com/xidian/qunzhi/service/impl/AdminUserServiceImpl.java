@@ -13,6 +13,7 @@ import com.xidian.qunzhi.service.AdminUserService;
 import com.xidian.qunzhi.utils.CopyUtil;
 import com.xidian.qunzhi.utils.MD5Utils;
 import com.xidian.qunzhi.utils.SnowFlake;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -75,7 +77,7 @@ public class AdminUserServiceImpl implements AdminUserService {
         //4.2 保存token到redis里
         LOG.info("生成单点登录token：{}，并放入redis中", token);
         redisTemplate.opsForValue().set(token.toString(), JSONObject.toJSONString(userLoginVO),
-                3600 * 24, TimeUnit.SECONDS);
+                60 * 30, TimeUnit.SECONDS);
 
         return userLoginVO;
     }
@@ -86,12 +88,19 @@ public class AdminUserServiceImpl implements AdminUserService {
         if(userLoginVO.getIsAdmin().intValue()!= AdminOrNotEnum.ADMIN.getValue()){
             throw new UnAuthenticatedException(20006);
         }
+        // 获取所有的key
+        Set<String> keys = redisTemplate.keys("*");
+        Integer onlineNum=keys.size();
+        if(ObjectUtils.isEmpty(onlineNum)){
+            onlineNum=0;
+        }
         User user=new User();
         Integer userCount=userMapper.selectCount(user);
         Integer projectCount=projectMapper.getCount();
         StatisticVO statisticVO=new StatisticVO();
         statisticVO.setUserCount(userCount);
         statisticVO.setProjectCount(projectCount);
+        statisticVO.setOnlineNum(onlineNum);
         return statisticVO;
     }
 }

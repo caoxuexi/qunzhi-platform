@@ -1,7 +1,9 @@
 package com.xidian.qunzhi.core.interceptor;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.xidian.qunzhi.exception.http.UnAuthenticatedException;
+import com.xidian.qunzhi.pojo.User;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 import com.xidian.qunzhi.utils.LoginUserContext;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
@@ -58,7 +61,10 @@ public class LoginInterceptor implements HandlerInterceptor {
         } else {
             LOG.info("已登录：{}", object);
             //序列化回结构体，存入LoginUserContext的localthread中
-            LoginUserContext.setUser(JSON.parseObject((String) object, UserLoginVO.class));
+            UserLoginVO user=JSON.parseObject((String) object, UserLoginVO.class);
+            LoginUserContext.setUser(user);
+            redisTemplate.opsForValue().set(token, JSONObject.toJSONString(user),
+                    60 * 30, TimeUnit.SECONDS);
             return true;
         }
     }

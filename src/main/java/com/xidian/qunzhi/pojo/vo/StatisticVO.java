@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import javax.persistence.Column;
+import java.security.PrivateKey;
 
 /**
  * @author Cao Study
@@ -17,4 +18,6 @@ public class StatisticVO {
     private Integer userCount;
     //项目总数
     private Integer projectCount;
+    //当前在线人数
+    private Integer onlineNum;
 }
