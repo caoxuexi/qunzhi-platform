@@ -11,7 +11,7 @@
  Target Server Version : 80026
  File Encoding         : 65001
 
- Date: 04/11/2021 21:14:47
+ Date: 07/11/2021 17:15:10
 */
 
 SET NAMES utf8mb4;
@@ -111,21 +111,21 @@ CREATE TABLE `service_recommend`  (
   `service_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `code_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of service_recommend
 -- ----------------------------
-INSERT INTO `service_recommend` VALUES (1, '用户管理', '用户注册', NULL);
-INSERT INTO `service_recommend` VALUES (2, '用户管理', '权限验证', NULL);
-INSERT INTO `service_recommend` VALUES (3, '用户管理', '用户登录', NULL);
-INSERT INTO `service_recommend` VALUES (4, '网站公告', '公告发布', NULL);
-INSERT INTO `service_recommend` VALUES (5, '网站公告', '消息发布', NULL);
-INSERT INTO `service_recommend` VALUES (6, '数据管理', '数据存储', NULL);
-INSERT INTO `service_recommend` VALUES (7, '数据管理', '可视化展示', NULL);
-INSERT INTO `service_recommend` VALUES (8, '设备接入', 'wifi接入', NULL);
-INSERT INTO `service_recommend` VALUES (9, '设备接入', '蓝牙接入', NULL);
-INSERT INTO `service_recommend` VALUES (10, '设备接入', '设备管理', NULL);
+INSERT INTO `service_recommend` VALUES (1, '用户管理', '用户注册', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/login.zip');
+INSERT INTO `service_recommend` VALUES (2, '用户管理', '权限验证', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/login.zip');
+INSERT INTO `service_recommend` VALUES (3, '用户管理', '用户登录', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/login.zip');
+INSERT INTO `service_recommend` VALUES (4, '网站公告', '公告发布', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/bulltin.zip');
+INSERT INTO `service_recommend` VALUES (5, '网站公告', '消息发布', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/bulltin.zip');
+INSERT INTO `service_recommend` VALUES (6, '数据管理', '数据存储', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/dataManage.zip');
+INSERT INTO `service_recommend` VALUES (7, '数据管理', '可视化展示', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/dataManage.zip');
+INSERT INTO `service_recommend` VALUES (8, '设备接入', 'wifi接入', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/instrument.zip\r\n');
+INSERT INTO `service_recommend` VALUES (9, '设备接入', '蓝牙接入', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/instrument.zip\r\n');
+INSERT INTO `service_recommend` VALUES (10, '设备接入', '设备管理', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/instrument.zip\r\n');
 
 -- ----------------------------
 -- Table structure for user
@@ -152,13 +152,13 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, '嗜血枭雄', '曹操', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245683@qq.com', '18858781650', '969718359', '浙江省杭州市萧山区萧山经济开发区钱农东路8号西电杭州研究院', '浙江省/杭州市/萧山区', 1, '109459000201973760', '2021-10-17 22:19:56.482', '2021-10-26 16:08:44.370');
+INSERT INTO `user` VALUES (1, '嗜血枭雄', '曹操', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245683@qq.com', '18858781650', '969718359', '浙江省杭州市萧山区萧山经济开发区钱农东路8号西电杭州研究院', '浙江省/杭州市/萧山区', 1, '112181289351778304', '2021-10-17 22:19:56.482', '2021-10-26 16:08:44.370');
 INSERT INTO `user` VALUES (2, '飞飞公主', '张飞', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245682@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-18 15:22:17.675', '2021-10-26 15:51:24.254');
 INSERT INTO `user` VALUES (3, '勇敢牛牛', '牛魔', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245680@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-18 20:17:09.138', '2021-10-26 15:51:24.363');
 INSERT INTO `user` VALUES (4, '机关重炮', '墨子', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245689@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-25 13:23:25.608', '2021-10-26 19:23:21.658');
 INSERT INTO `user` VALUES (5, '一夫当关', '关羽', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245679@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-25 20:28:01.710', '2021-10-26 19:23:22.604');
 INSERT INTO `user` VALUES (6, '皇叔蹦迪', '刘备', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245677@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-25 13:27:15.834', '2021-10-26 19:23:48.413');
-INSERT INTO `user` VALUES (7, 'caoxuexi1', '曹操1', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245688@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-26 21:35:23.914', '2021-10-26 21:35:23.914');
+INSERT INTO `user` VALUES (7, 'caoxuexi1', '曹操1', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245688@qq.com', NULL, NULL, NULL, NULL, 0, '112139571877253120', '2021-10-26 21:35:23.914', '2021-10-26 21:35:23.914');
 
 -- ----------------------------
 -- Table structure for user_project

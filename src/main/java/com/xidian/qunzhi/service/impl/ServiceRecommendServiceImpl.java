@@ -4,15 +4,12 @@ import com.xidian.qunzhi.mapper.ServiceRecommendMapper;
 import com.xidian.qunzhi.pojo.ServiceRecommend;
 import com.xidian.qunzhi.pojo.vo.ServiceRecommendVO;
 import com.xidian.qunzhi.service.ServiceRecommendService;
-import com.xidian.qunzhi.utils.CopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Cao Study
