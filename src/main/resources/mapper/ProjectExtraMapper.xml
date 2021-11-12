@@ -7,7 +7,6 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="project_id" jdbcType="INTEGER" property="projectId" />
-    <result column="current_user_count" jdbcType="INTEGER" property="currentUserCount" />
-    <result column="demand" jdbcType="LONGVARCHAR" property="demand" />
+    <result column="functions" jdbcType="LONGVARCHAR" property="functions" />
   </resultMap>
 </mapper>

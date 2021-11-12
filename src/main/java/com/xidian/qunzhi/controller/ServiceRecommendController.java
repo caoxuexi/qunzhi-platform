@@ -39,10 +39,10 @@ public class ServiceRecommendController {
         return serviceRecommendVOList;
     }
 
-    @ApiOperation(value = "列出当前传入字段对应的推荐服务的代码连接",httpMethod = "POST")
-    @PostMapping("/getCods")
+    @ApiOperation(value = "列出当前传入字段对应的推荐服务的代码链接",httpMethod = "POST")
+    @PostMapping("/getCodes")
     public Map getCods(String funcName){
-        Map<String, String> codsMap = serviceRecommendService.getCodsUrl(funcName);
-        return codsMap;
+        Map<String, String> codesMap = serviceRecommendService.getCodsUrl(funcName);
+        return codesMap;
     }
 }

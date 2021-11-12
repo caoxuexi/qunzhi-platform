@@ -25,18 +25,16 @@ public class TestRegist {
     UserService userService;
 
     @Test
-
-
     public void registTest() throws Exception {
-        UserRegistDTO registDTO = new UserRegistDTO();
-        registDTO.setPassword("123456");
-        String password = MD5Utils.getMD5Str(registDTO.getPassword());
-        for (int i=968601  ;i<1000000;i++) {
-            log.info("正在注册第"+i+"个用户");
-            registDTO.setRealname("Dragon"+i);
-            registDTO.setEmail("dragon"+i+"@xdu.com");
-            registDTO.setNickname(registDTO.getRealname());
-            userService.register(registDTO, password);
-        }
+//        UserRegistDTO registDTO = new UserRegistDTO();
+//        registDTO.setPassword("123456");
+//        String password = MD5Utils.getMD5Str(registDTO.getPassword());
+//        for (int i=968601  ;i<1000000;i++) {
+//            log.info("正在注册第"+i+"个用户");
+//            registDTO.setRealname("Dragon"+i);
+//            registDTO.setEmail("dragon"+i+"@xdu.com");
+//            registDTO.setNickname(registDTO.getRealname());
+//            userService.register(registDTO, password);
+//        }
     }
 }

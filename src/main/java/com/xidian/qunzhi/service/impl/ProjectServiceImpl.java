@@ -1,5 +1,6 @@
 package com.xidian.qunzhi.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xidian.qunzhi.core.enumerate.AdminOrNotEnum;
@@ -7,20 +8,15 @@ import com.xidian.qunzhi.core.enumerate.UserRoleEnum;
 import com.xidian.qunzhi.exception.http.ForbiddenException;
 import com.xidian.qunzhi.exception.http.NotFoundException;
 import com.xidian.qunzhi.exception.http.UnAuthenticatedException;
-import com.xidian.qunzhi.mapper.DeviceLogMapper;
-import com.xidian.qunzhi.mapper.ProjectMapper;
-import com.xidian.qunzhi.mapper.UserMapper;
-import com.xidian.qunzhi.mapper.UserProjectMapper;
-import com.xidian.qunzhi.pojo.DeviceLog;
-import com.xidian.qunzhi.pojo.Project;
-import com.xidian.qunzhi.pojo.User;
-import com.xidian.qunzhi.pojo.UserProject;
+import com.xidian.qunzhi.mapper.*;
+import com.xidian.qunzhi.pojo.*;
 import com.xidian.qunzhi.pojo.basic.PageVO;
 import com.xidian.qunzhi.pojo.dto.ProjectDTO;
 import com.xidian.qunzhi.pojo.dto.SearchProjectDTO;
 import com.xidian.qunzhi.pojo.vo.*;
 import com.xidian.qunzhi.service.ProjectService;
 import com.xidian.qunzhi.utils.CopyUtil;
+import com.xidian.qunzhi.utils.JsonUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -52,6 +48,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private DeviceLogMapper deviceLogMapper;
+
+    @Autowired
+    private ProjectExtraMapper projectExtraMapper;
 
     private static final Logger LOG= LoggerFactory.getLogger(ProjectServiceImpl.class);
 
@@ -131,7 +130,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public Integer create(ProjectDTO projectDTO, Integer userId) {
-        //插入项目
+        //1.插入项目
         Project project=CopyUtil.copy(projectDTO,Project.class);
         byte[] bytes=(project.getName()+project.getCreateTime())
                 .getBytes(StandardCharsets.UTF_8);
@@ -139,9 +138,10 @@ public class ProjectServiceImpl implements ProjectService {
         project.setProductSecret(UUID.nameUUIDFromBytes(bytes).toString());
 //        LOG.info("secret:"+UUID.nameUUIDFromBytes(bytes).toString());
         projectMapper.insertSelective(project);
-        //查询出用户的具体信息
+
+        //2.插入用户项目关系
+        //2.1查询出用户的具体信息
         User user = userMapper.selectByPrimaryKey(userId);
-        //插入用户项目关系
         UserProject userProject=new UserProject();
         userProject.setUserId(userId);
         userProject.setProjectId(project.getId());
@@ -149,6 +149,13 @@ public class ProjectServiceImpl implements ProjectService {
         userProject.setUserNickname(user.getNickname());
         userProject.setUserRealname(user.getRealname());
         userProjectMapper.insertSelective(userProject);
+
+        //3.插入需求
+        ProjectExtra projectExtra=new ProjectExtra();
+        projectExtra.setProjectId(project.getId());
+        String functions= JsonUtils.objectToJson(projectDTO.getFuncNames());
+        projectExtra.setFunctions(functions);
+        projectExtraMapper.insert(projectExtra);
         return project.getId();
     }
 
@@ -219,5 +226,15 @@ public class ProjectServiceImpl implements ProjectService {
             throw new UnAuthenticatedException(20006);
         }
         return projectMapper.getCount();
+    }
+
+    @Override
+    public String getFunctions(Integer projectId, Integer userId) {
+        //检查项目归属
+        checkBelonging(projectId,userId);
+        Example example=new Example(ProjectExtra.class);
+        example.createCriteria().andEqualTo("projectId",projectId);
+        ProjectExtra projectExtra = projectExtraMapper.selectOneByExample(example);
+        return projectExtra.getFunctions();
     }
 }

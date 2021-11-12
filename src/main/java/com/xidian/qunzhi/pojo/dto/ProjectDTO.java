@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 /**
  * @author Cao Study
@@ -39,4 +40,7 @@ public class ProjectDTO {
      */
     @ApiModelProperty(value = "是否共享",name = "share",example = "1",required = false)
     private Short share;
+
+    @ApiModelProperty(value = "功能要求",name = "funcNames",example = "[\"用户管理\" ]",required = false)
+    private List<String> funcNames;
 }

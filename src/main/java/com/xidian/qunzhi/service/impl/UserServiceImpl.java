@@ -159,6 +159,8 @@ public class UserServiceImpl implements UserService {
         if(StringUtils.isNotBlank(userInformationDTO.getMobile())){
             user.setMobile(userInformationDTO.getMobile());
         }
+
+
         //更新信息
         userMapper.updateByPrimaryKeySelective(user);
         userProjectMapper.updateByExampleSelective(userProject,upexample);

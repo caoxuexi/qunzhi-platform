@@ -88,4 +88,12 @@ public class ProjectController {
         String result = NLPUtil.ext(demands);
         return result;
     }
+
+    @ApiOperation(value = "获取项目所需功能",httpMethod = "GET")
+    @GetMapping("/getFunctions")
+    public String getFunctions(@RequestParam(value = "id")  Integer projectId){
+        UserLoginVO userLoginVO=LoginUserContext.getUser();
+        String functions = projectService.getFunctions(projectId, userLoginVO.getId());
+        return functions;
+    }
 }

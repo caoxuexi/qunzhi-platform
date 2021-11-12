@@ -10,11 +10,14 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.client.RestTemplate;
 import tk.mybatis.spring.annotation.MapperScan;
 
 import javax.annotation.PostConstruct;
 
 @SpringBootApplication
+@EnableTransactionManagement
 @MapperScan("com.xidian.qunzhi.mapper")
 public class QunzhiApplication {
     private static final Logger LOG= LoggerFactory.getLogger(QunzhiApplication.class);
@@ -38,5 +41,11 @@ public class QunzhiApplication {
         redisTemplate.setKeySerializer(redisSerializer);
         redisTemplate.setHashKeySerializer(redisSerializer);
         return redisTemplate;
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate;
     }
 }

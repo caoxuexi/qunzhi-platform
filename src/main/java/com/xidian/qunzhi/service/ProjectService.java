@@ -82,5 +82,13 @@ public interface ProjectService {
      * @return
      */
     Integer getCount(UserLoginVO userLoginVO);
+
+    /**
+     * 获取项目的功能需求
+     * @param projectId
+     * @param userId
+     * @return
+     */
+    String getFunctions(Integer projectId, Integer userId);
 }
 
