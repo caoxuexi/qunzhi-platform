@@ -54,22 +54,18 @@ public class UserController {
         String rawPassword = userRegistDTO.getPassword();
         String password = MD5Utils.getMD5Str(rawPassword);
         //判断验证码是否正确
-//        String sessionKey = request.getHeader("sessionKey");
-//        HttpSession session = ValidateCodeController.sessionMap.get(sessionKey);
-//        ValidateCodeController.sessionMap.remove(sessionKey);
-
-        String backgroundCaptcha = "";
-        HttpSession session = request.getSession();
-
-        LOGGER.info("register SessionID："+session.getId());
-        try {
-            backgroundCaptcha = session.getAttribute("code").toString();
-        }catch (Exception e){
-            throw new ForbiddenException(20004);
-        }
-        if (!backgroundCaptcha.equals(userRegistDTO.getCaptcha())) {
-            throw new ForbiddenException(20004);
-        }
+//        String backgroundCaptcha = "";
+//        HttpSession session = request.getSession();
+//
+//        LOGGER.info("register SessionID："+session.getId());
+//        try {
+//            backgroundCaptcha = session.getAttribute("code").toString();
+//        }catch (Exception e){
+//            throw new ForbiddenException(20004);
+//        }
+//        if (!backgroundCaptcha.equals(userRegistDTO.getCaptcha())) {
+//            throw new ForbiddenException(20004);
+//        }
         //注册
         boolean result = userService.register(userRegistDTO, password);
         if (result) {

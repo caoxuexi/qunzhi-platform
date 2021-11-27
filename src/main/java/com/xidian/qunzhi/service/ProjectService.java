@@ -36,7 +36,7 @@ public interface ProjectService {
      * @param usrId
      * @return
      */
-    public UserProject checkBelonging(Integer projectId, Integer usrId);
+    public UserProject checkBelonging(Integer projectId, Long usrId);
 
     /**
      * 根据项目名称搜索项目的详细信息
@@ -44,21 +44,21 @@ public interface ProjectService {
      * @param userId
      * @return
      */
-    ProjectDetailVO detail(Integer projectId, Integer userId);
+    ProjectDetailVO detail(Integer projectId, Long userId);
 
     /**
      * 删除项目(必须是组长身份才行)
      * @param projectId
      * @return
      */
-    void delete(Integer projectId, Integer userId);
+    void delete(Integer projectId, Long userId);
 
     /**
      * 新建项目
      * @param projectDTO
      * @param userId
      */
-    Integer create(ProjectDTO projectDTO, Integer userId);
+    Integer create(ProjectDTO projectDTO, Long userId);
 
     /**
      * 根据项目名称搜索项目的日志信息
@@ -66,7 +66,7 @@ public interface ProjectService {
      * @param userId
      * @return
      */
-    List<DeviceLogVO> logs(Integer projectId, Integer userId);
+    List<DeviceLogVO> logs(Integer projectId, Long userId);
 
     /**
      * 更新项目信息
@@ -74,7 +74,7 @@ public interface ProjectService {
      * @param userId
      * @return
      */
-    ProjectDetailVO update(ProjectDTO projectDTO, Integer userId);
+    ProjectDetailVO update(ProjectDTO projectDTO,Long userId);
 
     /**
      * 获取总的项目数
@@ -89,6 +89,6 @@ public interface ProjectService {
      * @param userId
      * @return
      */
-    String getFunctions(Integer projectId, Integer userId);
+    String getFunctions(Integer projectId, Long userId);
 }
 

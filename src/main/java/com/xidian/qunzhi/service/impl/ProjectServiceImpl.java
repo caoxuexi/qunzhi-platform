@@ -93,7 +93,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    public UserProject checkBelonging(Integer projectId, Integer usrId) {
+    public UserProject checkBelonging(Integer projectId, Long usrId) {
         Example example=new Example(UserProject.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("projectId",projectId)
@@ -110,7 +110,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public ProjectDetailVO detail(Integer projectId, Integer userId) {
+    public ProjectDetailVO detail(Integer projectId, Long userId) {
         //判断该项目是否属于当前用户
         checkBelonging(projectId,userId);
         Example example=new Example(Project.class);
@@ -129,7 +129,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public Integer create(ProjectDTO projectDTO, Integer userId) {
+    public Integer create(ProjectDTO projectDTO, Long userId) {
         //1.插入项目
         Project project=CopyUtil.copy(projectDTO,Project.class);
         byte[] bytes=(project.getName()+project.getCreateTime())
@@ -161,7 +161,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void delete(Integer projectId, Integer userId) {
+    public void delete(Integer projectId,Long userId) {
         //判断该项目是否属于当前用户
         UserProject checkUserProject = checkBelonging(projectId, userId);
         //判断当前用户是否是该项目的组长，只有组长才能删除项目
@@ -186,7 +186,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public List<DeviceLogVO> logs(Integer projectId, Integer userId) {
+    public List<DeviceLogVO> logs(Integer projectId, Long userId) {
         //判断该项目是否属于当前用户
         checkBelonging(projectId,userId);
         Example example=new Example(DeviceLog.class);
@@ -204,7 +204,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public ProjectDetailVO update(ProjectDTO projectDTO, Integer userId) {
+    public ProjectDetailVO update(ProjectDTO projectDTO, Long userId) {
         Project projectUpdate=CopyUtil.copy(projectDTO,Project.class);
 
         //因为是复用projectDTO所以这里要判断一下是否传入了id
@@ -229,7 +229,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public String getFunctions(Integer projectId, Integer userId) {
+    public String getFunctions(Integer projectId, Long userId) {
         //检查项目归属
         checkBelonging(projectId,userId);
         Example example=new Example(ProjectExtra.class);

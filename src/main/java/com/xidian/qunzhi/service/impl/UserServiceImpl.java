@@ -32,7 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.xidian.qunzhi.pojo.User;
 import com.xidian.qunzhi.pojo.vo.UserLoginVO;
 import tk.mybatis.mapper.entity.Example;
-import tk.mybatis.mapper.genid.GenId;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -52,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void changePassword(ChangePasswordDTO changePasswordDTO, Integer userId) throws Exception {
+    public void changePassword(ChangePasswordDTO changePasswordDTO, Long userId) throws Exception {
         String rawOldPassword = changePasswordDTO.getOldPassword();
         String oldPassword = MD5Utils.getMD5Str(rawOldPassword);
 
@@ -132,7 +131,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(propagation=Propagation.REQUIRED)
     @Override
-    public UserInformationVO changeInformation(UserInformationDTO userInformationDTO, Integer userId) {
+    public UserInformationVO changeInformation(UserInformationDTO userInformationDTO, Long userId) {
         //设置更新
         User user=new User();
         UserProject userProject=new UserProject();
@@ -172,7 +171,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(propagation=Propagation.SUPPORTS)
     @Override
-    public UserInformationVO getInformation(Integer userId) {
+    public UserInformationVO getInformation(Long userId) {
         User user = userMapper.selectByPrimaryKey(userId);
         UserInformationVO userInformationVO = CopyUtil.copy(user, UserInformationVO.class);
         return userInformationVO;
@@ -180,7 +179,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(propagation=Propagation.REQUIRED)
     @Override
-    public void logout(Integer userId) {
+    public void logout(Long userId) {
         User user = userMapper.selectByPrimaryKey(userId);
         String token=user.getToken();
         redisTemplate.delete(token);

@@ -42,7 +42,7 @@ public class ProjectGroupServiceImpl implements ProjectGroupService {
     /**
      * 确认当前用户是否为组长
      */
-    private UserProject checkLeader(Integer projectId, Integer leaderId) {
+    private UserProject checkLeader(Integer projectId, Long leaderId) {
         //判断该项目是否属于当前用户
         UserProject checkUserProject = projectService.checkBelonging(projectId, leaderId);
         //判断当前用户是否是该项目的组长，只有组长才能添加组员到项目
@@ -53,13 +53,13 @@ public class ProjectGroupServiceImpl implements ProjectGroupService {
     }
 
     @Override
-    public void applyProjectMember(Integer projectId, Integer userId) {
+    public void applyProjectMember(Integer projectId, Long userId) {
         //TODO 添加项目成员
 
     }
 
     @Override
-    public List<UserProjectVO> getProjectMember(Integer projectId, Integer userId) {
+    public List<UserProjectVO> getProjectMember(Integer projectId, Long userId) {
         //判断该项目是否属于当前用户
         UserProject checkUserProject = projectService.checkBelonging(projectId, userId);
         Example example = new Example(UserProject.class);
@@ -84,13 +84,13 @@ public class ProjectGroupServiceImpl implements ProjectGroupService {
     }
 
     @Override
-    public void getApplication(Integer projectId, Integer id) {
+    public void getApplication(Integer projectId, Long id) {
         //TODO 获取项目组请求
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void addProjectMember(Integer projectId, Integer userId, Integer leaderId) {
+    public void addProjectMember(Integer projectId, Long userId, Long leaderId) {
         checkLeader(projectId, leaderId);
         //查询用户是否已经属于该项目了
         Example example = new Example(UserProject.class);
@@ -116,7 +116,7 @@ public class ProjectGroupServiceImpl implements ProjectGroupService {
     }
 
     @Override
-    public void deleteProjectMember(Integer projectId, Integer userId, Integer leaderId) {
+    public void deleteProjectMember(Integer projectId, Long userId, Long leaderId) {
         checkLeader(projectId, leaderId);
         UserProject userProject = new UserProject();
         userProject.setDeleteTime(new Date());

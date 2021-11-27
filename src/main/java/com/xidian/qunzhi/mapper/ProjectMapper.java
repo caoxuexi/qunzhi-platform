@@ -7,7 +7,7 @@ import com.xidian.qunzhi.utils.MyMapper;
 import java.util.List;
 
 public interface ProjectMapper extends MyMapper<Project> {
-    List<Project> listAllByUserId(Integer id);
+    List<Project> listAllByUserId(Long id);
 
     Integer getCount();
 }

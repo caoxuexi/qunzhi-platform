@@ -33,7 +33,7 @@ public class ProjecctGroupController {
     @ApiOperation(value = "添加项目组成员",httpMethod = "GET")
     @GetMapping("/addProjectMember")
     public UnifyResponse addProjectMember(@ApiParam(value = "项目id",example = "1") @RequestParam(value = "id") Integer projectId,
-                                          @ApiParam(value = "用户id",example = "1") Integer userId,
+                                          @ApiParam(value = "用户id",example = "1") Long userId,
                                           HttpServletRequest request){
         UserLoginVO userLoginVO=LoginUserContext.getUser();
         projectGroupService.addProjectMember(projectId,userId,userLoginVO.getId());
@@ -43,7 +43,7 @@ public class ProjecctGroupController {
     @ApiOperation(value = "删除项目组成员",httpMethod = "GET")
     @GetMapping("/deleteProjectMember")
     public UnifyResponse deleteProjectMember(@ApiParam(value = "项目id",example = "1") @RequestParam(value = "id") Integer projectId,
-                                             @ApiParam(value = "用户id",example = "1") Integer userId,
+                                             @ApiParam(value = "用户id",example = "1") Long userId,
                                              HttpServletRequest request){
         UserLoginVO userLoginVO= LoginUserContext.getUser();
         projectGroupService.deleteProjectMember(projectId,userId,userLoginVO.getId());

@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 public class UserLoginVO {
     @ApiModelProperty(value = "id",name = "id",example = "1",required = true)
-    private Integer id;
+    private Long id;
     @ApiModelProperty(value = "邮箱",name = "email",example = "752245683@qq.com",required = true)
     private String email;
     @ApiModelProperty(value = "昵称",name = "nickname",example = "caoxuexi",required = true)

@@ -17,7 +17,7 @@ public interface UserService {
      * @param changePasswordDTO
      * @param userId
      */
-    void changePassword(ChangePasswordDTO changePasswordDTO, Integer userId) throws Exception;
+    void changePassword(ChangePasswordDTO changePasswordDTO, Long userId) throws Exception;
 
     /**
      * 开发者注册
@@ -39,21 +39,21 @@ public interface UserService {
      * @param userInformationDTO
      * @param userId
      */
-    UserInformationVO changeInformation(UserInformationDTO userInformationDTO, Integer userId);
+    UserInformationVO changeInformation(UserInformationDTO userInformationDTO, Long userId);
 
     /**
      * 获取用户具体信息
      * @param userId
      * @return
      */
-    UserInformationVO getInformation(Integer userId);
+    UserInformationVO getInformation(Long userId);
 
     /**
      * 用户退出
      * @param userId
      * @return
      */
-    void logout(Integer userId);
+    void logout(Long userId);
 
     /**
      * 管理员获取所有用户的信息

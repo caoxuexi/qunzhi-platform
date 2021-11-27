@@ -16,7 +16,7 @@ public interface ProjectGroupService {
      * @param userId
      * @param leaderId
      */
-    void addProjectMember(Integer projectId, Integer userId, Integer leaderId);
+    void addProjectMember(Integer projectId, Long userId, Long leaderId);
 
     /**
      * 组长删除项目组成员
@@ -24,7 +24,7 @@ public interface ProjectGroupService {
      * @param userId
      * @param leaderId
      */
-    void deleteProjectMember(Integer projectId, Integer userId, Integer leaderId);
+    void deleteProjectMember(Integer projectId, Long userId, Long leaderId);
 
 
     /**
@@ -32,7 +32,7 @@ public interface ProjectGroupService {
      * @param projectId
      * @param userId
      */
-    void applyProjectMember(Integer projectId, Integer userId);
+    void applyProjectMember(Integer projectId, Long userId);
 
     /**
      * 获得项目组的所有成员
@@ -40,12 +40,12 @@ public interface ProjectGroupService {
      * @param userId
      * @return
      */
-    List<UserProjectVO> getProjectMember(Integer projectId, Integer userId);
+    List<UserProjectVO> getProjectMember(Integer projectId, Long userId);
 
     /**
      * 组长获取申请加入项目的请求
      * @param projectId
      * @param id
      */
-    void getApplication(Integer projectId, Integer id);
+    void getApplication(Integer projectId, Long id);
 }

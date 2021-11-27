@@ -12,7 +12,7 @@ import javax.persistence.Id;
  */
 @Data
 public class UserProjectVO {
-    private Integer userId;
+    private Long userId;
 
     private String userNickname;
 
