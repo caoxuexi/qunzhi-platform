@@ -3,27 +3,34 @@ server:
 
 spring:
   redis:
-    host: localhost
+    host: 192.168.6.233
     port: 6379
     database: 0
-
   #分库分表
   shardingsphere:
     datasource:
       names: ds0,ds1
+      # 主库配置
       ds0:
         driver-class-name: com.mysql.cj.jdbc.Driver
         jdbcUrl: jdbc:mysql://222.25.188.1:43792/qunzhi-db?serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
         username: root
         password: 123456
         type: com.zaxxer.hikari.HikariDataSource
+      # 从库配置
       ds1:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbcUrl: jdbc:mysql://222.25.188.1:49567/qunzhi-db2?serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+        jdbcUrl: jdbc:mysql://222.25.188.1:49567/qunzhi-db?serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
         username: root
         password: 123456
         type: com.zaxxer.hikari.HikariDataSource
     sharding:
+      # 主从关系配置
+      master-slave-rules:
+        ms0:
+          load-balance-algorithm-type: RANDOM
+          master-data-source-name: ds0
+          slave-data-source-names: ds1
       tables:
         user:
           # 配置主键生成策略,props中指定雪花算法的配置
@@ -38,7 +45,7 @@ spring:
                   time:
                     difference:
                       milliseconds: 10
-          actual-data-nodes: ds0.user_$->{1..2}
+          actual-data-nodes: ms0.user_$->{1..2}
           table-strategy:
             standard:
               sharding-column: id
