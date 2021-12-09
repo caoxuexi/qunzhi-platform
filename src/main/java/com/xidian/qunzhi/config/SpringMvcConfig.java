@@ -20,6 +20,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
                         "/redis/**", //redisTemplate的本质也是向redis发http请求，所以这里redis接口要放开
                         //用户登录注册等路由
                         "/user/login",
+                        "/test/**", //放行测试用的controller
                         "/user/register",
                         "/adminUser/login",  //管理员登录路由
                         "/captcha/generate", //二维码生成路由

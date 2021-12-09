@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
         Long token = snowFlake.nextId();
         //4.1 保存token(登录状态到数据库中)
         user.setToken(token.toString());
-        userMapper.updateByPrimaryKeySelective(user);
+        userMapper.updateByExampleSelective(user,example);
         UserLoginVO userLoginVO = CopyUtil.copy(user, UserLoginVO.class);
 
         //4.2 保存token到redis里

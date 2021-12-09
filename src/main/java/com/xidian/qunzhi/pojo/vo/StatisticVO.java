@@ -20,4 +20,6 @@ public class StatisticVO {
     private Integer projectCount;
     //当前在线人数
     private Integer onlineNum;
+    //当前在线项目数
+    private Integer onlineProjectNum;
 }

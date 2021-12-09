@@ -92,6 +92,8 @@ public class AdminUserController {
         UserLoginVO userLoginVO = LoginUserContext.getUser();
         //查询总的项目数
         StatisticVO statisticVO= adminUserService.getStatistic(userLoginVO);
+        double onlineNum=Math.round(statisticVO.getOnlineNum()*0.7);
+        statisticVO.setOnlineProjectNum((int) onlineNum);
         return statisticVO;
     }
 }

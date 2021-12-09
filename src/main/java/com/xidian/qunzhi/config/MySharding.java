@@ -13,8 +13,8 @@ public class MySharding implements PreciseShardingAlgorithm<Long> {
          long mode= id %collection.size();
         mode=Math.abs(mode);
         String[] strings=collection.toArray(new String[0]);
-        System.out.println(strings[0]+"---------"+strings[1]);
-        System.out.println("mode="+mode);
+//        System.out.println(strings[0]+"---------"+strings[1]);
+//        System.out.println("mode="+mode);
         return strings[(int)mode];
     }
 }
