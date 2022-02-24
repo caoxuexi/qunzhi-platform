@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : XidianVM
  Source Server Type    : MySQL
- Source Server Version : 80026
- Source Host           : localhost:3306
+ Source Server Version : 80017
+ Source Host           : 222.25.188.1:43792
  Source Schema         : qunzhi-db
 
  Target Server Type    : MySQL
- Target Server Version : 80026
+ Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 07/11/2021 17:15:10
+ Date: 24/02/2022 20:37:28
 */
 
 SET NAMES utf8mb4;
@@ -23,14 +23,14 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `device_log`;
 CREATE TABLE `device_log`  (
   `id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `project_id` int NOT NULL,
+  `project_id` int(11) NOT NULL,
   `mac` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `first_online` datetime(3) NULL DEFAULT NULL,
-  `cumulative_online` int NOT NULL DEFAULT 0,
+  `cumulative_online` int(11) NOT NULL DEFAULT 0,
   `last_online` datetime(3) NULL DEFAULT NULL,
-  `state` smallint NULL DEFAULT NULL COMMENT '0:离线 1:在线',
+  `state` smallint(6) NULL DEFAULT NULL COMMENT '0:离线 1:在线',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of device_log
@@ -42,19 +42,19 @@ INSERT INTO `device_log` VALUES ('1', 1, 'virtual:site', '2021-10-01 22:08:29.00
 -- ----------------------------
 DROP TABLE IF EXISTS `project`;
 CREATE TABLE `project`  (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `category` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `chat_method` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `product_key` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `product_secret` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `power_dissipation` smallint NULL DEFAULT NULL COMMENT '1.低 2.正常 3.高',
-  `share` smallint NULL DEFAULT NULL COMMENT '0.不共享 1.共享',
+  `power_dissipation` smallint(6) NULL DEFAULT NULL COMMENT '1.低 2.正常 3.高',
+  `share` smallint(6) NULL DEFAULT NULL COMMENT '0.不共享 1.共享',
   `create_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
   `update_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of project
@@ -65,21 +65,23 @@ INSERT INTO `project` VALUES (3, '智慧城市系统', NULL, NULL, '5a220f0122af
 INSERT INTO `project` VALUES (4, '智慧园区系统', NULL, NULL, '5a220f0122af47fe9acf13a37ad93dc5', NULL, NULL, NULL, '2021-10-21 20:11:54.000', '2021-10-26 16:23:00.202', NULL);
 INSERT INTO `project` VALUES (5, '智慧校园系统', NULL, NULL, '5a220f0122af47fe9acf13a37ad93dc4', NULL, NULL, NULL, '2021-10-21 20:12:22.000', '2021-10-27 19:04:04.788', NULL);
 INSERT INTO `project` VALUES (6, '智能图书馆系统', '管理系统/后台', 'Wi-Fi', '51adf172-bd11-484f-a06b-02515ae5feb9', '51df266a-d2a2-3d0e-b109-e1f2ec424b8b', 2, 0, '2021-10-29 12:28:47.269', '2021-10-29 12:28:47.269', NULL);
+INSERT INTO `project` VALUES (7, '智慧图书馆系统', '管理系统/后台', 'Http', '9a42d870-114a-4d5c-a163-26d71043645a', '1f4ee7d9-8b4a-3014-b2bc-98d327e85523', 2, 1, '2021-11-09 11:31:01.572', '2021-11-09 11:31:01.572', NULL);
+INSERT INTO `project` VALUES (8, '智慧校园系统', '管理系统/后台', 'Http', 'a1c479ed-f213-4b15-8f98-7cc0a3db5034', '0dc2d25e-3311-332b-ab28-b2dad9faee81', 2, 1, '2021-11-09 11:33:20.929', '2021-11-09 11:33:20.929', NULL);
 
 -- ----------------------------
 -- Table structure for project_application
 -- ----------------------------
 DROP TABLE IF EXISTS `project_application`;
 CREATE TABLE `project_application`  (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `project_mac` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `project_id` int NOT NULL,
+  `project_id` int(11) NOT NULL,
   `first_online_time` datetime(3) NULL DEFAULT NULL,
   `last_onlon_time` datetime NULL DEFAULT NULL,
-  `online_count` int NULL DEFAULT NULL,
+  `online_count` int(11) NULL DEFAULT NULL,
   `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '0.未审批 1.已审批 2.已拒绝',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of project_application
@@ -90,92 +92,127 @@ CREATE TABLE `project_application`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `project_extra`;
 CREATE TABLE `project_extra`  (
-  `id` int NOT NULL,
-  `project_id` int NOT NULL,
-  `current_user_count` int UNSIGNED NULL DEFAULT 0,
-  `demand` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `functions` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of project_extra
 -- ----------------------------
+INSERT INTO `project_extra` VALUES (1, 8, '[\"用户管理\"]');
+INSERT INTO `project_extra` VALUES (2, 1, '[\"用户管理\",\"网站公告\"]');
 
 -- ----------------------------
 -- Table structure for service_recommend
 -- ----------------------------
 DROP TABLE IF EXISTS `service_recommend`;
 CREATE TABLE `service_recommend`  (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `function_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `service_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `code_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `domain` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of service_recommend
 -- ----------------------------
-INSERT INTO `service_recommend` VALUES (1, '用户管理', '用户注册', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/login.zip');
-INSERT INTO `service_recommend` VALUES (2, '用户管理', '权限验证', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/login.zip');
-INSERT INTO `service_recommend` VALUES (3, '用户管理', '用户登录', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/login.zip');
-INSERT INTO `service_recommend` VALUES (4, '网站公告', '公告发布', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/bulltin.zip');
-INSERT INTO `service_recommend` VALUES (5, '网站公告', '消息发布', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/bulltin.zip');
-INSERT INTO `service_recommend` VALUES (6, '数据管理', '数据存储', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/dataManage.zip');
-INSERT INTO `service_recommend` VALUES (7, '数据管理', '可视化展示', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/dataManage.zip');
-INSERT INTO `service_recommend` VALUES (8, '设备接入', 'wifi接入', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/instrument.zip\r\n');
-INSERT INTO `service_recommend` VALUES (9, '设备接入', '蓝牙接入', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/instrument.zip\r\n');
-INSERT INTO `service_recommend` VALUES (10, '设备接入', '设备管理', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/instrument.zip\r\n');
+INSERT INTO `service_recommend` VALUES (1, '用户管理', '用户注册', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/login.zip', NULL);
+INSERT INTO `service_recommend` VALUES (2, '用户管理', '权限验证', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/login.zip', NULL);
+INSERT INTO `service_recommend` VALUES (3, '用户管理', '用户登录', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/login.zip', NULL);
+INSERT INTO `service_recommend` VALUES (4, '网站公告', '公告发布', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/bulltin.zip', NULL);
+INSERT INTO `service_recommend` VALUES (5, '网站公告', '消息发布', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/bulltin.zip', NULL);
+INSERT INTO `service_recommend` VALUES (6, '数据管理', '数据存储', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/dataManage.zip', NULL);
+INSERT INTO `service_recommend` VALUES (7, '数据管理', '可视化展示', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/dataManage.zip', NULL);
+INSERT INTO `service_recommend` VALUES (8, '设备接入', 'wifi接入', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/instrument.zip\r\n', NULL);
+INSERT INTO `service_recommend` VALUES (9, '设备接入', '蓝牙接入', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/instrument.zip\r\n', NULL);
+INSERT INTO `service_recommend` VALUES (10, '设备接入', '设备管理', 'https://qunzhi-code.oss-cn-hangzhou.aliyuncs.com/instrument.zip\r\n', NULL);
 
 -- ----------------------------
--- Table structure for user
+-- Table structure for user_1
 -- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user`  (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `user_1`;
+CREATE TABLE `user_1`  (
+  `id` bigint(20) UNSIGNED NOT NULL,
   `nickname` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `realname` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `profile` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `picture` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `mobile` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `qq` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `address` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `district` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `is_admin` smallint UNSIGNED NULL DEFAULT 0,
+  `is_admin` smallint(5) UNSIGNED NULL DEFAULT 0,
   `token` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
   `create_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
   `update_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_email_password`(`email`, `password`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of user
+-- Records of user_1
 -- ----------------------------
-INSERT INTO `user` VALUES (1, '嗜血枭雄', '曹操', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245683@qq.com', '18858781650', '969718359', '浙江省杭州市萧山区萧山经济开发区钱农东路8号西电杭州研究院', '浙江省/杭州市/萧山区', 1, '112181289351778304', '2021-10-17 22:19:56.482', '2021-10-26 16:08:44.370');
-INSERT INTO `user` VALUES (2, '飞飞公主', '张飞', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245682@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-18 15:22:17.675', '2021-10-26 15:51:24.254');
-INSERT INTO `user` VALUES (3, '勇敢牛牛', '牛魔', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245680@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-18 20:17:09.138', '2021-10-26 15:51:24.363');
-INSERT INTO `user` VALUES (4, '机关重炮', '墨子', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245689@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-25 13:23:25.608', '2021-10-26 19:23:21.658');
-INSERT INTO `user` VALUES (5, '一夫当关', '关羽', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245679@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-25 20:28:01.710', '2021-10-26 19:23:22.604');
-INSERT INTO `user` VALUES (6, '皇叔蹦迪', '刘备', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245677@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-25 13:27:15.834', '2021-10-26 19:23:48.413');
-INSERT INTO `user` VALUES (7, 'caoxuexi1', '曹操1', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245688@qq.com', NULL, NULL, NULL, NULL, 0, '112139571877253120', '2021-10-26 21:35:23.914', '2021-10-26 21:35:23.914');
+INSERT INTO `user_1` VALUES (1, '嗜血枭雄', '曹操', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245683@qq.com', '18858781650', '969718359', '浙江省杭州市萧山区萧山经济开发区钱农东路8号西电杭州研究院', '浙江省/杭州市/萧山区', 1, '151884122690818048', '2021-10-17 22:19:56.482', '2021-12-02 03:59:02.558');
+INSERT INTO `user_1` VALUES (2, '粗中有细', '张飞', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245682@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-18 15:22:17.675', '2021-12-02 02:53:04.797');
+INSERT INTO `user_1` VALUES (3, '西部大镖客', '牛魔', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245680@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-18 20:17:09.138', '2021-12-02 02:53:04.879');
+INSERT INTO `user_1` VALUES (4, '机关重炮', '墨子', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245689@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-25 13:23:25.608', '2021-12-02 02:53:04.961');
+INSERT INTO `user_1` VALUES (5, '千里走单骑', '关羽', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245679@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-25 20:28:01.710', '2021-12-02 02:53:05.043');
+INSERT INTO `user_1` VALUES (6, '刘皇叔', '刘备', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245677@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-25 13:27:15.834', '2021-12-02 02:53:05.125');
+INSERT INTO `user_1` VALUES (7, 'caoxuexi1', '曹操1', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245688@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-10-26 21:35:23.914', '2021-12-02 02:53:05.208');
+INSERT INTO `user_1` VALUES (8, 'Dragon0', 'Dragon0', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, 'dragon0@xdu.com', NULL, NULL, NULL, NULL, 0, '', '2021-11-03 02:38:06.828', '2021-11-03 02:38:06.828');
+INSERT INTO `user_1` VALUES (9, 'caoxuexi', '曹操', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245681@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-11-18 21:01:02.680', '2021-11-18 21:01:02.680');
+INSERT INTO `user_1` VALUES (10, 'caoxuexi', '曹操', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '752245618@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-11-18 21:01:14.530', '2021-11-18 21:01:14.530');
+INSERT INTO `user_1` VALUES (671319907253616640, '龙宝', '吕龙龙', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '969718351@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-11-27 11:45:38.416', '2021-12-01 13:51:39.431');
+
+-- ----------------------------
+-- Table structure for user_2
+-- ----------------------------
+DROP TABLE IF EXISTS `user_2`;
+CREATE TABLE `user_2`  (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nickname` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `realname` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `picture` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `mobile` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `qq` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `address` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `district` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `is_admin` smallint(5) UNSIGNED NULL DEFAULT 0,
+  `token` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `create_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `update_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_email_password`(`email`, `password`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of user_2
+-- ----------------------------
+INSERT INTO `user_2` VALUES (671320054310109185, '强无敌', '曹强', 'Qvg6b85lKYQ4Urx02ffq2w==', NULL, '969718350@qq.com', NULL, NULL, NULL, NULL, 0, '', '2021-11-27 11:46:13.472', '2021-12-01 13:51:50.342');
 
 -- ----------------------------
 -- Table structure for user_project
 -- ----------------------------
 DROP TABLE IF EXISTS `user_project`;
 CREATE TABLE `user_project`  (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` int UNSIGNED NOT NULL,
-  `project_id` int UNSIGNED NOT NULL,
-  `user_role` smallint NULL DEFAULT NULL COMMENT '用户对于项目的角色：1.组长  2.组员',
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `project_id` int(10) UNSIGNED NOT NULL,
+  `user_role` smallint(6) NULL DEFAULT NULL COMMENT '用户对于项目的角色：1.组长  2.组员',
   `user_nickname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `user_realname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `create_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
   `update_time` datetime(3) NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `delete_time` datetime(3) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_project
@@ -186,5 +223,7 @@ INSERT INTO `user_project` VALUES (3, 2, 1, 2, '飞飞公主', '张飞', '2021-1
 INSERT INTO `user_project` VALUES (4, 3, 1, 2, '勇敢牛牛', '牛魔', '2021-10-21 20:04:18.503', '2021-10-26 13:11:04.705', NULL);
 INSERT INTO `user_project` VALUES (5, 5, 1, 2, '机关重炮', '墨子', '2021-10-26 16:19:08.969', '2021-10-26 16:19:08.969', NULL);
 INSERT INTO `user_project` VALUES (6, 1, 6, 1, '嗜血枭雄', '曹操', '2021-10-29 12:28:52.527', '2021-10-29 12:28:52.527', NULL);
+INSERT INTO `user_project` VALUES (7, 7, 7, 1, 'caoxuexi1', '曹操1', '2021-11-09 11:31:01.579', '2021-11-09 11:31:01.579', NULL);
+INSERT INTO `user_project` VALUES (9, 7, 8, 1, 'caoxuexi1', '曹操1', '2021-11-09 11:33:20.931', '2021-11-09 11:33:20.931', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
